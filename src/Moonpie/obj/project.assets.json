@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\quiqu\\Documents\\Moonpie\\examples\\CommandsExample\\CommandsExample.csproj",
-      "projectName": "CommandsExample",
-      "projectPath": "C:\\Users\\quiqu\\Documents\\Moonpie\\examples\\CommandsExample\\CommandsExample.csproj",
+      "projectUniqueName": "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\Moonpie.csproj",
+      "projectName": "Moonpie",
+      "projectPath": "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\Moonpie.csproj",
       "packagesPath": "C:\\Users\\quiqu\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\quiqu\\Documents\\Moonpie\\examples\\CommandsExample\\obj\\",
+      "outputPath": "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\quiqu\\Documents\\Moonpie\\examples\\SimpleExample\\SimpleExample.csproj": {}
+    "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\Moonpie.csproj": {}
   },
   "projects": {
-    "C:\\Users\\quiqu\\Documents\\Moonpie\\examples\\SimpleExample\\SimpleExample.csproj": {
+    "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\Moonpie.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\quiqu\\Documents\\Moonpie\\examples\\SimpleExample\\SimpleExample.csproj",
-        "projectName": "SimpleExample",
-        "projectPath": "C:\\Users\\quiqu\\Documents\\Moonpie\\examples\\SimpleExample\\SimpleExample.csproj",
+        "projectUniqueName": "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\Moonpie.csproj",
+        "projectName": "Moonpie",
+        "projectPath": "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\Moonpie.csproj",
         "packagesPath": "C:\\Users\\quiqu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\quiqu\\Documents\\Moonpie\\examples\\SimpleExample\\obj\\",
+        "outputPath": "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
