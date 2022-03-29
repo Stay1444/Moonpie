@@ -20,6 +20,19 @@ public class BasicCommands : BaseCommandModule
         await ctx.Player.SendMessageAsync("Connected!");
     }
 
+    [TabComplete("connect")]
+    public Task<string[]> TestTabComplete(TabCompleteContext ctx)
+    {
+        if (ctx.Args.Length == 0)
+        {
+            return Task.FromResult(new [] {"localhost"});
+        }else if (ctx.Args.Length == 1)
+        {
+            return Task.FromResult(new [] {"25565"});
+        }
+        return Task.FromResult(new string[0]);
+    }
+    
     [Command("transport")]
     public async Task TransportCommand(CommandContext ctx)
     {

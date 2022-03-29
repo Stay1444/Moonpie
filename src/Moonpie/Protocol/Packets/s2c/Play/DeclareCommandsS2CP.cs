@@ -392,7 +392,7 @@ public class DeclareCommandsS2CP : IS2CPacket
     
     public async Task Handle(PacketHandleContext handler)
     {
-        var proxyCommands = handler.Proxy.PluginManager.RegisterCommands(handler.Player);
+        var proxyCommands = handler.Proxy.Plugins.RegisterCommands(handler.Player);
         var root = Nodes[RootIndex];
 
 

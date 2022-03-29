@@ -20,9 +20,11 @@ public class TabCompleteC2SP : IC2SPacket
         buffer.WriteString(Text);
     }
 
-    public Task Handle(PacketHandleContext handler)
+    public async Task Handle(PacketHandleContext handler)
     {
-        Console.WriteLine($"{this.GetType().Name} {TransactionId} {Text}");
-        return Task.CompletedTask;
+        if (await handler.Proxy.Plugins.HandleAutoCompletionAsync(handler.Player, TransactionId, Text))
+        {
+            handler.Cancel();
+        }
     }
 }

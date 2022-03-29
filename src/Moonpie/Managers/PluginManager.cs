@@ -117,6 +117,21 @@ public class PluginManager
         return Task.FromResult(false);
     }
 
+    internal bool DoesCommandExist(string commandName)
+    {
+        foreach (var plugin in plugins!)
+        {
+            foreach (var commandInfo in plugin.Commands)
+            {
+                if (commandInfo.Name == commandName)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     private async Task RunComandAsync(CommandInfo command, string[] args, Player player)
     {
         try
@@ -231,5 +246,77 @@ public class PluginManager
         }
         
         return list;
+    }
+    
+    public T? GetInstance<T>() where T : MoonpiePlugin
+    {
+        return plugins!.FirstOrDefault(x => x is T) as T;
+    }
+
+    internal Task<bool> HandleAutoCompletionAsync(Player player, int transactionId, string text)
+    {
+        string[] split = text.Substring(1).Split(' ');
+        if (split.Length == 0) return Task.FromResult(false);
+        if (!DoesCommandExist(split[0])) return Task.FromResult(false);
+        if (GetCommandInfo(split[0])!.TabCompleteInfo is null) return Task.FromResult(false);
+        _ = RunAutoCompletionAsync(player, transactionId, split[0], split.Skip(1).ToArray());
+        return Task.FromResult(true);
+    }
+    
+    private CommandInfo? GetCommandInfo(string commandName)
+    {
+        foreach (var plugin in plugins!)
+        {
+            foreach (var commandInfo in plugin.Commands)
+            {
+                if (commandInfo.Name == commandName) return commandInfo;
+            }
+        }
+
+        return null;
+    }
+
+    private MoonpiePlugin? GetPlugin(CommandInfo info)
+    {
+        foreach (var plugin in plugins!)
+        {
+            foreach (var commandInfo in plugin.Commands)
+            {
+                if (commandInfo.Name == info.Name) return plugin;
+            }
+        }
+        
+        return null;
+    }
+
+    private async Task RunAutoCompletionAsync(Player player, int transactionId, string command, string[] args)
+    {
+        args = args.Where( x=> !string.IsNullOrEmpty(x)).ToArray();
+        var commandInfo = GetCommandInfo(command)!;
+        var tabCompleteInfo = commandInfo.TabCompleteInfo!;
+        var plugin = GetPlugin(commandInfo)!;
+        var context = new TabCompleteContext(commandInfo, player, this._proxy, plugin, args);
+        try
+        {
+            if (tabCompleteInfo.Method.Invoke(tabCompleteInfo.Module, new object[] {context})! is not Task<string[]> result) return;
+            var text = await result!;
+            TabCompleteS2CP tabCompleteS2CP = new TabCompleteS2CP();
+            tabCompleteS2CP.TransactionId = transactionId;
+            tabCompleteS2CP.StartIndex = command.Length + string.Join(" ", args).Length + args.Length + 2;
+            tabCompleteS2CP.Length = 0;
+            foreach (var textResult in text)
+            {
+                tabCompleteS2CP.Matches.Add(new TabCompleteS2CP.Match()
+                {
+                    MatchText = textResult
+                });
+            }
+
+            await player.Transport.PlayerTransport.Connection.WritePacketAsync(tabCompleteS2CP);
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Error while running tab completion for command " + command);
+        }
     }
 }

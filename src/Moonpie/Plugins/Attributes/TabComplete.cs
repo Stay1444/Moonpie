@@ -1,10 +1,10 @@
 ﻿namespace Moonpie.Plugins.Attributes;
 
 [AttributeUsage(AttributeTargets.Method)]
-public class Command : Attribute
+public class TabComplete : Attribute
 {
     public string Name { get; }
-    public Command(string name)
+    public TabComplete(string name)
     {
         Name = name;
     }

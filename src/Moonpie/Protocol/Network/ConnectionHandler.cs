@@ -65,7 +65,7 @@ public class ConnectionHandler
 
     private async Task HandleStatusRequest(PlayerConnection connection)
     {
-        var result = await _proxy.PluginManager.TriggerEventAsync(new PlayerPingEventArgs(connection.RemoteEndPoint, connection.Version));
+        var result = await _proxy.Plugins.TriggerEventAsync(new PlayerPingEventArgs(connection.RemoteEndPoint, connection.Version));
         if (result is null)
         {
             await connection.DisconnectAsync();

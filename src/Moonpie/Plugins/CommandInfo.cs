@@ -8,6 +8,7 @@ public class CommandInfo
     public string? Name { get; private set; }
     public BaseCommandModule Module { get; private set; }
     public MethodInfo Method { get; private set; }
+    public TabCompleteInfo? TabCompleteInfo { get; internal set; }
     internal CommandInfo(MethodInfo info, BaseCommandModule module)
     {
         this.Module = module;
