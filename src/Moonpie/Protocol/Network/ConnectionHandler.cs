@@ -6,6 +6,7 @@ using Moonpie.Entities.Models.Events;
 using Moonpie.Protocol.Packets.c2s.Handshaking;
 using Moonpie.Protocol.Packets.c2s.Login;
 using Moonpie.Protocol.Packets.c2s.Status;
+using Moonpie.Protocol.Packets.s2c.Login;
 using Moonpie.Protocol.Packets.s2c.Status;
 using Moonpie.Protocol.Protocol;
 using Serilog;
@@ -143,10 +144,26 @@ public class ConnectionHandler
         }
         else
         {
+            connection.Dispose();
             return null;
         }
         
-        if (username is null) return null;
+        if (username is null)
+        {
+            connection.Dispose();
+            return null;
+        }
+        
+        if (_proxy.Players.Any(x => x.Username == username))
+        {
+            await connection.WritePacketAsync(new LoginKickS2CP()
+            {
+                Reason = "Username already in use"
+            });
+            await connection.DisconnectAsync();
+            connection.Dispose();
+            return null;
+        }
         
         var player = new Player(_proxy, connection, username);
         await player.Connect(_config.Fallback.Host, _config.Fallback.Port);

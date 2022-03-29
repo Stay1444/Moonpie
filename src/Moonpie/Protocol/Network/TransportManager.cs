@@ -193,6 +193,7 @@ public class TransportManager
 
                 if (packet is not LoginSuccessS2CP)
                 {
+                    server.Dispose();
                     throw new Exception("Login failed");
                 }
                 
@@ -259,6 +260,7 @@ public class TransportManager
         
         if (packet is not LoginSuccessS2CP)
         {
+            server.Dispose();
             throw new Exception("Login failed");
         }
         
