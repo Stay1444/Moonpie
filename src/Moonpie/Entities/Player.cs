@@ -21,7 +21,7 @@ public class Player
     public TransportManager Transport => _transportManager;
     
     
-    public string Username { get; private set; }
+    public string Username { get; internal set; }
     internal Player(Moonpie proxy, PlayerConnection connection, string username)
     {
         this.Proxy = proxy;
@@ -36,7 +36,7 @@ public class Player
 
     public async Task SendMessageAsync(ChatComponent message)
     {
-        await _transportManager.PlayerConnection.WritePacketAsync(new ChatMessageS2CP()
+        await _transportManager.PlayerTransport.Connection.WritePacketAsync(new ChatMessageS2CP()
         {
             Message = message,
             Position = ChatMessageS2CP.ChatTextPositions.SystemMessage

@@ -6,10 +6,6 @@ namespace Moonpie.Protocol.Network;
 
 public class ServerConnection : Connection
 {
-    public ServerConnection(TcpClient client) : base(client)
-    {
-    }
-
     public ServerConnection(TcpClient client, ProtocolVersion version) : base(client)
     {
         this.Version = version;

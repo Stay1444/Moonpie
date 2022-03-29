@@ -13,6 +13,7 @@ public class Moonpie
     private MoonpieConfiguration _configuration;
     private readonly TcpListener _tcpListener;
     private readonly ConnectionHandler _connectionHandler;
+    public MoonpieConfiguration Configuration => _configuration;
     public bool IsRunning { get; private set; }
     private List<Player> _players = new List<Player>();
     public IReadOnlyCollection<Player> Players => _players;

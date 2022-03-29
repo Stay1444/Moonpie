@@ -4,8 +4,8 @@ namespace Moonpie.Protocol.Protocol;
 
 public class ChatComponent
 {
-    [JsonPropertyName("text")]
-    public string Text { get; set; }
+    [JsonPropertyName("text"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Text { get; set; }
     
     [JsonPropertyName("extra"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<ChatComponent>? Extra { get; set; } 

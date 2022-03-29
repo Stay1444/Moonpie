@@ -24,7 +24,9 @@ public class PacketHandler
         {
             var ctx = new PacketHandleContext(Proxy, Player, Transport, this);
             var stopwatch = Stopwatch.StartNew();
-            await packet.Handle(ctx);
+            var earlyReturn = ctx.TExitEarly.Task;
+            var handleTask = packet.Handle(ctx);
+            await Task.WhenAny(earlyReturn, handleTask);
             stopwatch.Stop();
             if (stopwatch.ElapsedMilliseconds > 100)
             {

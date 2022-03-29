@@ -33,15 +33,14 @@ public class LoginSuccessS2CP : IS2CPacket
 
     public async Task Handle(PacketHandleContext handler)
     {
-        /*
-        await handler.Transport.PlayerConnection.WritePacketAsync(new CompressionSetS2CP()
+        
+        await handler.Transport.PlayerTransport.Connection.WritePacketAsync(new CompressionSetS2CP()
         {
-            Threshold = 256
+            Threshold = handler.Proxy.Configuration.CompressionThreshold
         });
-        handler.Transport.PlayerConnection.CompressionThreshold = 256;
-        */
-        handler.Transport.ServerConnection!.State = ProtocolState.Play;
-        handler.Transport.PlayerConnection.State = ProtocolState.Play;
-        Log.Information("Login success");
+        handler.Transport.PlayerTransport.Connection.CompressionThreshold = handler.Proxy.Configuration.CompressionThreshold;
+        
+        handler.Transport.ServerTransport!.Connection.State = ProtocolState.Play;
+        handler.Transport.PlayerTransport.Connection.State = ProtocolState.Play;
     }
 }

@@ -3,6 +3,8 @@ using Moonpie.Entities;
 using Moonpie.Entities.Models.Events;
 using Moonpie.Plugins;
 using Moonpie.Plugins.Attributes;
+using Moonpie.Protocol.Packets.s2c.Play;
+using Moonpie.Protocol.Protocol;
 using Serilog;
 
 namespace Moonpie.Managers;
@@ -147,5 +149,82 @@ public class PluginManager
         {
             Log.Error(e, "Failed to run command {command}", command.Name);
         }
+    }
+
+    internal Dictionary<string, KeyValuePair<DeclareCommandsS2CP.CommandNode, List<DeclareCommandsS2CP.CommandNode>?>> RegisterCommands(Player player)
+    {
+        if (plugins is null) return new Dictionary<string, KeyValuePair<DeclareCommandsS2CP.CommandNode, List<DeclareCommandsS2CP.CommandNode>?>>();
+        var list = new Dictionary<string, KeyValuePair<DeclareCommandsS2CP.CommandNode, List<DeclareCommandsS2CP.CommandNode>?>>();
+
+        bool AreNextParametersRequired(ParameterInfo[] parameters, int startIndex)
+        {
+            for (int i = startIndex; i < parameters.Length; i++)
+            {
+                if (parameters[i].IsOptional) return false;
+            }
+            
+            return true;
+        }
+        
+        foreach (var plugin in plugins)
+        {
+            foreach (var commandInfo in plugin.Commands)
+            {
+                if (commandInfo.Name is null) continue;
+                var parameters = commandInfo.Method.GetParameters().Where(x => x.ParameterType != typeof(CommandContext)).ToArray();
+                var literal = DeclareCommandsS2CP.CommandLiteralNode.Create(commandInfo.Name!,
+                    parameters.Length == 0);
+                list.Add(literal.Name, new KeyValuePair<DeclareCommandsS2CP.CommandNode, List<DeclareCommandsS2CP.CommandNode>?>(literal, null));
+                if (parameters.Length > 0)
+                {
+                    for (int i = 0; i < parameters.Length; i++)
+                    {
+                        var parameter = parameters[i];
+                        if (parameter.ParameterType == typeof(string))
+                        {
+                            var agument = DeclareCommandsS2CP.CommandArgumentNode.Create(parameter.Name ?? "string", !AreNextParametersRequired(parameters, i), "brigadier:string",
+                                DeclareCommandsS2CP.CommandArgumentNode.SuggestionTypes.ASK_SERVER, new List<object>
+                                {
+                                    new VarInt(0)
+                                });
+
+                            if (list[commandInfo.Name].Value is null)
+                            {
+                                list[commandInfo.Name] = new KeyValuePair<DeclareCommandsS2CP.CommandNode, List<DeclareCommandsS2CP.CommandNode>?>(
+                                    literal, new List<DeclareCommandsS2CP.CommandNode> {agument});
+                            }else
+                            {
+                                list[commandInfo.Name].Value!.Add(agument);
+                            }
+                            
+                            continue;
+                        }
+                        
+                        if (parameter.ParameterType == typeof(int))
+                        {
+                            var agument = DeclareCommandsS2CP.CommandArgumentNode.Create(parameter.Name ?? "int", true, "brigadier:integer",
+                                DeclareCommandsS2CP.CommandArgumentNode.SuggestionTypes.ASK_SERVER, new List<object>
+                                {
+                                    (byte)0x00
+                                });
+
+                            if (list[commandInfo.Name].Value is null)
+                            {
+                                list[commandInfo.Name] = new KeyValuePair<DeclareCommandsS2CP.CommandNode, List<DeclareCommandsS2CP.CommandNode>?>(
+                                    literal, new List<DeclareCommandsS2CP.CommandNode> {agument});
+                            }else
+                            {
+                                list[commandInfo.Name].Value!.Add(agument);
+                            }
+                            
+                            continue;
+                        }
+                    }
+                }
+                
+            }
+        }
+        
+        return list;
     }
 }

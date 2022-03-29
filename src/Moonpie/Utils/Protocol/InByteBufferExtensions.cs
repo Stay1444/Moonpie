@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Protocol;
-using Serilog;
 
 namespace Moonpie.Utils.Protocol;
 
@@ -149,6 +148,27 @@ public static class InByteBufferExtensions
         }
         return default;
     }
+    
+    public static T[] ReadArray<T>(this InByteBuffer buffer, int length, Func<T> read)
+    {
+        var array = new T[length];
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = read();
+        }
+        return array;
+    }
+
+    public static T[] ReadArray<T>(this InByteBuffer buffer, Func<InByteBuffer, T> read, int length)
+    {
+        var array = new T[length];
+        for (int i = 0; i < length; i++)
+        {
+            array[i] = read(buffer);
+        }
+        return array;
+    }
+    
     public static PlayerProperties ReadPlayerProperties(this InByteBuffer buffer)
     {
         PlayerTextures? textures = null;

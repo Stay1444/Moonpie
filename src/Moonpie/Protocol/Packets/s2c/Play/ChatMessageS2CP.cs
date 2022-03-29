@@ -9,7 +9,7 @@ namespace Moonpie.Protocol.Packets.s2c.Play;
 public class ChatMessageS2CP : IS2CPacket
 {
     public ChatComponent? Message { get; set; } = ChatComponent.Empty;
-    public ChatTranslate? Translate { get; set; }
+    public string? Translate { get; set; }
     public ChatTextPositions Position { get; set; } = ChatTextPositions.SystemMessage;
     public JavaUUID? Sender { get; set; } = null;
     public void Read(InByteBuffer buffer)
@@ -17,7 +17,7 @@ public class ChatMessageS2CP : IS2CPacket
         string json = buffer.ReadString();
         if (json.Contains("translate"))
         {
-            Translate = JsonSerializer.Deserialize<ChatTranslate>(json);
+            Translate = json;
         }else
         {
             Message = JsonSerializer.Deserialize<ChatComponent>(json);
@@ -37,7 +37,7 @@ public class ChatMessageS2CP : IS2CPacket
     {
         if (Translate != null)
         {
-            buffer.WriteString(JsonSerializer.Serialize(Translate));
+            buffer.WriteString(Translate);
         }
         else
         {

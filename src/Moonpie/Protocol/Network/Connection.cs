@@ -3,7 +3,6 @@ using System.Net.Sockets;
 using Moonpie.Protocol.Packets;
 using Moonpie.Protocol.Packets.c2s;
 using Moonpie.Protocol.Packets.s2c;
-using Moonpie.Protocol.Packets.s2c.Login;
 using Moonpie.Protocol.Protocol;
 using Moonpie.Utils.Protocol;
 using Serilog;
@@ -23,7 +22,6 @@ public abstract class Connection : IDisposable
         get => CompressionThreshold > 0;
     }
     public long CompressionThreshold { get; internal set; }
-    public EndPoint LocalEndPoint { get; private protected set; }
     public EndPoint RemoteEndPoint { get; private protected set; }
     public ProtocolVersion Version { get; internal set; }
     public ProtocolState State { get; internal set; }
@@ -35,7 +33,6 @@ public abstract class Connection : IDisposable
         _cts = new CancellationTokenSource();
         _client = client;
         _stream = client.GetStream();
-        LocalEndPoint = client.Client.LocalEndPoint ?? throw new Exception("LocalEndPoint is null");
         RemoteEndPoint = client.Client.RemoteEndPoint ?? throw new Exception("RemoteEndPoint is null");
         _packetMapper = new PacketMapper();
         IsConnected = true;
@@ -61,6 +58,7 @@ public abstract class Connection : IDisposable
                 await DisconnectAsync();
                 return null;
             }
+
             if (CompressionEnabled)
             {
                 if (LOG) Log.Debug("ReadC2SPacketAsync: CompressionEnabled");
@@ -70,16 +68,21 @@ public abstract class Connection : IDisposable
             var buffer = new InByteBuffer(data, Version, State);
             return _packetMapper.DeserializeC2SPacket(buffer);
 
-        }catch(Exception e)
+        }
+        catch (OperationCanceledException)
+        {
+            return null;
+        }
+        catch(Exception e)
         {
             Console.WriteLine(e);
+            Log.Error(e, "Error reading packet C2S");
             await DisconnectAndCleanupAsync();
         }
         await DisconnectAndCleanupAsync();
         return null;
     }
 
-    private static byte[]? _lastChunkDataRead;
     protected async Task<IS2CPacket?> ReadS2CPacketAsync()
     {
         if (!IsConnected || _cts.IsCancellationRequested)
@@ -91,11 +94,8 @@ public abstract class Connection : IDisposable
         {
             
             var data = await ReadDataChunk();
-            var dataClone = data.Clone() as byte[];
-            if (LOG) Log.Debug("ReadS2CPacketAsync Chunk: {data}", data.Length);
             if (CompressionEnabled)
             {
-                if (LOG) Log.Debug("ReadS2CPacketAsync: CompressionEnabled");
                 data = Decompress(data);
             }
             
@@ -109,9 +109,14 @@ public abstract class Connection : IDisposable
             
             return packet;
 
-        }catch(Exception e)
+        }catch (OperationCanceledException)
+        {
+            return null;
+        }
+        catch(Exception e)
         {
             Console.WriteLine(e);
+            Log.Error(e, "Error reading packet S2C");
             await DisconnectAndCleanupAsync();
         }
         
@@ -237,8 +242,6 @@ public abstract class Connection : IDisposable
     public Task WritePacketAsync(IPacket packet)
     {
         if (!IsConnected) return Task.CompletedTask;
-        
-        if (LOG) Log.Debug("Sending packet: {name}", packet.GetType().Name);
         
         if (packet is IS2CPacket s2c)
         {

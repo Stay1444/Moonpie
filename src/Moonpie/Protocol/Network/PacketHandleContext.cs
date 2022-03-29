@@ -21,4 +21,10 @@ public class PacketHandleContext
     {
         IsCanceled = true;
     }
+
+    internal TaskCompletionSource TExitEarly { get; set; } = new TaskCompletionSource(); 
+    public void ExitEarly()
+    {
+        TExitEarly.SetResult();
+    }
 }

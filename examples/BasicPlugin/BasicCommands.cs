@@ -12,11 +12,10 @@ public class BasicCommands : BaseCommandModule
         await ctx.Player.SendMessageAsync("Hello World!");
     }
     
-    [Command("test")]
+    [Command("connect")]
     public async Task TestCommand(CommandContext ctx, string host, int port)
     {
         await ctx.Player.SendMessageAsync("Connecting you to " + host + ":" + port + "...");
-        await Task.Delay(1000);
         await ctx.Player.Connect(host, (uint)port);
         await ctx.Player.SendMessageAsync("Connected!");
     }
@@ -26,20 +25,8 @@ public class BasicCommands : BaseCommandModule
     {
         await ctx.Player.SendMessageLinesAsync(
             ChatComponent.Parse($"{ctx.Player.Username} §a<->§r §9Moonpie§r §a<->§r Server"),
-            ChatComponent.Parse($"{ctx.Player.Username} §a<->§r §9Moonpie§r [§cNot Encrypted§r] [{(ctx.Player.Transport.PlayerConnection.CompressionEnabled ? $"§bCompressed ({ctx.Player.Transport.PlayerConnection.CompressionThreshold})§r" : "§cNot Compressed§r")}]"),
-            ChatComponent.Parse($"Server §a<->§r §9Moonpie§r [§cNot Encrypted§r] [{(ctx.Player.Transport.ServerConnection!.CompressionEnabled ? $"§bCompressed ({ctx.Player.Transport.ServerConnection.CompressionThreshold})§r" : "§cNot Compressed§r")}]")
+            ChatComponent.Parse($"{ctx.Player.Username} §a<->§r §9Moonpie§r [§cNot Encrypted§r] [{(ctx.Player.Transport.PlayerTransport.Connection.CompressionEnabled ? $"§bCompressed ({ctx.Player.Transport.PlayerTransport.Connection.CompressionThreshold})§r" : "§cNot Compressed§r")}]"),
+            ChatComponent.Parse($"Server §a<->§r §9Moonpie§r [§cNot Encrypted§r] [{(ctx.Player.Transport.PlayerTransport.Connection!.CompressionEnabled ? $"§bCompressed ({ctx.Player.Transport.ServerTransport!.Connection.CompressionThreshold})§r" : "§cNot Compressed§r")}]")
             );
-    }
-
-    [Command("text")]
-    public async Task TextCommand(CommandContext ctx, int length)
-    {
-        string text = "";
-        for (int i = 0; i < length; i++)
-        {
-            text += "a";
-        }
-        
-        await ctx.Player.SendMessageAsync(text);
     }
 }

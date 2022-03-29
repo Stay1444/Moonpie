@@ -19,15 +19,10 @@ public class CompressionSetS2CP : IS2CPacket
         buffer.WriteVarInt(Threshold);
     }
     
-    public async Task Handle(PacketHandleContext context)
+    public Task Handle(PacketHandleContext context)
     {
-        await context.Transport.PlayerConnection.WritePacketAsync(new CompressionSetS2CP()
-        {
-            Threshold = 128
-        });
-        context.Transport.PlayerConnection.CompressionThreshold = 128;
-        context.Transport.ServerConnection!.CompressionThreshold = Threshold;
         context.Cancel();
-        Console.WriteLine($"Compression threshold set to {Threshold}");
+        context.Transport.ServerTransport!.Connection.CompressionThreshold = Threshold;
+        return Task.CompletedTask;
     }
 }

@@ -5,7 +5,6 @@ using Serilog;
 using Serilog.Core;
 using Tomlyn;
 using Moonpie = Moonpie.Moonpie;
-
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()

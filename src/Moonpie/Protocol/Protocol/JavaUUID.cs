@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Moonpie.Protocol.Protocol;
 public readonly struct JavaUUID : IComparable<JavaUUID>, IEquatable<JavaUUID>
@@ -74,6 +75,11 @@ public readonly struct JavaUUID : IComparable<JavaUUID>, IEquatable<JavaUUID>
         hash[8] &= 0x3F;  /* clear variant        */
         hash[8] |= 0x80;  /* set to IETF variant  */
         return new JavaUUID(hash);
+    }
+    
+    public static JavaUUID NameUUIDFromBytes(string name)
+    {
+        return NameUUIDFromBytes(Encoding.UTF8.GetBytes(name));
     }
 
     public static JavaUUID FromString(string name)

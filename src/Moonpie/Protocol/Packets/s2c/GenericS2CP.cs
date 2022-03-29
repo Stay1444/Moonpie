@@ -29,6 +29,10 @@ public class GenericS2CP : IS2CPacket
 
     public Task Handle(PacketHandleContext handler)
     {
+        if (Type == PacketTypes.S2C.PLAY_AUTOCOMPLETIONS)
+        {
+            Console.WriteLine("Got autocompletions");
+        }
         return Task.CompletedTask;
     }
 }

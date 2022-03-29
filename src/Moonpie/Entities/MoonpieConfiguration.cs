@@ -26,6 +26,6 @@ public class MoonpieConfiguration
     public string Host { get; init; }
     public ushort Port { get; init; }
     public uint MaxPlayers { get; init; }
-    
+    public int CompressionThreshold { get; init; } = 256;
     public MoonpieConfiguration_FallbackServer Fallback { get; init; } = new MoonpieConfiguration_FallbackServer();   
 }
