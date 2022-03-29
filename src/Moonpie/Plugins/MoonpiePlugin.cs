@@ -39,6 +39,33 @@ public abstract class MoonpiePlugin
             }
             
             var commandInfo = new CommandInfo(method, instance);
+            foreach (var method2 in instance.GetType().GetMethods())
+            {
+                if (method2.GetCustomAttribute<TabComplete>() is null) continue;
+                var tabCompleteAttribute = method2.GetCustomAttribute<TabComplete>();
+                if (tabCompleteAttribute!.Name != commandInfo.Name) continue;
+
+                if (method2.GetParameters().Length != 1)
+                {
+                    Log.Error("TabComplete {0} has an invalid TabCompleteContext paramenter.", method2.Name);
+                    continue;
+                }
+                
+                if (method2.GetParameters()[0].ParameterType != typeof(TabCompleteContext))
+                {
+                    Log.Error("TabComplete {0} has an invalid TabCompleteContext paramenter.", method2.Name);
+                    continue;
+                }
+
+                if (method2.ReturnType != typeof(Task<string[]>))
+                {
+                    Log.Error("TabComplete {0} has an invalid return type. Expected: {1}", method2.Name, typeof(Task<string[]>));
+                    continue;
+                }
+
+                commandInfo.TabCompleteInfo = new TabCompleteInfo(commandInfo, method2, instance);
+                break;
+            }
             _commands.Add(commandInfo);
         }
         return Task.CompletedTask;

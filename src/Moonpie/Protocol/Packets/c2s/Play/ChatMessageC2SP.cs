@@ -24,7 +24,7 @@ public class ChatMessageC2SP : IC2SPacket
     {
         if (Message.StartsWith("/"))
         {
-            var found = await handler.Proxy.PluginManager.TriggerCommandAsync(handler.Player, Message);
+            var found = await handler.Proxy.Plugins.TriggerCommandAsync(handler.Player, Message);
             if (found)
             {
                 handler.Cancel();

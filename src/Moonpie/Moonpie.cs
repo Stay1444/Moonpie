@@ -21,7 +21,7 @@ public class Moonpie
     public IReadOnlyCollection<Player> Players => _players;
     public string Host { get; }
     public int Port { get; }
-    public PluginManager PluginManager { get; }
+    public PluginManager Plugins { get; }
     public Moonpie(MoonpieConfiguration configuration)
     {
         this._configuration = configuration;
@@ -30,8 +30,8 @@ public class Moonpie
         Host = configuration.Host;
         Port = configuration.Port;
         _connectionHandler = new ConnectionHandler(configuration, this);
-        PluginManager = new PluginManager(this);
-        PluginManager.Load();
+        Plugins = new PluginManager(this);
+        Plugins.Load();
     }
 
     public void Start()

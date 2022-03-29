@@ -193,4 +193,12 @@ public static class OutByteBufferExtensions
     {
         buffer.WriteVarInt(0);
     }
+    
+    public static void WriteArray<T>(this OutByteBuffer buffer, IEnumerable<T> enumerable, Action<T> write)
+    {
+        foreach (var item in enumerable)
+        {
+            write(item);
+        }
+    }
 }
