@@ -1,4 +1,5 @@
-﻿using Moonpie.Protocol.Network;
+﻿using System.Threading.Tasks;
+using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Packets.s2c.Play;
 using Moonpie.Protocol.Protocol;
 

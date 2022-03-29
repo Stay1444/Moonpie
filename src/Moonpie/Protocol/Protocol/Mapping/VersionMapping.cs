@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace Moonpie.Protocol.Protocol.Mapping;
 
 public class VersionMapping

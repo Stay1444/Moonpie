@@ -1,4 +1,5 @@
-﻿using Moonpie.Entities.Models.Events;
+﻿using System.Threading.Tasks;
+using Moonpie.Entities.Models.Events;
 
 namespace Moonpie.Plugins;
 

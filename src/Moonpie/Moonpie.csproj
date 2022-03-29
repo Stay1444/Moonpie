@@ -45,8 +45,4 @@
       <PackageReference Include="Tomlyn" Version="0.14.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Moonpie.Common\Moonpie.Common.csproj" />
-    </ItemGroup>
-
 </Project>

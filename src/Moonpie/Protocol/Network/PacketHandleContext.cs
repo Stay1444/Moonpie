@@ -1,4 +1,5 @@
-﻿using Moonpie.Entities;
+﻿using System.Threading.Tasks;
+using Moonpie.Entities;
 
 namespace Moonpie.Protocol.Network;
 

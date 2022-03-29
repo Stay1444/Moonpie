@@ -1,4 +1,6 @@
-﻿namespace Moonpie.Protocol.Protocol;
+﻿using System.Collections.Generic;
+
+namespace Moonpie.Protocol.Protocol;
 
 public struct VarInt
 {

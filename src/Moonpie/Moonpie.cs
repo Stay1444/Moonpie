@@ -1,5 +1,7 @@
-﻿using System.Net;
+﻿global using System.Net;
+using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Moonpie.Entities;
 using Moonpie.Managers;
 using Moonpie.Protocol.Network;
