@@ -1,6 +1,7 @@
 ﻿using Moonpie.Plugins;
 using Moonpie.Plugins.Attributes;
 using Moonpie.Protocol.Protocol;
+using Serilog;
 
 namespace BasicPlugin;
 
@@ -16,8 +17,16 @@ public class BasicCommands : BaseCommandModule
     public async Task TestCommand(CommandContext ctx, string host, int port)
     {
         await ctx.Player.SendMessageAsync("Connecting you to " + host + ":" + port + "...");
-        await ctx.Player.Connect(host, (uint)port);
-        await ctx.Player.SendMessageAsync("Connected!");
+        try
+        {
+            await ctx.Player.Connect(host, (uint)port);
+            await ctx.Player.SendMessageAsync("Connected!");
+        }catch(Exception e)
+        {
+            await ctx.Player.SendMessageAsync("Failed to connect: " + e.Message);
+            Log.Error(e, "Failed to connect");
+        }
+
     }
 
     [TabComplete("connect")]
