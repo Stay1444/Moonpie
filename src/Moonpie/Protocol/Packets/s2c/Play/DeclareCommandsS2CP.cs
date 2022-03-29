@@ -346,7 +346,7 @@ public class DeclareCommandsS2CP : IS2CPacket
 
         public static CommandArgumentNode Create(string name, bool executable, string parser, SuggestionTypes suggestionTypes, List<object> data)
         {
-            return new CommandArgumentNode(0x02, executable, name, parser, suggestionTypes, data);
+            return new CommandArgumentNode((byte) 0x02.SetBitMask(0x10), executable, name, parser, suggestionTypes, data);
         }
     }
 
@@ -420,6 +420,7 @@ public class DeclareCommandsS2CP : IS2CPacket
                 }
             }
         }
+
         await handler.Player.SendMessageAsync($"Command tree received, {Nodes.Count} nodes, root index {RootIndex}");
     }
 }
