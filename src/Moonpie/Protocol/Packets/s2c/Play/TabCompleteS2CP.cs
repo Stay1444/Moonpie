@@ -66,6 +66,11 @@ public class TabCompleteS2CP : IS2CPacket
 
     public void Write(OutByteBuffer buffer)
     {
+        Console.WriteLine("TabCompleteS2CP.Write {0} Length: {1} StartIndex: {2}", TransactionId, Length, StartIndex);
+        foreach (Match match in Matches)
+        {
+            Console.WriteLine("Match: {0}", match.MatchText);
+        }
         buffer.WriteVarInt(TransactionId);
         buffer.WriteVarInt(StartIndex);
         buffer.WriteVarInt(Length);

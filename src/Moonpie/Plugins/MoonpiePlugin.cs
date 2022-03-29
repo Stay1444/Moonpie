@@ -88,6 +88,12 @@ public abstract class MoonpiePlugin
                     continue;
                 }
 
+                if (method.GetParameters().Length < 2)
+                {
+                    Log.Error("Command {0} does not have any parameters for tab completion.", method.Name);
+                    continue;
+                }
+
                 commandInfo.TabCompleteInfo = new TabCompleteInfo(commandInfo, method2, instance);
                 break;
             }

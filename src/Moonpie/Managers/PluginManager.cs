@@ -315,21 +315,42 @@ public class PluginManager
         return null;
     }
 
-    private async Task RunAutoCompletionAsync(Player player, int transactionId, string command, string[] args)
+    private async Task RunAutoCompletionAsync(Player player, int transactionId, string command, string[] ogargs)
     {
-        args = args.Where( x=> !string.IsNullOrEmpty(x)).ToArray();
+        if (ogargs.Any() && ogargs[0] == "")
+        {
+            ogargs = new string[0];
+        }
+        
+        var args = ogargs;//ogargs.Where( x=> !string.IsNullOrEmpty(x)).ToArray();
         var commandInfo = GetCommandInfo(command)!;
         var tabCompleteInfo = commandInfo.TabCompleteInfo!;
         var plugin = GetPlugin(commandInfo)!;
-        var context = new TabCompleteContext(commandInfo, player, this._proxy, plugin, args);
+        string currentArg = args.Length > 0 ? args[^1] : "";
+        int argIndex = args.Length > 0 ? args.Length - 1 : 0;
+        
+        var context = new TabCompleteContext(commandInfo, player, this._proxy, plugin, currentArg, args, argIndex);
         try
         {
             if (tabCompleteInfo.Method.Invoke(tabCompleteInfo.Module, new object[] {context})! is not Task<string[]> result) return;
             var text = await result!;
             TabCompleteS2CP tabCompleteS2CP = new TabCompleteS2CP();
             tabCompleteS2CP.TransactionId = transactionId;
-            tabCompleteS2CP.StartIndex = command.Length + string.Join(" ", args).Length + args.Length + 2;
-            tabCompleteS2CP.Length = 0;
+            tabCompleteS2CP.StartIndex = command.Length + string.Join(" ", args.Take(args.Length - 1)).Length + 1 + args.Length + (ogargs.Any() ? 0 : 1);
+            if (text.Any() && args.Any())
+            {
+                for (int i = 0; i < text[0].Length && i < args[^1].Length; i++)
+                {
+                    if (text[0][i] == args[^1][i])
+                    {
+                        tabCompleteS2CP.Length++;
+                    }else
+                    {
+                        break;
+                    }
+                }
+            }            
+            
             foreach (var textResult in text)
             {
                 tabCompleteS2CP.Matches.Add(new TabCompleteS2CP.Match()
@@ -339,6 +360,7 @@ public class PluginManager
             }
 
             await player.Transport.PlayerTransport.Connection.WritePacketAsync(tabCompleteS2CP);
+            Console.WriteLine($"{player.Username} tab completed {command} {string.Join(" ", args)}");
         }
         catch (Exception e)
         {

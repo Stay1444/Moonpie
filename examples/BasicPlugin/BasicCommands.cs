@@ -14,7 +14,7 @@ public class BasicCommands : BaseCommandModule
     }
     
     [Command("connect")]
-    public async Task TestCommand(CommandContext ctx, string host, int port)
+    public async Task ConnectCommand(CommandContext ctx, string host, int port)
     {
         await ctx.Player.SendMessageAsync("Connecting you to " + host + ":" + port + "...");
         try
@@ -30,14 +30,14 @@ public class BasicCommands : BaseCommandModule
     }
 
     [TabComplete("connect")]
-    public Task<string[]> TestTabComplete(TabCompleteContext ctx)
+    public Task<string[]> ConnectTabComplete(TabCompleteContext ctx)
     {
-        if (ctx.Args.Length == 0)
+        if (ctx.ArgIndex == 0)
         {
-            return Task.FromResult(new [] {"localhost"});
-        }else if (ctx.Args.Length == 1)
+            return Task.FromResult(new[] {"localhost"});
+        }else if(ctx.ArgIndex == 1)
         {
-            return Task.FromResult(new [] {"25565"});
+            return Task.FromResult(new[] {"25565"});
         }
         return Task.FromResult(new string[0]);
     }
@@ -50,5 +50,17 @@ public class BasicCommands : BaseCommandModule
             ChatComponent.Parse($"{ctx.Player.Username} §a<->§r §9Moonpie§r [§cNot Encrypted§r] [{(ctx.Player.Transport.PlayerTransport.Connection.CompressionEnabled ? $"§bCompressed ({ctx.Player.Transport.PlayerTransport.Connection.CompressionThreshold})§r" : "§cNot Compressed§r")}]"),
             ChatComponent.Parse($"Server §a<->§r §9Moonpie§r [§cNot Encrypted§r] [{(ctx.Player.Transport.PlayerTransport.Connection!.CompressionEnabled ? $"§bCompressed ({ctx.Player.Transport.ServerTransport!.Connection.CompressionThreshold})§r" : "§cNot Compressed§r")}]")
             );
+    }
+
+    [Command("test_command")]
+    public async Task TestCommand(CommandContext ctx, string test, int test1)
+    {
+        
+    }
+
+    [TabComplete("test_command")]
+    public async Task<string[]> TestCommandTabComplete(TabCompleteContext ctx)
+    {
+        return new[] {"test" + ctx.ArgIndex};
     }
 }

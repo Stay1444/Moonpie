@@ -30,17 +30,22 @@ namespace Moonpie.Plugins;
 
 public class TabCompleteContext
 {
-    public TabCompleteContext(CommandInfo command, Player player, Moonpie proxy, MoonpiePlugin plugin, string[] args)
+    public TabCompleteContext(CommandInfo command, Player player, Moonpie proxy, MoonpiePlugin plugin, string currentArg, string[] fullArgs, int argIndex)
     {
         Command = command;
         Player = player;
         Proxy = proxy;
         Plugin = plugin;
-        Args = args;
+        CurrentArg = currentArg;
+        FullArgs = fullArgs;
+        ArgIndex = argIndex;
     }
-    public string[] Args { get; set; }
     public CommandInfo Command { get; init; }
     public Player Player { get; init; }
     public Moonpie Proxy { get; init; }
     public MoonpiePlugin Plugin { get; init; }
+    
+    public string CurrentArg { get; set; }
+    public string[] FullArgs { get; init; }
+    public int ArgIndex { get; init; }
 }
