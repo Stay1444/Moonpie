@@ -33,35 +33,7 @@ namespace Moonpie.Protocol.Packets.s2c.Play;
 [PacketType(PacketTypes.S2C.PLAY_BOSS_BAR)]
 public class BossbarS2CP : IS2CPacket
 {
-    public enum BossbarAction
-    {
-        Add,
-        Remove,
-        UpdateHealth,
-        UpdateTitle,
-        UpdateStyle,
-        UpdateFlags
-    }
 
-    public enum BossbarColor
-    {
-        Pink,
-        Blue,
-        Red,
-        Green,
-        Yellow,
-        Purple,
-        White
-    }
-
-    public enum BossbarDivision
-    {
-        NoDivision,
-        Notches6,
-        Notches10,
-        Notches12,
-        Notches20
-    }
     
     public JavaUUID Uuid { get; set; }
     public BossbarAction Action { get; set; }
@@ -141,4 +113,34 @@ public class BossbarS2CP : IS2CPacket
                 throw new ArgumentOutOfRangeException();
         }
     }
+}
+
+public enum BossbarAction
+{
+    Add,
+    Remove,
+    UpdateHealth,
+    UpdateTitle,
+    UpdateStyle,
+    UpdateFlags
+}
+
+public enum BossbarColor
+{
+    Pink,
+    Blue,
+    Red,
+    Green,
+    Yellow,
+    Purple,
+    White
+}
+
+public enum BossbarDivision
+{
+    NoDivision,
+    Notches6,
+    Notches10,
+    Notches12,
+    Notches20
 }
