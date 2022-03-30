@@ -115,11 +115,6 @@ public readonly struct JavaUUID : IComparable<JavaUUID>, IEquatable<JavaUUID>
         {
             throw new ArgumentException("Invalid UUID string: " + name);
         }
-
-        for (int i = 0; i < 5; i++)
-        {
-            components[i] = "0x" + components[i];
-        }
         
         long mostSigBits = long.Parse(components[0], NumberStyles.HexNumber);
         mostSigBits <<= 16;
