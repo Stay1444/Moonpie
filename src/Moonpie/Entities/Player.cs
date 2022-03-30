@@ -24,7 +24,7 @@
 // SOFTWARE.
 #endregion
 
-using System.Threading.Tasks;
+using Moonpie.Entities.Models;
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Packets.s2c.Play;
 using Moonpie.Protocol.Protocol;
@@ -46,7 +46,49 @@ public class Player
     }
     
     public TransportManager Transport => _transportManager;
+    public Bossbar? Bossbar { get; private set; }
     
+    
+    public async Task RemoveBossbarAsync()
+    {
+        if (Bossbar == null) return;
+        var packet = new BossbarS2CP
+        {
+            Uuid = Bossbar!.Uuid,
+            Action = BossbarAction.Remove
+        };
+        await _transportManager.PlayerTransport.Connection.WritePacketAsync(packet);
+        Bossbar = null;
+    }
+    
+    public async Task SendBossbarAsync(Action<BossbarModifyModel> modify)
+    {
+        if (Bossbar == null)
+        {
+            Bossbar = new Bossbar(this, JavaUUID.Random());
+        }
+        else
+        {
+            throw new InvalidOperationException("Bossbar already exists");
+        }
+
+        var model = new BossbarModifyModel();
+        modify(model);
+        model.Health = Math.Clamp(model.Health ?? 0, 0, 100);
+        var packet = new BossbarS2CP
+        {
+            Uuid = Bossbar.Uuid,
+            Action = BossbarAction.Add,
+            Color = model.Color,
+            Division = model.Division,
+            Title = model.Title,
+            Health = model.Health / 100.0f
+        };
+
+        await _transportManager.PlayerTransport.Connection.WritePacketAsync(packet);
+        
+        Bossbar.Set(model);
+    }
     
     public string Username { get; internal set; }
     internal Player(Moonpie proxy, PlayerConnection connection, string username)

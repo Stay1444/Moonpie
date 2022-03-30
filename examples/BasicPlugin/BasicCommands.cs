@@ -1,5 +1,6 @@
 ﻿using Moonpie.Plugins;
 using Moonpie.Plugins.Attributes;
+using Moonpie.Protocol.Packets.s2c.Play;
 using Moonpie.Protocol.Protocol;
 using Serilog;
 
@@ -55,7 +56,7 @@ public class BasicCommands : BaseCommandModule
     [Command("test_command")]
     public async Task TestCommand(CommandContext ctx, string test, int test1)
     {
-        
+
     }
 
     [TabComplete("test_command")]
@@ -63,4 +64,42 @@ public class BasicCommands : BaseCommandModule
     {
         return new[] {"test" + ctx.ArgIndex};
     }
+    
+    [Command("bossbar")]
+    public async Task BossbarCommand(CommandContext ctx, string text, int percent)
+    {
+        if (ctx.Player.Bossbar is null)
+        {
+            await ctx.Player.SendBossbarAsync(x =>
+            {
+                x.Title = text;
+                x.Health = percent;
+                x.Color = BossbarColor.Green;
+                x.Division = BossbarDivision.NoDivision;
+            });
+            await ctx.Player.SendMessageAsync("Bossbar created!");
+        }else
+        {
+            await ctx.Player.Bossbar.ModifyAsync(x =>
+            {
+                x.Health = percent;
+                x.Title = text;
+            });
+            await ctx.Player.SendMessageAsync("Bossbar updated!");
+        }
+    }
+    
+    [Command("bossbar_remove")]
+    public async Task BossbarRemoveCommand(CommandContext ctx)
+    {
+        if (ctx.Player.Bossbar is null)
+        {
+            await ctx.Player.SendMessageAsync("No bossbar to remove!");
+        }else
+        {
+            await ctx.Player.RemoveBossbarAsync();
+            await ctx.Player.SendMessageAsync("Bossbar removed!");
+        }
+    }
+    
 }
