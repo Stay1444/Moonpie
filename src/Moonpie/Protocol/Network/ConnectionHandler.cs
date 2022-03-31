@@ -92,7 +92,7 @@ public class ConnectionHandler
 
     private async Task HandleStatusRequest(PlayerConnection connection)
     {
-        var result = await _proxy.Plugins.TriggerEventAsync(new PlayerPingEventArgs(connection.RemoteEndPoint, connection.Version));
+        var result = await _proxy.Plugins.TriggerEventAsync(new PlayerPingEventArgs(_proxy, connection.RemoteEndPoint, connection.Version));
         if (result is null)
         {
             await connection.DisconnectAsync();
@@ -100,7 +100,7 @@ public class ConnectionHandler
             return;
         }
 
-        if (result.Cancelled)
+        if (result.Canceled)
         {
             await connection.DisconnectAsync();
             connection.Dispose();

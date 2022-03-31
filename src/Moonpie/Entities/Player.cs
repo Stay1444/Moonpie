@@ -24,7 +24,8 @@
 // SOFTWARE.
 #endregion
 
-using System.Threading.Tasks;
+using Moonpie.Entities.Models;
+using Moonpie.Managers;
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Packets.s2c.Play;
 using Moonpie.Protocol.Protocol;
@@ -46,14 +47,14 @@ public class Player
     }
     
     public TransportManager Transport => _transportManager;
-    
-    
+    public BossbarManager BossbarManager { get; }
     public string Username { get; internal set; }
     internal Player(Moonpie proxy, PlayerConnection connection, string username)
     {
         this.Proxy = proxy;
         _transportManager = new TransportManager(this, connection);
         this.Username = username;
+        this.BossbarManager = new BossbarManager(this);
     }
 
     public async Task Connect(string host, uint port)
@@ -69,7 +70,7 @@ public class Player
             Position = ChatMessageS2CP.ChatTextPositions.SystemMessage
         });
     }
-    
+
     public async Task SendMessageLinesAsync(params ChatComponent[] lines)
     {
         if (lines.Length == 0)

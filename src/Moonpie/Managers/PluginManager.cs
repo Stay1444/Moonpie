@@ -175,7 +175,6 @@ public class PluginManager
                     parameters[i] = context;
                     continue;
                 }
-
                 if (methodParameters[i].ParameterType == typeof(int))
                 {
                     parameters[i] = int.Parse(args[i - 1]);

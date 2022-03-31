@@ -24,20 +24,27 @@
 // SOFTWARE.
 #endregion
 
-using System.Net;
 using Moonpie.Protocol.Protocol;
+using NUnit.Framework;
 
-namespace Moonpie.Entities.Models.Events;
+namespace Moonpie.Tests;
 
-public class PlayerPingEventArgs : MoonpieEventArgs
+public class JavaUUIDTest
 {
-    public EndPoint EndPoint { get; }
-    public ProtocolVersion Version { get; }
-
-    public ServerStatusResponseBuilder? Response { get; set; }
-    public PlayerPingEventArgs(Moonpie proxy, EndPoint endPoint, ProtocolVersion version) : base(proxy)
+    [Test]
+    public void ParseTest()
     {
-        EndPoint = endPoint;
-        Version = version;
+        string uuidString = "a0a0a0a0-a0a0-a0a0-a0a0-a0a0a0a0a0a0";
+        var uuid = JavaUUID.FromString(uuidString);
+        Assert.AreEqual(uuidString, uuid.ToString());
     }
+    
+    [Test]
+    public void RandomUuid()
+    {
+        var randomOne = JavaUUID.Random();
+        var randomTwo = JavaUUID.Random();
+        Assert.AreNotEqual(randomOne, randomTwo, "Random UUIDs should not be equal");
+    }
+    
 }

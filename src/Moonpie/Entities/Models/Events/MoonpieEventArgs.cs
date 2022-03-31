@@ -29,11 +29,16 @@ namespace Moonpie.Entities.Models.Events;
 public abstract class MoonpieEventArgs
 {
     public bool Handled { get; set; }
-
-    internal bool Cancelled { get; set; }
+    public Moonpie Proxy { get; }
+    internal bool Canceled { get; set; }
     public void Cancel()
     {
-        this.Cancelled = true;
+        this.Canceled = true;
         this.Handled = true;
+    }
+
+    internal MoonpieEventArgs(Moonpie proxy)
+    {
+        this.Proxy = proxy;
     }
 }

@@ -50,14 +50,8 @@ public class ChatComponent
         return this;
     }
     
-    public static ChatComponent Empty
-    {
-        get
-        {
-            return new ChatComponent("");
-        }
-    }
-    
+    public static ChatComponent Empty => new ChatComponent("");
+
     public ChatComponent(string text)
     {
         this.Text = text;
@@ -128,5 +122,51 @@ public class ChatComponent
         }
         
         return result;
+    }
+    
+    public override bool Equals(object? obj)
+    {
+        if (obj is ChatComponent component)
+        {
+            if (component.Text != null || this.Text != null)
+            {
+                if (component.Text != this.Text)
+                {
+                    return false;
+                }
+            }
+            
+            if (component.Color != null || this.Color != null)
+            {
+                if (component.Color != this.Color)
+                {
+                    return false;
+                }
+            }
+            
+            if (component.Extra != null || this.Extra != null)
+            {
+                if (component.Extra != null && this.Extra != null)
+                {
+                    if (!component.Extra.SequenceEqual(this.Extra))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            
+            return true;
+            
+        }
+        return false;
+    }
+    
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
     }
 }

@@ -1,5 +1,8 @@
-﻿using Moonpie.Plugins;
+﻿using Moonpie.Entities;
+using Moonpie.Entities.Enums;
+using Moonpie.Plugins;
 using Moonpie.Plugins.Attributes;
+using Moonpie.Protocol.Packets.s2c.Play;
 using Moonpie.Protocol.Protocol;
 using Serilog;
 
@@ -55,7 +58,7 @@ public class BasicCommands : BaseCommandModule
     [Command("test_command")]
     public async Task TestCommand(CommandContext ctx, string test, int test1)
     {
-        
+
     }
 
     [TabComplete("test_command")]
@@ -63,4 +66,48 @@ public class BasicCommands : BaseCommandModule
     {
         return new[] {"test" + ctx.ArgIndex};
     }
+    
+    [Command("bossbar")]
+    public async Task BossbarCommand(CommandContext ctx, string text, int percent)
+    {
+        
+        if (ctx.Player.BossbarManager.Bossbars.Count == 0)
+        {
+            await ctx.Player.BossbarManager.CreateBossbar(new BossbarBuilder().WithTitle(text)
+                .WithColor(BossbarColor.Blue)
+                .WithDivision(BossbarDivision.Notches6)
+                .WithHealth(percent / 100f));
+            
+            await ctx.Player.SendMessageAsync("Bossbar created!");
+
+            return;
+        }
+
+        var bossbar = ctx.Player.BossbarManager.Bossbars.FirstOrDefault(x => x.Value.Owner == BossbarOwner.Moonpie).Value;
+
+        await bossbar.ModifyAsync(x =>
+        {
+            x.Title = text;
+            x.Health = percent / 100f;
+        });
+        
+        await ctx.Player.SendMessageAsync("Bossbar modified!");
+    }
+    
+    [Command("bossbar_remove")]
+    public async Task BossbarRemoveCommand(CommandContext ctx)
+    {
+        if (!ctx.Player.BossbarManager.Bossbars.Any())
+        {
+            await ctx.Player.SendMessageAsync("No bossbar to remove!");
+        }else
+        {
+            foreach (var bossbar in ctx.Player.BossbarManager.Bossbars)
+            {
+                await bossbar.Value.DeleteAsync();
+                await ctx.Player.SendMessageAsync($"Bossbar {bossbar.Key} removed!");
+            }
+        }
+    }
+    
 }
