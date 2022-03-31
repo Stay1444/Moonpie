@@ -46,9 +46,9 @@ public class BossbarData
     public bool IsDragonBar { get; set; }
     public bool CreateFog { get; set; }
     
-    internal BossbarData()
+    internal BossbarData(JavaUUID id)
     {
-        
+        this.Id = id;
     }
 
     internal BossbarData(BossbarS2CP packet)
@@ -65,9 +65,8 @@ public class BossbarData
     
     internal BossbarData Clone()
     {
-        return new BossbarData
+        return new BossbarData(Id)
         {
-            Id = Id,
             Title = Title,
             Health = Health,
             Color = Color,

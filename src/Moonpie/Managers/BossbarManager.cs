@@ -29,7 +29,6 @@ using Moonpie.Entities.Enums;
 using Moonpie.Entities.Models;
 using Moonpie.Protocol.Packets.s2c.Play;
 using Moonpie.Protocol.Protocol;
-using Moonpie.Utils.Protocol;
 
 namespace Moonpie.Managers;
 
@@ -49,13 +48,12 @@ public class BossbarManager
         bool shouldDarkenSky = false, bool isDragonBar = false, bool createFog = false)
     {
         var bossbarId = JavaUUID.Random();
-        var bossbar = new Bossbar(this, BossbarOwner.Moonpie)
+        var bossbar = new Bossbar(this, BossbarOwner.Moonpie, bossbarId)
         {
             Title = title,
             Color = color,
             Division = division,
             Health = health,
-            Id = bossbarId,
             ShouldDarkenSky = shouldDarkenSky,
             IsDragonBar = isDragonBar,
             CreateFog = createFog,
@@ -69,13 +67,12 @@ public class BossbarManager
     internal Task<Bossbar> i_CreateBossbar(BossbarData data)
     {
         var bossbarId = data.Id;
-        var bossbar = new Bossbar(this, BossbarOwner.Minecraft)
+        var bossbar = new Bossbar(this, BossbarOwner.Minecraft, bossbarId)
         {
             Title = data.Title ?? new ChatComponent(""),
             Color = data.Color,
             Division = data.Division,
             Health = data.Health,
-            Id = bossbarId,
             ShouldDarkenSky = data.ShouldDarkenSky,
             IsDragonBar = data.IsDragonBar,
             CreateFog = data.CreateFog,
@@ -89,7 +86,7 @@ public class BossbarManager
     internal Task i_DeleteBossbar(BossbarS2CP packet)
     {
         var bossbarId = packet.Uuid;
-        if (_bossbars.TryGetValue(bossbarId, out var bossbar))
+        if (_bossbars.TryGetValue(bossbarId, out _))
         {
             _bossbars.Remove(bossbarId);
         }

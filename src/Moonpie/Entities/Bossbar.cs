@@ -42,7 +42,6 @@ public class Bossbar
     public JavaUUID Id
     {
         get => _data.Id;
-        internal set => _data.Id = value;
     }
 
     /// <summary>
@@ -118,11 +117,11 @@ public class Bossbar
     
     private readonly BossbarManager _manager;
     private readonly BossbarData _data;
-    internal Bossbar(BossbarManager manager, BossbarOwner owner)
+    internal Bossbar(BossbarManager manager, BossbarOwner owner, JavaUUID id)
     {
         _manager = manager;
         Owner = owner;
-        _data = new BossbarData();
+        _data = new BossbarData(id);
     }
     
     internal BossbarData GetDataClone()
