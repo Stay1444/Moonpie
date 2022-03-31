@@ -24,20 +24,17 @@
 // SOFTWARE.
 #endregion
 
-using System.Net;
 using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Entities.Models.Events;
 
-public class PlayerPingEventArgs : MoonpieEventArgs
+public class BossbarRemoveEventArgs : MoonpieEventArgs
 {
-    public EndPoint EndPoint { get; }
-    public ProtocolVersion Version { get; }
-
-    public ServerStatusResponseBuilder? Response { get; set; }
-    public PlayerPingEventArgs(Moonpie proxy, EndPoint endPoint, ProtocolVersion version) : base(proxy)
+    public JavaUUID Id { get; }
+    public Player Player { get; }
+    public BossbarRemoveEventArgs(JavaUUID id, Player player, Moonpie proxy) : base(proxy)
     {
-        EndPoint = endPoint;
-        Version = version;
+        this.Id = id;
+        this.Player = player;
     }
 }

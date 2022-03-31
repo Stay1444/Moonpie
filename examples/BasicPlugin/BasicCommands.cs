@@ -1,4 +1,6 @@
-﻿using Moonpie.Plugins;
+﻿using Moonpie.Entities;
+using Moonpie.Entities.Enums;
+using Moonpie.Plugins;
 using Moonpie.Plugins.Attributes;
 using Moonpie.Protocol.Packets.s2c.Play;
 using Moonpie.Protocol.Protocol;
@@ -68,37 +70,43 @@ public class BasicCommands : BaseCommandModule
     [Command("bossbar")]
     public async Task BossbarCommand(CommandContext ctx, string text, int percent)
     {
-        if (ctx.Player.Bossbar is null)
+        
+        if (ctx.Player.BossbarManager.Bossbars.Count == 0)
         {
-            await ctx.Player.SendBossbarAsync(x =>
-            {
-                x.Title = text;
-                x.Health = percent;
-                x.Color = BossbarColor.Green;
-                x.Division = BossbarDivision.NoDivision;
-            });
+            await ctx.Player.BossbarManager.CreateBossbar(new BossbarBuilder().WithTitle(text)
+                .WithColor(BossbarColor.Blue)
+                .WithDivision(BossbarDivision.Notches6)
+                .WithHealth(percent / 100f));
+            
             await ctx.Player.SendMessageAsync("Bossbar created!");
-        }else
-        {
-            await ctx.Player.Bossbar.ModifyAsync(x =>
-            {
-                x.Health = percent;
-                x.Title = text;
-            });
-            await ctx.Player.SendMessageAsync("Bossbar updated!");
+
+            return;
         }
+
+        var bossbar = ctx.Player.BossbarManager.Bossbars.FirstOrDefault(x => x.Value.Owner == BossbarOwner.Moonpie).Value;
+
+        await bossbar.ModifyAsync(x =>
+        {
+            x.Title = text;
+            x.Health = percent / 100f;
+        });
+        
+        await ctx.Player.SendMessageAsync("Bossbar modified!");
     }
     
     [Command("bossbar_remove")]
     public async Task BossbarRemoveCommand(CommandContext ctx)
     {
-        if (ctx.Player.Bossbar is null)
+        if (!ctx.Player.BossbarManager.Bossbars.Any())
         {
             await ctx.Player.SendMessageAsync("No bossbar to remove!");
         }else
         {
-            await ctx.Player.RemoveBossbarAsync();
-            await ctx.Player.SendMessageAsync("Bossbar removed!");
+            foreach (var bossbar in ctx.Player.BossbarManager.Bossbars)
+            {
+                await bossbar.Value.DeleteAsync();
+                await ctx.Player.SendMessageAsync($"Bossbar {bossbar.Key} removed!");
+            }
         }
     }
     

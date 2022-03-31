@@ -25,6 +25,7 @@
 #endregion
 
 using Moonpie.Entities.Models;
+using Moonpie.Managers;
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Packets.s2c.Play;
 using Moonpie.Protocol.Protocol;
@@ -46,56 +47,14 @@ public class Player
     }
     
     public TransportManager Transport => _transportManager;
-    public Bossbar? Bossbar { get; private set; }
-    
-    
-    public async Task RemoveBossbarAsync()
-    {
-        if (Bossbar == null) return;
-        var packet = new BossbarS2CP
-        {
-            Uuid = Bossbar!.Uuid,
-            Action = BossbarAction.Remove
-        };
-        await _transportManager.PlayerTransport.Connection.WritePacketAsync(packet);
-        Bossbar = null;
-    }
-    
-    public async Task SendBossbarAsync(Action<BossbarModifyModel> modify)
-    {
-        if (Bossbar == null)
-        {
-            Bossbar = new Bossbar(this, JavaUUID.Random());
-        }
-        else
-        {
-            throw new InvalidOperationException("Bossbar already exists");
-        }
-
-        var model = new BossbarModifyModel();
-        modify(model);
-        model.Health = Math.Clamp(model.Health ?? 0, 0, 100);
-        var packet = new BossbarS2CP
-        {
-            Uuid = Bossbar.Uuid,
-            Action = BossbarAction.Add,
-            Color = model.Color,
-            Division = model.Division,
-            Title = model.Title,
-            Health = model.Health / 100.0f
-        };
-
-        await _transportManager.PlayerTransport.Connection.WritePacketAsync(packet);
-        
-        Bossbar.Set(model);
-    }
-    
+    public BossbarManager BossbarManager { get; }
     public string Username { get; internal set; }
     internal Player(Moonpie proxy, PlayerConnection connection, string username)
     {
         this.Proxy = proxy;
         _transportManager = new TransportManager(this, connection);
         this.Username = username;
+        this.BossbarManager = new BossbarManager(this);
     }
 
     public async Task Connect(string host, uint port)
@@ -111,7 +70,7 @@ public class Player
             Position = ChatMessageS2CP.ChatTextPositions.SystemMessage
         });
     }
-    
+
     public async Task SendMessageLinesAsync(params ChatComponent[] lines)
     {
         if (lines.Length == 0)

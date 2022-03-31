@@ -28,12 +28,58 @@ using Moonpie.Entities.Enums;
 using Moonpie.Protocol.Packets.s2c.Play;
 using Moonpie.Protocol.Protocol;
 
-namespace Moonpie.Entities.Models;
+namespace Moonpie.Entities;
 
-public class BossbarModifyModel
+public class BossbarBuilder
 {
-    public float? Health { get; set; }
-    public BossbarColor? Color { get; set; }
-    public BossbarDivision? Division { get; set; }
-    public ChatComponent? Title { get; set; }
+    public float Health { get; set; }
+    public BossbarColor Color { get; set; }
+    public BossbarDivision Division { get; set; }
+    public bool ShouldDarkenSky { get; set; }
+    public bool IsDragonBar { get; set; }
+    public bool CreateFog { get; set; }
+    public ChatComponent Title { get; set; } = ChatComponent.Empty;
+    
+    public BossbarBuilder WithHealth(float health)
+    {
+        Health = health;
+        return this;
+    }
+    
+    public BossbarBuilder WithColor(BossbarColor color)
+    {
+        Color = color;
+        return this;
+    }
+    
+    public BossbarBuilder WithDivision(BossbarDivision division)
+    {
+        Division = division;
+        return this;
+    }
+    
+    public BossbarBuilder WithTitle(ChatComponent title)
+    {
+        Title = title;
+        return this;
+    }
+    
+    public BossbarBuilder SetDarkenSky(bool darkenSky)
+    {
+        ShouldDarkenSky = darkenSky;
+        return this;
+    }
+    
+    public BossbarBuilder SetDragonBar(bool dragonBar)
+    {
+        IsDragonBar = dragonBar;
+        return this;
+    }
+    
+    public BossbarBuilder SetCreateFog(bool createFog)
+    {
+        CreateFog = createFog;
+        return this;
+    }
+    
 }

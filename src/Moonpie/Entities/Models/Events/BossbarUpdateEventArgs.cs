@@ -24,20 +24,21 @@
 // SOFTWARE.
 #endregion
 
-using System.Net;
-using Moonpie.Protocol.Protocol;
+using Moonpie.Protocol.Packets.s2c.Play;
 
 namespace Moonpie.Entities.Models.Events;
 
-public class PlayerPingEventArgs : MoonpieEventArgs
+public class BossbarUpdateEventArgs : MoonpieEventArgs
 {
-    public EndPoint EndPoint { get; }
-    public ProtocolVersion Version { get; }
-
-    public ServerStatusResponseBuilder? Response { get; set; }
-    public PlayerPingEventArgs(Moonpie proxy, EndPoint endPoint, ProtocolVersion version) : base(proxy)
+    public Player Player { get; }
+    public BossbarData New { get; }
+    public BossbarData Old { get; }
+    public BossbarAction Action { get; }
+    internal BossbarUpdateEventArgs(Moonpie proxy, Player player, BossbarAction action, BossbarData old, BossbarData @new) : base(proxy)
     {
-        EndPoint = endPoint;
-        Version = version;
+        this.Player = player;
+        this.Action = action;
+        this.Old = old;
+        this.New = @new;
     }
 }

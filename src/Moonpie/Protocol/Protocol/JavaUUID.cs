@@ -193,5 +193,15 @@ public readonly struct JavaUUID : IComparable<JavaUUID>, IEquatable<JavaUUID>
         return (int) (this.mostSigBits ^ this.leastSigBits);
     }
     
+    public static bool operator ==(JavaUUID a, JavaUUID b)
+    {
+        return a.Equals(b);
+    }
+    
+    public static bool operator !=(JavaUUID a, JavaUUID b)
+    {
+        return !a.Equals(b);
+    }
+    
 }
 

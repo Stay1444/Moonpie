@@ -24,11 +24,26 @@
 // SOFTWARE.
 #endregion
 
+using System.Text.Json;
+using Moonpie.Entities;
+using Moonpie.Entities.Enums;
+using Moonpie.Entities.Models;
+using Moonpie.Entities.Models.Events;
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Protocol;
 using Moonpie.Utils.Protocol;
-
 namespace Moonpie.Protocol.Packets.s2c.Play;
+
+public enum BossbarAction
+{
+    Add,
+    Remove,
+    UpdateHealth,
+    UpdateTitle,
+    UpdateStyle,
+    UpdateFlags
+}
+
 
 [PacketType(PacketTypes.S2C.PLAY_BOSS_BAR)]
 public class BossbarS2CP : IS2CPacket
@@ -38,10 +53,42 @@ public class BossbarS2CP : IS2CPacket
     public JavaUUID Uuid { get; set; }
     public BossbarAction Action { get; set; }
     public ChatComponent? Title { get; set; }
+    private string? _translate;
     public float? Health { get; set; }
     public BossbarColor? Color { get; set; }
     public BossbarDivision? Division { get; set; }
     public byte? Flags { get; set; }
+
+    public BossbarS2CP()
+    {
+        
+    }
+
+    public BossbarS2CP(BossbarAction action, Bossbar bossbar)
+    {
+        this.Uuid = bossbar.Id;
+        this.Action = action;
+        this.Title = bossbar.Title;
+        this.Health = bossbar.Health;
+        this.Color = bossbar.Color;
+        this.Division = bossbar.Division;
+        this.Flags = 0;
+        
+        if (bossbar.ShouldDarkenSky)
+        {
+            this.Flags.Value.SetBitMask(0x1);
+        }
+
+        if (bossbar.IsDragonBar)
+        {
+            this.Flags.Value.SetBitMask(0x2);
+        }
+        
+        if (bossbar.CreateFog)
+        {
+            this.Flags.Value.SetBitMask(0x4);
+        }
+    }
     
     public void Read(InByteBuffer buffer)
     {
@@ -51,7 +98,14 @@ public class BossbarS2CP : IS2CPacket
         switch (Action)
         {
             case BossbarAction.Add:
-                Title = buffer.ReadChatComponent();
+                var json = buffer.ReadString();
+                if (json.Contains("translate"))
+                {
+                    _translate = json;
+                }else
+                {
+                    Title = JsonSerializer.Deserialize<ChatComponent>(json);
+                }
                 Health = buffer.ReadFloat();
                 Color = (BossbarColor)buffer.ReadVarInt();
                 Division = (BossbarDivision)buffer.ReadVarInt();
@@ -64,7 +118,14 @@ public class BossbarS2CP : IS2CPacket
                 Health = buffer.ReadFloat();
                 break;
             case BossbarAction.UpdateTitle:
-                Title = buffer.ReadChatComponent();
+                var json2 = buffer.ReadString();
+                if (json2.Contains("translate"))
+                {
+                    _translate = json2;
+                }else
+                {
+                    Title = JsonSerializer.Deserialize<ChatComponent>(json2);
+                }
                 break;
             case BossbarAction.UpdateStyle:
                 Color = (BossbarColor)buffer.ReadVarInt();
@@ -87,7 +148,15 @@ public class BossbarS2CP : IS2CPacket
         switch (Action)
         {
             case BossbarAction.Add:
-                buffer.WriteChatComponent(Title ?? ChatComponent.Empty);
+                if (_translate != null)
+                {
+                    buffer.WriteString(_translate);
+                }
+                else
+                {
+                    buffer.WriteChatComponent(Title ?? ChatComponent.Empty);
+                }
+
                 buffer.WriteFloat(Health ?? 0);
                 buffer.WriteVarInt((int)(Color ?? 0));
                 buffer.WriteVarInt((int)(Division ?? 0));
@@ -100,7 +169,14 @@ public class BossbarS2CP : IS2CPacket
                 buffer.WriteFloat(Health ?? 0);
                 break;
             case BossbarAction.UpdateTitle:
-                buffer.WriteChatComponent(Title ?? ChatComponent.Empty);
+                if (_translate != null)
+                {
+                    buffer.WriteString(_translate);
+                }
+                else
+                {
+                    buffer.WriteChatComponent(Title ?? ChatComponent.Empty);
+                }
                 break;
             case BossbarAction.UpdateStyle:
                 buffer.WriteVarInt((int)(Color ?? 0));
@@ -113,34 +189,187 @@ public class BossbarS2CP : IS2CPacket
                 throw new ArgumentOutOfRangeException();
         }
     }
-}
 
-public enum BossbarAction
-{
-    Add,
-    Remove,
-    UpdateHealth,
-    UpdateTitle,
-    UpdateStyle,
-    UpdateFlags
-}
+    public async Task Handle(PacketHandleContext handler)
+    {
+        handler.Cancel();
+        handler.ExitEarly();
 
-public enum BossbarColor
-{
-    Pink,
-    Blue,
-    Red,
-    Green,
-    Yellow,
-    Purple,
-    White
-}
+        if (Action == BossbarAction.Add)
+        {
+            var bossbarData = new BossbarData(this);
+            var result =
+                await handler.Proxy.Plugins.TriggerEventAsync(new BossbarAddEventArgs(handler.Proxy, handler.Player,
+                    bossbarData));
+            
+            if (result is null) return;
+            
+            if (result.Canceled)
+            {
+                return;
+            }
+            
+            await handler.Player.BossbarManager.i_CreateBossbar(bossbarData);
 
-public enum BossbarDivision
-{
-    NoDivision,
-    Notches6,
-    Notches10,
-    Notches12,
-    Notches20
+            this.Health = result.Bossbar.Health;
+            this.Title = result.Bossbar.Title;
+            this.Color = result.Bossbar.Color;
+            this.Division = result.Bossbar.Division;
+            this.Flags = 0;
+            
+            if (result.Bossbar.ShouldDarkenSky)
+            {
+                this.Flags.Value.SetBitMask(0x1);
+            }
+
+            if (result.Bossbar.IsDragonBar)
+            {
+                this.Flags.Value.SetBitMask(0x2);
+            }
+            
+            if (result.Bossbar.CreateFog)
+            {
+                this.Flags.Value.SetBitMask(0x4);
+            }
+                    
+            await handler.Player.Transport.PlayerTransport.Connection.WritePacketAsync(this);
+            
+            return;
+        }
+        
+        if (Action == BossbarAction.Remove)
+        {
+            await handler.Proxy.Plugins.TriggerEventAsync(new BossbarRemoveEventArgs(this.Uuid, handler.Player, handler.Proxy));
+            await handler.Player.BossbarManager.i_DeleteBossbar(this);
+            await handler.Player.Transport.PlayerTransport.Connection.WritePacketAsync(this);
+            return;
+        }
+
+        if (Action == BossbarAction.UpdateHealth)
+        {
+            if (this.Health is null) return;
+            var bossbar = handler.Player.BossbarManager.GetBossbar(Uuid);
+            if (bossbar == null)
+            {
+                return;
+            }
+            
+            var bossbarData = new BossbarData(this);
+            
+            var result =
+                await handler.Proxy.Plugins.TriggerEventAsync(new BossbarUpdateEventArgs(handler.Proxy, handler.Player,
+                    Action, bossbar.GetDataClone(), bossbarData));
+            
+            if (result is null) return;
+
+            if (result.New == bossbarData)
+            {
+                return;
+            }
+
+            this.Health = result.New.Health;
+            await handler.Player.Transport.PlayerTransport.Connection.WritePacketAsync(this);
+            
+            return;
+        }
+        
+        if (Action == BossbarAction.UpdateTitle)
+        {
+            if (this.Title is null) return;
+            var bossbar = handler.Player.BossbarManager.GetBossbar(Uuid);
+            if (bossbar == null)
+            {
+                return;
+            }
+            
+            var bossbarData = new BossbarData(this);
+            
+            var result =
+                await handler.Proxy.Plugins.TriggerEventAsync(new BossbarUpdateEventArgs(handler.Proxy, handler.Player,
+                    Action, bossbar.GetDataClone(), bossbarData));
+            
+            if (result is null) return;
+
+            if (result.New == bossbarData)
+            {
+                return;
+            }
+
+            this.Title = result.New.Title;
+            await handler.Player.Transport.PlayerTransport.Connection.WritePacketAsync(this);
+            
+            return;
+        }
+        
+        if (Action == BossbarAction.UpdateStyle)
+        {
+            if (this.Color is null) return;
+            var bossbar = handler.Player.BossbarManager.GetBossbar(Uuid);
+            if (bossbar == null)
+            {
+                return;
+            }
+            
+            var bossbarData = new BossbarData(this);
+            
+            var result =
+                await handler.Proxy.Plugins.TriggerEventAsync(new BossbarUpdateEventArgs(handler.Proxy, handler.Player,
+                    Action, bossbar.GetDataClone(), bossbarData));
+            
+            if (result is null) return;
+
+            if (result.New == bossbarData)
+            {
+                return;
+            }
+
+            this.Color = result.New.Color;
+            this.Division = result.New.Division;
+            await handler.Player.Transport.PlayerTransport.Connection.WritePacketAsync(this);
+            
+            return;
+        }
+        
+        if (Action == BossbarAction.UpdateFlags)
+        {
+            if (this.Flags is null) return;
+            var bossbar = handler.Player.BossbarManager.GetBossbar(Uuid);
+            if (bossbar == null)
+            {
+                return;
+            }
+            
+            var bossbarData = new BossbarData(this);
+            
+            var result =
+                await handler.Proxy.Plugins.TriggerEventAsync(new BossbarUpdateEventArgs(handler.Proxy, handler.Player,
+                    Action, bossbar.GetDataClone(), bossbarData));
+            
+            if (result is null) return;
+
+            if (result.New == bossbarData)
+            {
+                return;
+            }
+
+            this.Flags = 0;
+            if (result.New.ShouldDarkenSky)
+            {
+                this.Flags.Value.SetBitMask(0x1);
+            }
+            if (result.New.IsDragonBar)
+            {
+                this.Flags.Value.SetBitMask(0x2);
+            }
+            if (result.New.CreateFog)
+            {
+                this.Flags.Value.SetBitMask(0x4);
+            }
+            await handler.Player.Transport.PlayerTransport.Connection.WritePacketAsync(this);
+            
+            return;
+        }
+        
+        throw new ArgumentOutOfRangeException();
+    }
 }

@@ -24,20 +24,30 @@
 // SOFTWARE.
 #endregion
 
-using System.Net;
-using Moonpie.Protocol.Protocol;
+namespace Moonpie.Utils.Math;
 
-namespace Moonpie.Entities.Models.Events;
-
-public class PlayerPingEventArgs : MoonpieEventArgs
+public static class FloatUtil
 {
-    public EndPoint EndPoint { get; }
-    public ProtocolVersion Version { get; }
+    public static bool IsEqual(this float a, float b, float tolerance = 0.001f) {
+        return System.Math.Abs(a - b) < tolerance;
+    }
+    
+    public static bool IsEqual(this float? a, float? b, float tolerance = 0.001f) {
+        if (a == null && b == null) {
+            return true;
+        }
+        
+        if (a == null || b == null) {
+            return false;
+        }
+        return System.Math.Abs(a.Value - b.Value) < tolerance;
+    }
 
-    public ServerStatusResponseBuilder? Response { get; set; }
-    public PlayerPingEventArgs(Moonpie proxy, EndPoint endPoint, ProtocolVersion version) : base(proxy)
-    {
-        EndPoint = endPoint;
-        Version = version;
+    public static bool IsGreater(this float a, float b) {
+        return a > b;
+    }
+
+    public static bool IsLess(this float a, float b) {
+        return a < b;
     }
 }

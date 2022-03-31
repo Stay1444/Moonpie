@@ -24,102 +24,143 @@
 // SOFTWARE.
 #endregion
 
+using Moonpie.Entities.Enums;
 using Moonpie.Entities.Models;
-using Moonpie.Protocol.Packets.s2c.Play;
+using Moonpie.Managers;
 using Moonpie.Protocol.Protocol;
+using Moonpie.Utils.Math;
+
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Moonpie.Entities;
 
 public class Bossbar
 {
-    private Player _player;
-    public JavaUUID Uuid { get; internal set; }
-    public ChatComponent Title { get; internal set; } = new ChatComponent("Unnamed");
-    public int Health { get; internal set; }
-    public BossbarColor Color { get; internal set; }
-    public BossbarDivision Division { get; internal set; }
-    internal Bossbar(Player player, JavaUUID uuid)
+    /// <summary>
+    /// The unique identifier of the bossbar.
+    /// </summary>
+    public JavaUUID Id
     {
-        this.Uuid = uuid;
-        this._player = player;
+        get => _data.Id;
+        internal set => _data.Id = value;
     }
+
+    /// <summary>
+    /// The title of the bossbar.
+    /// </summary>
+    public ChatComponent Title
+    {
+        get => _data.Title ?? ChatComponent.Empty;
+        internal set => _data.Title = value;
+    }
+
+    /// <summary>
+    /// Health of the bossbar.
+    /// 0.0f - 1.0f
+    /// </summary>
+    public float Health
+    {
+        get => _data.Health;
+        internal set => _data.Health = value;
+    }
+
+    /// <summary>
+    /// Color of the bossbar.
+    /// <see cref="BossbarColor"/>
+    /// </summary>
+    public BossbarColor Color
+    {
+        get => _data.Color;
+        internal set => _data.Color = value;
+    }
+
+    /// <summary>
+    /// Divisions of the bossbar.
+    /// <see cref="BossbarDivision"/>
+    /// </summary>
+    public BossbarDivision Division
+    {
+        get => _data.Division;
+        internal set => _data.Division = value;
+    }
+
+    /// <summary>
+    /// Should darken the bossbar.
+    /// </summary>
+    public bool ShouldDarkenSky
+    {
+        get => _data.ShouldDarkenSky;
+        internal set => _data.ShouldDarkenSky = value;
+    }
+
+    /// <summary>
+    /// Is dragon bar.
+    /// </summary>
+    public bool IsDragonBar
+    {
+        get => _data.IsDragonBar;
+        internal set => _data.IsDragonBar = value;
+    }
+
+    /// <summary>
+    /// Create fog.
+    /// </summary>
+    public bool CreateFog
+    {
+        get => _data.CreateFog;
+        internal set => _data.CreateFog = value;
+    }
+    
+    /// <summary>
+    /// Owner of the bossbar.
+    /// </summary>
+    public BossbarOwner Owner { get; internal set; }
+    
+    private readonly BossbarManager _manager;
+    private readonly BossbarData _data;
+    internal Bossbar(BossbarManager manager, BossbarOwner owner)
+    {
+        _manager = manager;
+        Owner = owner;
+        _data = new BossbarData();
+    }
+    
+    internal BossbarData GetDataClone()
+    {
+        return _data.Clone();
+    }
+    
+    /// <summary>
+    /// Deletes the bossbar.
+    /// </summary>
+    public Task DeleteAsync() => _manager.DeleteBossbar(this);
 
     public async Task ModifyAsync(Action<BossbarModifyModel> action)
     {
-        var bossbarEditModel = new BossbarModifyModel();
-        action(bossbarEditModel);
+        var model = new BossbarModifyModel();
+        action(model);
+        if (model.Title != null && !model.Title.Equals(Title))
+        {
+            await _manager.SetBossbarTitle(this, model.Title);
+        }
+        
+        if (model.Health != null && !model.Health.IsEqual(Health))
+        {
+            await _manager.SetBossbarHealth(this, model.Health.Value);
+        }
 
-        bossbarEditModel.Health = Math.Clamp(bossbarEditModel.Health ?? 0, 0, 100);
-        
-        if (bossbarEditModel.Health != null && bossbarEditModel.Health != Health)
+        if (model.Color != null || model.Division != null)
         {
-            var packet = new BossbarS2CP
+            if (model.Color != null && model.Division != null && model.Color != Color && model.Division != Division)
             {
-                Action = BossbarAction.UpdateHealth,
-                Uuid = Uuid,
-                Health = bossbarEditModel.Health / 100f
-            };
-            
-            await _player.Transport.PlayerTransport.Connection.WritePacketAsync(packet);
+                await _manager.SetBossbarStyle(this, model.Color.Value, model.Division.Value);
+            }else if (model.Color != null && model.Color != Color)
+            {
+                await _manager.SetBossbarStyle(this, model.Color.Value, Division);
+            }else if (model.Division != null && model.Division != Division)
+            {
+                await _manager.SetBossbarStyle(this, Color, model.Division.Value);
+            }
         }
-        
-        if (bossbarEditModel.Division != null && bossbarEditModel.Color != null && bossbarEditModel.Color != Color && bossbarEditModel.Division != Division)
-        {
-            var packet = new BossbarS2CP
-            {
-                Action = BossbarAction.UpdateStyle,
-                Uuid = Uuid,
-                Color = bossbarEditModel.Color,
-                Division = bossbarEditModel.Division
-            };
-
-            await _player.Transport.PlayerTransport.Connection.WritePacketAsync(packet);
-        }
-        else if (bossbarEditModel.Color != null && bossbarEditModel.Color != Color)
-        {
-            var packet = new BossbarS2CP
-            {
-                Action = BossbarAction.UpdateStyle,
-                Uuid = Uuid,
-                Color = bossbarEditModel.Color
-            };
-            
-            await _player.Transport.PlayerTransport.Connection.WritePacketAsync(packet);
-        }else if (bossbarEditModel.Division != null && bossbarEditModel.Division != Division)
-        {
-            var packet = new BossbarS2CP
-            {
-                Action = BossbarAction.UpdateStyle,
-                Uuid = Uuid,
-                Division = bossbarEditModel.Division
-            };
-            
-            await _player.Transport.PlayerTransport.Connection.WritePacketAsync(packet);
-        }
-        
-        if (bossbarEditModel.Title != null && bossbarEditModel.Title != Title)
-        {
-            var packet = new BossbarS2CP
-            {
-                Action = BossbarAction.UpdateTitle,
-                Uuid = Uuid,
-                Title = bossbarEditModel.Title
-            };
-            
-            await _player.Transport.PlayerTransport.Connection.WritePacketAsync(packet);
-        }
-        
-        this.Color = bossbarEditModel.Color ?? BossbarColor.Blue;
-        this.Division = bossbarEditModel.Division ?? BossbarDivision.NoDivision;
-        this.Health = bossbarEditModel.Health ?? 0;
-    }
-
-    internal void Set(BossbarModifyModel model)
-    {
-        this.Color = model.Color ?? BossbarColor.Blue;
-        this.Division = model.Division ?? BossbarDivision.NoDivision;
-        this.Health = model.Health ?? 0;
-        this.Title = model.Title ?? new ChatComponent("Unnamed");
     }
 }

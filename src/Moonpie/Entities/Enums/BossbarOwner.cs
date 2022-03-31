@@ -24,20 +24,10 @@
 // SOFTWARE.
 #endregion
 
-using System.Net;
-using Moonpie.Protocol.Protocol;
+namespace Moonpie.Entities.Enums;
 
-namespace Moonpie.Entities.Models.Events;
-
-public class PlayerPingEventArgs : MoonpieEventArgs
+public enum BossbarOwner
 {
-    public EndPoint EndPoint { get; }
-    public ProtocolVersion Version { get; }
-
-    public ServerStatusResponseBuilder? Response { get; set; }
-    public PlayerPingEventArgs(Moonpie proxy, EndPoint endPoint, ProtocolVersion version) : base(proxy)
-    {
-        EndPoint = endPoint;
-        Version = version;
-    }
+    Moonpie,
+    Minecraft
 }
