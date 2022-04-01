@@ -24,7 +24,6 @@
 // SOFTWARE.
 #endregion
 
-using System.Threading.Tasks;
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Protocol;
 
