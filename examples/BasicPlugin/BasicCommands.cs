@@ -109,5 +109,20 @@ public class BasicCommands : BaseCommandModule
             }
         }
     }
+
+    [Command("test_title")]
+    public async Task TitlePacket(CommandContext ctx, string text, string? subtext)
+    {
+        var titleBuilder = new TitleBuilder()
+            .WithText(text)
+            .WithSubtitle(subtext)
+            .WithFadeIn(TimeSpan.FromSeconds(1))
+            .WithDuration(TimeSpan.FromSeconds(5))
+            .WithFadeOut(TimeSpan.FromSeconds(1));
+        
+        await ctx.Player.SendTitleAsync(titleBuilder);
+        
+        await ctx.Player.SendMessageAsync("Title sent!");
+    }
     
 }

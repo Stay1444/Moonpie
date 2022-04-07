@@ -269,6 +269,14 @@ public abstract class Connection : IDisposable
         return DisconnectAndCleanupAsync();
     }
 
+    public async Task WritePacketAsync(params IPacket[] packets)
+    {
+        foreach (var packet in packets)
+        {
+            await WritePacketAsync(packet);
+        }
+    }
+
     public Task WritePacketAsync(IPacket packet)
     {
         if (!IsConnected) return Task.CompletedTask;

@@ -31,9 +31,9 @@ namespace Moonpie.Entities;
 public class TitleBuilder
 {
     public ChatComponent Text { get; set; } = ChatComponent.Empty;
-    public TimeSpan FadeIn { get; set; }
-    public TimeSpan FadeOut { get; set; }
-    public TimeSpan Duration { get; set; }
+    public TimeSpan FadeIn { get; set; } = TimeSpan.FromSeconds(1);
+    public TimeSpan FadeOut { get; set; } = TimeSpan.FromSeconds(1);
+    public TimeSpan Duration { get; set; } = TimeSpan.FromSeconds(1);
     
     public ChatComponent? Subtitle { get; set; }
     

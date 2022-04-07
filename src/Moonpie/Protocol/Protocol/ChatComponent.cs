@@ -169,4 +169,23 @@ public class ChatComponent
     {
         return base.GetHashCode();
     }
+    
+    public bool IsEmpty()
+    {
+        if (string.IsNullOrEmpty(Text)) return true;
+
+        if (Extra is not null)
+        {
+            foreach (var chatComponent in Extra)
+            {
+                if (!chatComponent.IsEmpty()) return false;
+            }
+            
+            return true;
+        }else
+        {
+            return false;
+        }
+    }
+    
 }

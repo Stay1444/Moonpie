@@ -4,10 +4,15 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Moonpie\Moonpie.csproj" />
     </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="mv bin/Debug/net6.0/BasicPlugin.dll ../../src/Moonpie/bin/Debug/net6.0/plugins/BasicPlugin.dll" />
+    </Target>
 
 </Project>
