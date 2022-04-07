@@ -1,33 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\quiqu\\Documents\\Moonpie\\tests\\Moonpie.Tests\\Moonpie.Tests.csproj": {}
+    "/home/stay/work/Moonpie/tests/Moonpie.Tests/Moonpie.Tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\Moonpie.csproj": {
+    "/home/stay/work/Moonpie/src/Moonpie/Moonpie.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\Moonpie.csproj",
+        "projectUniqueName": "/home/stay/work/Moonpie/src/Moonpie/Moonpie.csproj",
         "projectName": "Moonpie",
-        "projectPath": "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\Moonpie.csproj",
-        "packagesPath": "C:\\Users\\quiqu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\obj\\",
+        "projectPath": "/home/stay/work/Moonpie/src/Moonpie/Moonpie.csproj",
+        "packagesPath": "/home/stay/.nuget/packages/",
+        "outputPath": "/home/stay/work/Moonpie/src/Moonpie/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\quiqu\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/stay/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.emzi0767.com/api/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
@@ -93,41 +86,34 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/6.0.201/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\quiqu\\Documents\\Moonpie\\tests\\Moonpie.Tests\\Moonpie.Tests.csproj": {
+    "/home/stay/work/Moonpie/tests/Moonpie.Tests/Moonpie.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\quiqu\\Documents\\Moonpie\\tests\\Moonpie.Tests\\Moonpie.Tests.csproj",
+        "projectUniqueName": "/home/stay/work/Moonpie/tests/Moonpie.Tests/Moonpie.Tests.csproj",
         "projectName": "Moonpie.Tests",
-        "projectPath": "C:\\Users\\quiqu\\Documents\\Moonpie\\tests\\Moonpie.Tests\\Moonpie.Tests.csproj",
-        "packagesPath": "C:\\Users\\quiqu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\quiqu\\Documents\\Moonpie\\tests\\Moonpie.Tests\\obj\\",
+        "projectPath": "/home/stay/work/Moonpie/tests/Moonpie.Tests/Moonpie.Tests.csproj",
+        "packagesPath": "/home/stay/.nuget/packages/",
+        "outputPath": "/home/stay/work/Moonpie/tests/Moonpie.Tests/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\quiqu\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/stay/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.emzi0767.com/api/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\Moonpie.csproj": {
-                "projectPath": "C:\\Users\\quiqu\\Documents\\Moonpie\\src\\Moonpie\\Moonpie.csproj"
+              "/home/stay/work/Moonpie/src/Moonpie/Moonpie.csproj": {
+                "projectPath": "/home/stay/work/Moonpie/src/Moonpie/Moonpie.csproj"
               }
             }
           }
@@ -174,7 +160,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/6.0.201/RuntimeIdentifierGraph.json"
         }
       }
     }

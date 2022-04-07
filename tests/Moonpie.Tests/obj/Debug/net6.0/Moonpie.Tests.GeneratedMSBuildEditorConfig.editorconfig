@@ -7,4 +7,4 @@ build_property.InvariantGlobalization =
 build_property.PlatformNeutralAssembly = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Moonpie.Tests
-build_property.ProjectDir = C:\Users\quiqu\Documents\Moonpie\tests\Moonpie.Tests\
+build_property.ProjectDir = /home/stay/work/Moonpie/tests/Moonpie.Tests/

@@ -1,4 +1,4 @@
-﻿#region Copyright
+﻿#region License
 // Moonpie
 // 
 // Copyright (c) 2022 Stay
@@ -25,6 +25,7 @@
 #endregion
 
 using Ardalis.SmartEnum;
+// ReSharper disable InconsistentNaming
 
 namespace Moonpie.Protocol.Protocol;
 
@@ -32,6 +33,17 @@ public class ProtocolVersion : SmartEnum<ProtocolVersion>
 {
     #region Enum
     #pragma warning disable 
+    public static readonly ProtocolVersion v22w13a = new("22w13a",1073741900, true);
+    public static readonly ProtocolVersion v22w12a = new("22w12a",1073741899, true);
+    public static readonly ProtocolVersion v22w11a = new("22w11a",1073741898, true);
+    public static readonly ProtocolVersion v1_18_2 = new("1.18.2",758, false);
+    public static readonly ProtocolVersion v1_18_2_rc1 = new("1.18.2-rc1",1073741897, true);
+    public static readonly ProtocolVersion v1_18_2_pre3 = new("1.18.2-pre3",1073741896, true);
+    public static readonly ProtocolVersion v1_18_2_pre2 = new("1.18.2-pre2",1073741895, true);
+    public static readonly ProtocolVersion v1_18_2_pre1 = new("1.18.2-pre1",1073741894, true);
+    public static readonly ProtocolVersion v22w07a = new("22w07a",1073741892, true);
+    public static readonly ProtocolVersion v22w06a = new("22w06a",1073741891, true);
+    public static readonly ProtocolVersion v22w05a = new("22w05a",1073741890, true);
     public static readonly ProtocolVersion v22w03a = new("22w03a",1073741889, true);
     public static readonly ProtocolVersion v1_18_1 = new("1.18.1",757, false);
     public static readonly ProtocolVersion v1_18_1_rc3 = new("1.18.1-rc3",1073741888, true);

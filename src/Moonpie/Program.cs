@@ -1,4 +1,4 @@
-﻿#region Copyright
+﻿#region License
 // Moonpie
 // 
 // Copyright (c) 2022 Stay
@@ -25,14 +25,10 @@
 #endregion
 
 global using System;
-using System.IO;
-using System.Threading.Tasks;
 using Moonpie.Entities;
-using Moonpie.Protocol.Protocol;
 using Serilog;
-using Serilog.Core;
 using Tomlyn;
-using Moonpie = Moonpie.Moonpie;
+
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()

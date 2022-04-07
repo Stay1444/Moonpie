@@ -1,4 +1,4 @@
-﻿#region Copyright
+﻿#region License
 // Moonpie
 // 
 // Copyright (c) 2022 Stay
