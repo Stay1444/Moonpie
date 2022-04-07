@@ -1,3 +1,4 @@
+#region License
 // Moonpie
 // 
 // Copyright (c) 2022 Stay
@@ -21,10 +22,60 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+#endregion
+
+using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Entities;
 
 public class TitleBuilder
 {
+    public ChatComponent Text { get; set; } = ChatComponent.Empty;
+    public TimeSpan FadeIn { get; set; }
+    public TimeSpan FadeOut { get; set; }
+    public TimeSpan Duration { get; set; }
     
+    public ChatComponent? Subtitle { get; set; }
+    
+    public TitleBuilder WithText(ChatComponent component)
+    {
+        this.Text = component;
+        return this;
+    }
+    
+    public TitleBuilder WithText(string text, params object[] args)
+    {
+        this.Text = string.Format(text, args);
+        return this;
+    }
+    
+    public TitleBuilder WithFadeIn(TimeSpan fadeIn)
+    {
+        this.FadeIn = fadeIn;
+        return this;
+    }
+    
+    public TitleBuilder WithFadeOut(TimeSpan fadeOut)
+    {
+        this.FadeOut = fadeOut;
+        return this;
+    }
+    
+    public TitleBuilder WithDuration(TimeSpan duration)
+    {
+        this.Duration = duration;
+        return this;
+    }
+    
+    public TitleBuilder WithSubtitle(ChatComponent component)
+    {
+        this.Subtitle = component;
+        return this;
+    }
+    
+    public TitleBuilder RemoveSubtitle()
+    {
+        this.Subtitle = null;
+        return this;
+    }
 }
