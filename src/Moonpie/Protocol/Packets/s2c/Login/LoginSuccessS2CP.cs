@@ -63,9 +63,9 @@ public class LoginSuccessS2CP : IS2CPacket
         
         await handler.Transport.PlayerTransport.Connection.WritePacketAsync(new CompressionSetS2CP()
         {
-            Threshold = handler.Proxy.Configuration.CompressionThreshold
+            Threshold = handler.Proxy.Configuration.Net.CompressionThreshold
         });
-        handler.Transport.PlayerTransport.Connection.CompressionThreshold = handler.Proxy.Configuration.CompressionThreshold;
+        handler.Transport.PlayerTransport.Connection.CompressionThreshold = handler.Proxy.Configuration.Net.CompressionThreshold;
         
         handler.Transport.ServerTransport!.Connection.State = ProtocolState.Play;
         handler.Transport.PlayerTransport.Connection.State = ProtocolState.Play;

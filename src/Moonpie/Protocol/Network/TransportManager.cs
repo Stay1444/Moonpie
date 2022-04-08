@@ -175,7 +175,7 @@ public class TransportManager
         }
     }
     
-    internal async Task Connect(string host, uint port)
+    internal async Task Connect(string host, int port)
     {
         try
         {
@@ -191,9 +191,9 @@ public class TransportManager
             
             await _playerTransport.Connection.WritePacketAsync(new CompressionSetS2CP()
             {
-                Threshold = _player.Proxy.Configuration.CompressionThreshold
+                Threshold = _player.Proxy.Configuration.Net.CompressionThreshold
             });
-            _playerTransport.Connection.CompressionThreshold = _player.Proxy.Configuration.CompressionThreshold;
+            _playerTransport.Connection.CompressionThreshold = _player.Proxy.Configuration.Net.CompressionThreshold;
             
             await server.WritePacketAsync(new HandshakeC2SP()
             {
@@ -244,7 +244,7 @@ public class TransportManager
         }
     }
 
-    private async Task<ServerConnection?> CreateServerConnection(string host, uint port)
+    private async Task<ServerConnection?> CreateServerConnection(string host, int port)
     {
         TcpClient client = new TcpClient();
         await client.ConnectAsync(host, (int)port);
@@ -252,7 +252,7 @@ public class TransportManager
         var server = new ServerConnection(client, Version);
         return server;
     }
-    private async Task TransportConnection(string host, uint port)
+    private async Task TransportConnection(string host, int port)
     {
         TcpClient client = new TcpClient();
         await client.ConnectAsync(host, (int)port);

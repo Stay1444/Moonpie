@@ -22,7 +22,7 @@ public class BasicCommands : BaseCommandModule
         await ctx.Player.SendMessageAsync("Connecting you to " + host + ":" + port + "...");
         try
         {
-            await ctx.Player.Connect(host, (uint)port);
+            await ctx.Player.Connect(host, port);
             await ctx.Player.SendMessageAsync("Connected!");
         }catch(Exception e)
         {

@@ -51,10 +51,10 @@ public class Moonpie
     public Moonpie(MoonpieConfiguration configuration)
     {
         this._configuration = configuration;
-        _tcpListener = new TcpListener(IPAddress.Parse(configuration.Host), configuration.Port);
+        _tcpListener = new TcpListener(IPAddress.Parse(configuration.Net.Host), configuration.Net.Port);
         IsRunning = false;
-        Host = configuration.Host;
-        Port = configuration.Port;
+        Host = configuration.Net.Host;
+        Port = configuration.Net.Port;
         _connectionHandler = new ConnectionHandler(configuration, this);
         Plugins = new PluginManager(this);
         Plugins.Load();

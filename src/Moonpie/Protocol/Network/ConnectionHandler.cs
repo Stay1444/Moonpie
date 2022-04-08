@@ -112,7 +112,7 @@ public class ConnectionHandler
             result.Response = new ServerStatusResponseBuilder();
             result.Response.WithDescription("Moonpie");
             result.Response.WithVersion(connection.Version);
-            result.Response.WithPlayers(_proxy.Players.Count, (int)_config.MaxPlayers);
+            result.Response.WithPlayers(_proxy.Players.Count, (int)_config.Net.MaxConnections);
         }
 
         if (await connection.ReadPacketAsync() is StatusRequestC2SP)
@@ -194,7 +194,9 @@ public class ConnectionHandler
         var player = new Player(_proxy, connection, username);
         try
         {
-            await player.Connect(_config.Fallback.Host, _config.Fallback.Port);
+            string address = _config.DefaultServer.Host.Split(":")[0];
+            int port = int.Parse(_config.DefaultServer.Host.Split(":")[1]);
+            await player.Connect(address, port);
             return player;
         }
         catch (Exception e)

@@ -37,7 +37,7 @@ Log.Logger = new LoggerConfiguration()
 
 if (!File.Exists("config.toml"))
 {
-    File.WriteAllText("config.toml", Toml.FromModel(new MoonpieConfiguration("127.0.0.1", 25565, 64)));
+    File.WriteAllText("config.toml", Toml.FromModel(new MoonpieConfiguration()));
 }
 
 var config = Toml.ToModel<MoonpieConfiguration>(File.ReadAllText("config.toml"));

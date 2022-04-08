@@ -59,7 +59,7 @@ public class Player
         this.BossbarManager = new BossbarManager(this);
     }
 
-    public async Task Connect(string host, uint port)
+    public async Task Connect(string host, int port)
     {
         await _transportManager.Connect(host, port);
     }

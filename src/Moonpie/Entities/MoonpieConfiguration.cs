@@ -24,34 +24,74 @@
 // SOFTWARE.
 #endregion
 
+// ReSharper disable InconsistentNaming
 namespace Moonpie.Entities;
 
 public class MoonpieConfiguration
 {
-    public class MoonpieConfiguration_FallbackServer
+    public enum OnlineMode
     {
-        public bool Enabled { get; set; } = false;
-        public string Host { get; set; } = "127.0.0.1";
-        public ushort Port { get; set; } = 25566;
+        Disabled,
+        Hybrid,
+        Enabled
+    }
+
+    public class MoonpieConfiguration_Motd
+    {
+        public string Motd { get; set; } = "Default Moonpie Motd";
+        public int MaxPlayers { get; set; } = 20;
+        public string Version { get; set; } = "Moonpie";
     }
     
-    public MoonpieConfiguration(string host, ushort port, uint maxPlayers)
+    public class MoonpieConfiguration_Net
     {
-        Host = host;
-        Port = port;
-        MaxPlayers = maxPlayers;
+        public int ServerConnectTimeout { get; set; } = 5000;
+        public int CompressionThreshold { get; set; } = 256;
+        public bool PingPassthrough { get; set; } = false;
+        public string Host { get; set; } = "127.0.0.1";
+        public int Port { get; set; } = 30000;
+        public int MaxConnections { get; set; } = 0;
     }
 
-    public MoonpieConfiguration()
+    public class MoonpieConfiguration_Logs
     {
-        Host = "127.0.0.1";
-        Port = 25565;
-        MaxPlayers = 20;
+        public bool Pings { get; set; } = true;
+        public bool Commands { get; set; } = true;
+        public bool Connections { get; set; } = true;
+        public bool LogToFile { get; set; } = true;
     }
 
-    public string Host { get; init; }
-    public ushort Port { get; init; }
-    public uint MaxPlayers { get; init; }
-    public int CompressionThreshold { get; init; } = 256;
-    public MoonpieConfiguration_FallbackServer Fallback { get; init; } = new MoonpieConfiguration_FallbackServer();   
+    public class MoonpieConfiguration_Compatibility
+    {
+        public bool ForgeSupport { get; set; } = false;
+        public bool IpForwarding { get; set; } = false;
+    }
+
+    public class MoonpieConfiguration_Security
+    {
+        public OnlineMode OnlineMode { get; set; } = OnlineMode.Enabled;
+        public bool PreventProxyConnections { get; set; } = false;
+        public int ConnectionThrottle { get; set; } = 5000;
+        public int ConnectionThrottleLimit { get; set; } = 5;
+        public int MaxConnectionsPerIp { get; set; } = 0;
+    }
+
+    public class MoonpieConfiguration_Others
+    {
+        public string[] DisabledCommands { get; set; } = new string[] { "example" };
+    }
+
+    public class MoonpieConfiguration_DefaultServer
+    {
+        public bool Enabled { get; set; } = false;
+        public string Host { get; set; } = "127.0.0.1:25565";
+    }
+
+    public MoonpieConfiguration_Net Net { get; set; } = new MoonpieConfiguration_Net();
+    public MoonpieConfiguration_Logs Logs { get; set; } = new MoonpieConfiguration_Logs();
+    public MoonpieConfiguration_Compatibility Compatibility { get; set; } = new MoonpieConfiguration_Compatibility();
+    public MoonpieConfiguration_Security Security { get; set; } = new MoonpieConfiguration_Security();
+    public MoonpieConfiguration_DefaultServer DefaultServer { get; set; } = new MoonpieConfiguration_DefaultServer();
+    public MoonpieConfiguration_Motd Motd { get; set; } = new MoonpieConfiguration_Motd();
+    public MoonpieConfiguration_Others Others { get; set; } = new MoonpieConfiguration_Others();
 }
