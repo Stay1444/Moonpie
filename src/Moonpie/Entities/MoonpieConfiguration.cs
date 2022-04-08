@@ -29,13 +29,6 @@ namespace Moonpie.Entities;
 
 public class MoonpieConfiguration
 {
-    public enum OnlineMode
-    {
-        Disabled,
-        Hybrid,
-        Enabled
-    }
-
     public class MoonpieConfiguration_Motd
     {
         public string Motd { get; set; } = "Default Moonpie Motd";
@@ -69,7 +62,7 @@ public class MoonpieConfiguration
 
     public class MoonpieConfiguration_Security
     {
-        public OnlineMode OnlineMode { get; set; } = OnlineMode.Enabled;
+        public string OnlineMode { get; set; } = "enabled";
         public bool PreventProxyConnections { get; set; } = false;
         public int ConnectionThrottle { get; set; } = 5000;
         public int ConnectionThrottleLimit { get; set; } = 5;
@@ -94,4 +87,13 @@ public class MoonpieConfiguration
     public MoonpieConfiguration_DefaultServer DefaultServer { get; set; } = new MoonpieConfiguration_DefaultServer();
     public MoonpieConfiguration_Motd Motd { get; set; } = new MoonpieConfiguration_Motd();
     public MoonpieConfiguration_Others Others { get; set; } = new MoonpieConfiguration_Others();
+
+    internal void Validate()
+    {
+        if (Security.OnlineMode != "enabled" && Security.OnlineMode != "disabled" && Security.OnlineMode != "hybrid")
+            throw new Exception("Invalid online mode: " + Security.OnlineMode + ". Valid values are: enabled, disabled and hybrid.");
+        
+        if (Net.Port < 0 || Net.Port > 65535)
+            throw new Exception("Invalid port: " + Net.Port + ". Valid values are between 0 and 65535.");
+    }
 }

@@ -41,7 +41,7 @@ if (!File.Exists("config.toml"))
 }
 
 var config = Toml.ToModel<MoonpieConfiguration>(File.ReadAllText("config.toml"));
-
+config.Validate();
 var moonpie = new global::Moonpie.Moonpie(config);
 moonpie.Start();
 
