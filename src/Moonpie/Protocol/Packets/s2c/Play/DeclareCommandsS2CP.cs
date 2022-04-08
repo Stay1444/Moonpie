@@ -446,6 +446,18 @@ public class DeclareCommandsS2CP : IS2CPacket
                 }
             }
         }
+        
+        for(int i = 0; i < Nodes.Count; i++)
+        {
+            var node = Nodes[i];
+            if (node is CommandLiteralNode literalNode)
+            {
+                if (handler.Proxy.Configuration.Others.DisabledCommands.Contains(literalNode.Name))
+                {
+                    Nodes[RootIndex].ChildrenIds.Remove(i);
+                }
+            }
+        }
 
         await handler.Player.SendMessageAsync($"Command tree received, {Nodes.Count} nodes, root index {RootIndex}");
     }

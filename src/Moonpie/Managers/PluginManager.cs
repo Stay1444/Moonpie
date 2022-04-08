@@ -124,11 +124,18 @@ public class PluginManager
         return args;
     }
 
-    internal Task<bool> TriggerCommandAsync(Player player, string text)
+    internal async Task<bool> TriggerCommandAsync(Player player, string text)
     {
         string commandName = text.Split(' ')[0];
         string[] args = text.Split(' ').Skip(1).ToArray();
         commandName = commandName.Substring(1);
+        
+        if (_proxy.Configuration.Others.DisabledCommands.Contains(commandName))
+        {
+            await player.SendMessageAsync("Unknown command. Type \"/help\" for help.");
+            return true;
+        }
+        
         foreach (var plugin in plugins!)
         {
             foreach (var commandInfo in plugin.Commands)
@@ -136,11 +143,11 @@ public class PluginManager
                 if (commandInfo.Name == commandName)
                 {
                     _ = RunComandAsync(commandInfo, args, player);
-                    return Task.FromResult(true);
+                    return true;
                 }
             }
         }
-        return Task.FromResult(false);
+        return false;
     }
 
     internal bool DoesCommandExist(string commandName)
