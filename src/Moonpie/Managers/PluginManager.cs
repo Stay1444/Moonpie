@@ -103,19 +103,22 @@ public class PluginManager
 
             foreach (var listener in plugin.Listeners)
             {
-                foreach (var methods in listener.GetType().GetMethods())
+                var methods = listener.GetType().GetMethods();
+                foreach (var method in methods)
                 {
-                    if (!methods.GetParameters().Any()) continue;
-                    if (methods.GetParameters().First().ParameterType == args.GetType())
+                    var baseDefinition = method.GetBaseDefinition();
+                    if (baseDefinition.DeclaringType != typeof(BaseEventListener)) continue;
+                    if (!method.GetParameters().Any()) continue;
+                    if (method.GetParameters().First().ParameterType == args.GetType())
                     {
                         try
                         {
-                            await ((Task?) methods.Invoke(listener, new object[] {args}))!;
+                            await ((Task?) method.Invoke(listener, new object[] {args}))!;
                             if (args.Handled) return args;
                         }
                         catch (Exception e)
                         {
-                            Log.Error(e, "Failed to invoke {method}", methods.Name);
+                            Log.Error(e, "Failed to invoke {method}", method.Name);
                         }
                     }
                 }

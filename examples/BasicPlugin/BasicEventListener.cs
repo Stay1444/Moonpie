@@ -15,4 +15,10 @@ public class BasicEventListener : BaseEventListener
         e.Response.WithVersion(e.Version);
         return Task.CompletedTask;
     }
+
+    public Task PlayerPingHandle(PlayerPingEventArgs e)
+    {
+        Console.WriteLine("PlayerPingHandle");
+        return Task.CompletedTask;
+    }
 }
