@@ -33,6 +33,8 @@ namespace Moonpie.Protocol.Protocol;
 
 public class ChatColor : SmartEnum<ChatColor, string>
 {
+    public const char PrefixChar = '§';
+    
     public static readonly ChatColor Black = new ChatColor("Black", "black", '0', Color.Black);
     public static readonly ChatColor DarkBlue = new ChatColor("DarkBlue", "dark_blue", '1', Color.DarkBlue);
     public static readonly ChatColor DarkGreen = new ChatColor("DarkGreen", "dark_green",'2', Color.DarkGreen);
