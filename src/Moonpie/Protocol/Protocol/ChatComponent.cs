@@ -24,6 +24,8 @@
 // SOFTWARE.
 #endregion
 
+using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Moonpie.Protocol.Protocol;
@@ -40,10 +42,7 @@ public class ChatComponent
     public ChatColor? Color { get; set; }
     public ChatComponent Add(ChatComponent component)
     {
-        if (Extra == null)
-        {
-            Extra = new List<ChatComponent>();
-        }
+        Extra ??= new List<ChatComponent>();
         Extra.Add(component);
         return this;
     }
@@ -60,7 +59,7 @@ public class ChatComponent
         return new ChatComponent(text);
     }
 
-    public static ChatComponent Parse(string text, char colorChar = '§')
+    public static ChatComponent Parse(string text, char colorChar = ChatColor.PrefixChar)
     {
         var result = new ChatComponent("");
         var builder = new List<char>();
@@ -163,11 +162,6 @@ public class ChatComponent
         return false;
     }
     
-    public override int GetHashCode()
-    {   
-        return base.GetHashCode();
-    }
-    
     public bool IsEmpty()
     {
         if (string.IsNullOrEmpty(Text)) return true;
@@ -185,5 +179,95 @@ public class ChatComponent
             return false;
         }
     }
+
+    private static ChatComponent FromQuotedString(string str)
+    {
+        var unquoted = str.Substring(1, str.Length - 2);
+        
+        return Parse(unquoted);
+    }
+ 
+    public string ToQuotedString()
+    {
+        var builder = new StringBuilder();
+        
+        builder.Append('"');
+        if (this.Color is not null)
+        {
+            builder.Append(ChatColor.PrefixChar);
+            builder.Append(this.Color.Code);
+        }
+        
+        builder.Append(this.Text);
+        if (this.Extra is not null)
+        {
+            foreach (var chatComponent in this.Extra)
+            {
+                if (chatComponent.IsEmpty()) continue;
+                if (chatComponent.Color is not null)
+                {
+                    builder.Append(ChatColor.PrefixChar);
+                    builder.Append(chatComponent.Color.Code);
+                }
+                
+                builder.Append(chatComponent.Text);
+            }
+        }
+        
+        builder.Append('"');
+        
+        return builder.ToString();
+    }
+
+    public enum SerializationMode
+    {
+        Normal,
+        Compact,
+        Quoted
+    }
+
+    private SerializationMode _serializationMode = SerializationMode.Normal;
     
+    public static ChatComponent FromJson(string json)
+    {
+        if (json.StartsWith('"'))
+        {
+            var cc = FromQuotedString(json);
+            
+            cc._serializationMode = SerializationMode.Quoted;
+            
+            return cc;
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize<ChatComponent>(json)!;
+        }
+        catch (JsonException)
+        {
+            var compact = JsonSerializer.Deserialize<ChatComponentCompact>(json);
+            var chatComponent = ChatComponent.Empty;
+            chatComponent.Text = compact?.Text;
+            if (compact?.Extra is not null)
+            {
+                foreach (var extra in compact.Extra)
+                {
+                    chatComponent.Add(new ChatComponent(extra));
+                }
+            }
+            
+            chatComponent._serializationMode = SerializationMode.Compact;
+            
+            return chatComponent;
+        }
+    }
+
+    public class ChatComponentCompact
+    {
+        [JsonPropertyName("text"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? Text { get; set; }
+        
+        [JsonPropertyName("extra"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string[]? Extra { get; set; }
+    }
 }
