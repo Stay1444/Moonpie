@@ -148,8 +148,8 @@ public class TransportManager
         var proxy = player.Proxy;
         _handler = new PacketHandler(proxy, _player, this);
         _playerTransport = new Transport(playerConnection, HandlePlayerRead);
-        _playerTransport.Begin();
         _playerTransport.OnDisconnected += HandlePlayerDisconnected;
+        _playerTransport.Begin();
     }
 
     private void HandlePlayerDisconnected(Transport transport)

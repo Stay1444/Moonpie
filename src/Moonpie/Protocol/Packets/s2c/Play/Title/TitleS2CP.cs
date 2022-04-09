@@ -109,4 +109,10 @@ public class TitleS2CP : IS2CPacket
         buffer.WriteVarInt((int) Action);
         ActionData?.Write(buffer);
     }
+
+    public Task Handle(PacketHandleContext handler)
+    {
+        Console.WriteLine("Old title format in version: " +handler.Player.Version);
+        return Task.CompletedTask;
+    }
 }

@@ -164,8 +164,8 @@ public static class InByteBufferExtensions
     
     public static ChatComponent ReadChatComponent(this InByteBuffer buffer)
     {
-        string json = buffer.ReadString();
-        return JsonSerializer.Deserialize<ChatComponent>(json)!;
+        var json = buffer.ReadString();
+        return ChatComponent.FromJson(json);
     }
     public static T? ReadOptional<T>(this InByteBuffer buffer, Func<T> action)
     {

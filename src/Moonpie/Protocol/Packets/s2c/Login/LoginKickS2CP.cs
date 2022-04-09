@@ -24,7 +24,6 @@
 // SOFTWARE.
 #endregion
 
-using System.Text.Json;
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Protocol;
 using Moonpie.Utils.Protocol;
@@ -40,7 +39,8 @@ public class LoginKickS2CP : IS2CPacket
     public void Read(InByteBuffer buffer)
     {
         string json = buffer.ReadString();
-        Reason = JsonSerializer.Deserialize<ChatComponent>(json)!;
+        Reason = ChatComponent.FromJson(json);
+
     }
 
     public void Write(OutByteBuffer buffer)

@@ -98,9 +98,26 @@ public class Moonpie
     {
         var player = await _connectionHandler.HandleConnectionAsync(client);
         if (player is null) return;
+        try
+        {
+            if (!player.Transport.PlayerTransport.Connection.IsConnected)
+            {
+                await player.Transport.PlayerTransport.Close();
+                if (player.Transport.ServerTransport is not null)
+                {
+                    await player.Transport.ServerTransport.Close();
+                }
+                Log.Information("Player {player} disconnected while connecting", player.Username);
+                return;
+            }
+        }catch(Exception e)
+        {
+            Log.Error(e, "Error while closing connection");
+        }
+
+        player.Disconnected += PlayerDisconnected;
         Log.Information("Player {username} connected", player.Username);
         _players.Add(player);
-        player.Disconnected += PlayerDisconnected;
     }
 
     private void PlayerDisconnected(object? sender, EventArgs e)

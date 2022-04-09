@@ -40,13 +40,13 @@ public class ChatMessageS2CP : IS2CPacket
     public JavaUUID? Sender { get; set; } = null;
     public void Read(InByteBuffer buffer)
     {
-        string json = buffer.ReadString();
+        var json = buffer.ReadString();
         if (json.Contains("translate"))
         {
             Translate = json;
         }else
         {
-            Message = JsonSerializer.Deserialize<ChatComponent>(json);
+            Message = ChatComponent.FromJson(json);
         }
         
         if (buffer.Version >= ProtocolVersion.v14w04a)
@@ -67,7 +67,8 @@ public class ChatMessageS2CP : IS2CPacket
         }
         else
         {
-            buffer.WriteString(JsonSerializer.Serialize(Message));
+            var json = JsonSerializer.Serialize(Message);
+            buffer.WriteString(json);
         }
         if (buffer.Version >= ProtocolVersion.v14w04a)
         {
@@ -85,5 +86,5 @@ public class ChatMessageS2CP : IS2CPacket
         SystemMessage,
         AboveHotbar,
     }
-    
+
 }

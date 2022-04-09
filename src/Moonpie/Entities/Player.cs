@@ -96,40 +96,95 @@ public class Player
 
     public async Task SendTitleAsync(TitleBuilder builder, bool reset = true)
     {
-        var clearPacket = new TitleClearS2CP()
+        if (Version >= ProtocolVersion.v1_17)
         {
-            Reset = reset
-        };
-
-        var timesPacket = new TitleTimesSetS2CP()
-        {
-            StayTime = builder.Duration.TotalSeconds.ToInt() * 20,
-            FadeOutTime = builder.FadeOut.TotalSeconds.ToInt() * 20,
-            FadeInTime = builder.FadeIn.TotalSeconds.ToInt() * 20
-        };
-        
-        var titleSetPacket = new TitleSetS2CP()
-        {
-            Title = builder.Text
-        };
-
-        IPacket? subtitleSetPacket = null;
-
-        if (builder.Subtitle is not null && !builder.Subtitle.IsEmpty())
-        {
-            subtitleSetPacket = new TitleSubtitleSetS2CP()
+            var clearPacket = new TitleClearS2CP()
             {
-                Subtitle = builder.Subtitle
+                Reset = reset
             };
-        }
+            var timesPacket = new TitleTimesSetS2CP()
+            {
+                StayTime = builder.Duration.TotalSeconds.ToInt() * 20,
+                FadeOutTime = builder.FadeOut.TotalSeconds.ToInt() * 20,
+                FadeInTime = builder.FadeIn.TotalSeconds.ToInt() * 20
+            };
+            var titleSetPacket = new TitleSetS2CP()
+            {
+                Title = builder.Text
+            };
+            IPacket? subtitleSetPacket = null;
+            if (builder.Subtitle is not null && !builder.Subtitle.IsEmpty())
+            {
+                subtitleSetPacket = new TitleSubtitleSetS2CP()
+                {
+                    Subtitle = builder.Subtitle
+                };
+            }
 
-        await _transportManager.PlayerTransport.Connection.WritePacketAsync(clearPacket);
-        
-        if (subtitleSetPacket is not null)
-            await _transportManager.PlayerTransport.Connection.WritePacketAsync(subtitleSetPacket);
-        
-        await _transportManager.PlayerTransport.Connection.WritePacketAsync(timesPacket, titleSetPacket);
-        
+            await _transportManager.PlayerTransport.Connection.WritePacketAsync(clearPacket);
+            if (subtitleSetPacket is not null)
+                await _transportManager.PlayerTransport.Connection.WritePacketAsync(subtitleSetPacket);
+            await _transportManager.PlayerTransport.Connection.WritePacketAsync(timesPacket, titleSetPacket);
+        }
+        else
+        {
+            {
+                var clearPacket = new TitleS2CP
+                {
+                    Action = TitleS2CP.TitleActions.Hide
+                };
+
+                await _transportManager.PlayerTransport.Connection.WritePacketAsync(clearPacket);
+            }
+
+            if (reset)
+            {
+                var resetPacket = new TitleS2CP
+                {
+                    Action = TitleS2CP.TitleActions.Reset
+                };
+
+                await _transportManager.PlayerTransport.Connection.WritePacketAsync(resetPacket);
+            }
+            
+            var timesPacket = new TitleS2CP
+            {
+                Action = TitleS2CP.TitleActions.Times,
+                ActionData = new TitleS2CP.TitleActionTimes()
+                {
+                    StayTime = builder.Duration.TotalSeconds.ToInt() * 20,
+                    FadeOutTime = builder.FadeOut.TotalSeconds.ToInt() * 20,
+                    FadeInTime = builder.FadeIn.TotalSeconds.ToInt() * 20
+                }
+            };
+            
+            await _transportManager.PlayerTransport.Connection.WritePacketAsync(timesPacket);
+            
+            if (builder.Subtitle is not null && !builder.Subtitle.IsEmpty())
+            {
+                var subtitlePacket = new TitleS2CP
+                {
+                    Action = TitleS2CP.TitleActions.Subtitle,
+                    ActionData = new TitleS2CP.TitleActionText()
+                    {
+                        Text = builder.Subtitle
+                    }
+                };
+
+                await _transportManager.PlayerTransport.Connection.WritePacketAsync(subtitlePacket);
+            }
+            
+            var titlePacket = new TitleS2CP
+            {
+                Action = TitleS2CP.TitleActions.TitleText,
+                ActionData = new TitleS2CP.TitleActionText()
+                {
+                    Text = builder.Text
+                }
+            };
+            
+            await _transportManager.PlayerTransport.Connection.WritePacketAsync(titlePacket);
+        }
     }
     
 }
