@@ -47,9 +47,10 @@ public static class OutByteBufferExtensions
         buffer.WriteString(json);
     }
     
+    // ReSharper disable InconsistentNaming
     public static void WriteUUIDString(this OutByteBuffer buffer, JavaUUID guid)
     {
-        buffer.WriteString(guid.ToString().Replace("-", ""));
+        buffer.WriteString(guid.ToString());
     }
     
     public static void WriteUUID(this OutByteBuffer buffer, JavaUUID? guid)
