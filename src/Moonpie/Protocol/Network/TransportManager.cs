@@ -226,7 +226,6 @@ public class TransportManager
                 var loginSuccessS2CP = (LoginSuccessS2CP) packet;
                 this._uuid = loginSuccessS2CP.Uuid;
                 _player.Username = loginSuccessS2CP.Name ?? _player.Username;
-                Console.WriteLine(_uuid);
 
                 await _playerTransport.Connection.WritePacketAsync(packet);
                 
