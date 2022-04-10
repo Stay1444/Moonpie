@@ -50,6 +50,7 @@ public class CompressionSetS2CP : IS2CPacket
     {
         context.Cancel();
         context.Transport.ServerTransport!.Connection.CompressionThreshold = Threshold;
+        Console.WriteLine($"Compression threshold set to {Threshold}");
         return Task.CompletedTask;
     }
 }
