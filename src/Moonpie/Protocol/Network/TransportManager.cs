@@ -188,13 +188,15 @@ public class TransportManager
             var server = await CreateServerConnection(host, port);
         
             if (server is null) return;
-            
-            await _playerTransport.Connection.WritePacketAsync(new CompressionSetS2CP()
+            if (_player.Proxy.Configuration.Net.CompressionThreshold > 0)
             {
-                Threshold = _player.Proxy.Configuration.Net.CompressionThreshold
-            });
-            _playerTransport.Connection.CompressionThreshold = _player.Proxy.Configuration.Net.CompressionThreshold;
-            
+                await _playerTransport.Connection.WritePacketAsync(new CompressionSetS2CP()
+                {
+                    Threshold = _player.Proxy.Configuration.Net.CompressionThreshold
+                });
+                _playerTransport.Connection.CompressionThreshold = _player.Proxy.Configuration.Net.CompressionThreshold;
+            }
+
             await server.WritePacketAsync(new HandshakeC2SP()
             {
                 ProtocolVersion = Version,
@@ -220,7 +222,7 @@ public class TransportManager
                 if (packet is not LoginSuccessS2CP)
                 {
                     server.Dispose();
-                    throw new Exception("Login failed");
+                    throw new Exception("Login failed " + packet);
                 }
                 
                 var loginSuccessS2CP = (LoginSuccessS2CP) packet;
@@ -282,13 +284,16 @@ public class TransportManager
             packet = await server.ReadPacketAsync();
         }
         
-        if (packet is not LoginSuccessS2CP)
+        if (packet is not LoginSuccessS2CP loginSuccessS2CP)
         {
             server.Dispose();
-            throw new Exception("Login failed");
+            if (packet is LoginKickS2CP loginKickS2CP)
+            {
+                throw new Exception("Login failed: " + loginKickS2CP.Reason);
+            }
+            throw new Exception("Login failed " + packet);
         }
-        
-        var loginSuccessS2CP = (LoginSuccessS2CP) packet;
+
         this._uuid = loginSuccessS2CP.Uuid;
         Console.WriteLine(_uuid);
         _player.Username = loginSuccessS2CP.Name ?? _player.Username;
