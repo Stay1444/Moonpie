@@ -227,9 +227,9 @@ public class PacketMapper
 
     public IS2CPacket DeserializeS2CPacket(InByteBuffer buffer)
     {
-        var ProtocolVersion = buffer.Version;
-        int id = buffer.ReadVarInt();
-        var packetType = GetS2CPacket(id, ProtocolVersion,buffer.State);
+        var protocolVersion = buffer.Version;
+        var id = buffer.ReadVarInt();
+        var packetType = GetS2CPacket(id, protocolVersion, buffer.State);
 
         if (packetType is null) throw new Exception($"Could not find S2C packet with id {id}");
 
@@ -251,7 +251,6 @@ public class PacketMapper
         }
 
         if (packet is null) throw new Exception($"Could not create S2C packet with id {id}");
-
         packet.Read(buffer);
 
         if (LOG)
