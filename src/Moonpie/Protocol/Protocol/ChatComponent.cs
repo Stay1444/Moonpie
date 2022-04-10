@@ -161,7 +161,27 @@ public class ChatComponent
         }
         return false;
     }
-    
+
+    public override string ToString()
+    {
+        StringBuilder builder = new StringBuilder();
+        if (!string.IsNullOrEmpty(Text))
+        {
+            builder.Append(Text);
+        }
+        
+        if (Extra != null)
+        {
+            foreach (var component in Extra)
+            {
+                builder.Append(' ');
+                builder.Append(component.Text);
+            }
+        }
+        
+        return builder.ToString();
+    }
+
     public bool IsEmpty()
     {
         if (string.IsNullOrEmpty(Text)) return true;
