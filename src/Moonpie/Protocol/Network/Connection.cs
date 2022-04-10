@@ -130,13 +130,9 @@ public abstract class Connection : IDisposable
             }
             
             var buffer = new InByteBuffer(data, Version, State);
-            var packet =  _packetMapper.DeserializeS2CPacket(buffer);
-
-            if (packet is GenericS2CP {Type: PacketTypes.S2C.PLAY_CHUNK_DATA})
-            {
-                
-            }
             
+            var packet =  _packetMapper.DeserializeS2CPacket(buffer);
+        
             return packet;
 
         }catch (OperationCanceledException)
@@ -145,7 +141,6 @@ public abstract class Connection : IDisposable
         }
         catch(Exception e)
         {
-            Console.WriteLine(e);
             Log.Error(e, "Error reading packet S2C");
             await DisconnectAndCleanupAsync();
         }
@@ -202,6 +197,7 @@ public abstract class Connection : IDisposable
             if (read == 0)
             {
                 await DisconnectAndCleanupAsync();
+                Console.WriteLine("Disconnected from server (ReadDataChunk)");
                 return Array.Empty<byte>();
             }
             buffer.AddRange(_previousBytes);
@@ -254,6 +250,7 @@ public abstract class Connection : IDisposable
         _cts.Cancel();
         await _stream.DisposeAsync();
         _client.Dispose();
+        _previousBytes.Clear();
         IsConnected = false;
         try
         {
