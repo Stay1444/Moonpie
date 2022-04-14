@@ -235,6 +235,7 @@ public class TransportManager
                 _playerTransport.Connection.State = ProtocolState.Play;
 
                 _serverTransport = new Transport(server, HandleServerRead);
+                _serverTransport.OnDisconnected += HandleServerDisconnected;
                 _serverTransport.Begin();
             }
         }
@@ -243,6 +244,11 @@ public class TransportManager
             Log.Error(e, "Failed to connect to server");
             throw;
         }
+    }
+
+    private void HandleServerDisconnected(Transport obj)
+    {
+        Console.WriteLine("Server disconnected");
     }
 
     private async Task<ServerConnection?> CreateServerConnection(string host, int port)
