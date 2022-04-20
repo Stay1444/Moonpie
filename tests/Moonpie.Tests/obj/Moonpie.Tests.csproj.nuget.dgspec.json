@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/stay/work/Moonpie/tests/Moonpie.Tests/Moonpie.Tests.csproj": {}
+    "C:\\Users\\remin\\Documents\\GitHub\\Moonpie\\tests\\Moonpie.Tests\\Moonpie.Tests.csproj": {}
   },
   "projects": {
-    "/home/stay/work/Moonpie/src/Moonpie/Moonpie.csproj": {
+    "C:\\Users\\remin\\Documents\\GitHub\\Moonpie\\src\\Moonpie\\Moonpie.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/stay/work/Moonpie/src/Moonpie/Moonpie.csproj",
+        "projectUniqueName": "C:\\Users\\remin\\Documents\\GitHub\\Moonpie\\src\\Moonpie\\Moonpie.csproj",
         "projectName": "Moonpie",
-        "projectPath": "/home/stay/work/Moonpie/src/Moonpie/Moonpie.csproj",
-        "packagesPath": "/home/stay/.nuget/packages/",
-        "outputPath": "/home/stay/work/Moonpie/src/Moonpie/obj/",
+        "projectPath": "C:\\Users\\remin\\Documents\\GitHub\\Moonpie\\src\\Moonpie\\Moonpie.csproj",
+        "packagesPath": "C:\\Users\\remin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\remin\\Documents\\GitHub\\Moonpie\\src\\Moonpie\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/stay/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\remin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -86,21 +86,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/6.0.202/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\remin\\.dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/stay/work/Moonpie/tests/Moonpie.Tests/Moonpie.Tests.csproj": {
+    "C:\\Users\\remin\\Documents\\GitHub\\Moonpie\\tests\\Moonpie.Tests\\Moonpie.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/stay/work/Moonpie/tests/Moonpie.Tests/Moonpie.Tests.csproj",
+        "projectUniqueName": "C:\\Users\\remin\\Documents\\GitHub\\Moonpie\\tests\\Moonpie.Tests\\Moonpie.Tests.csproj",
         "projectName": "Moonpie.Tests",
-        "projectPath": "/home/stay/work/Moonpie/tests/Moonpie.Tests/Moonpie.Tests.csproj",
-        "packagesPath": "/home/stay/.nuget/packages/",
-        "outputPath": "/home/stay/work/Moonpie/tests/Moonpie.Tests/obj/",
+        "projectPath": "C:\\Users\\remin\\Documents\\GitHub\\Moonpie\\tests\\Moonpie.Tests\\Moonpie.Tests.csproj",
+        "packagesPath": "C:\\Users\\remin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\remin\\Documents\\GitHub\\Moonpie\\tests\\Moonpie.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/stay/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\remin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -112,8 +112,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "/home/stay/work/Moonpie/src/Moonpie/Moonpie.csproj": {
-                "projectPath": "/home/stay/work/Moonpie/src/Moonpie/Moonpie.csproj"
+              "C:\\Users\\remin\\Documents\\GitHub\\Moonpie\\src\\Moonpie\\Moonpie.csproj": {
+                "projectPath": "C:\\Users\\remin\\Documents\\GitHub\\Moonpie\\src\\Moonpie\\Moonpie.csproj"
               }
             }
           }
@@ -160,7 +160,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/6.0.202/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\remin\\.dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

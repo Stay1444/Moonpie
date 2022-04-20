@@ -64,6 +64,18 @@ public class PluginManager
         {
             Directory.CreateDirectory("plugins");
         }
+
+        /*
+         * Loading internal plugin:
+         */
+        
+        var internalPlugin = new InternalPlugin.InternalPlugin();
+        plugins.Add(internalPlugin);
+        internalPlugin.OnLoad();
+        
+        /*
+         * Start of modular plugins load:
+         */
         
         foreach (var file in Directory.GetFiles("plugins", "*.dll"))
         {
