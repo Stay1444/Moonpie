@@ -27,6 +27,7 @@
 using System.Threading.Tasks;
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Protocol;
+using Serilog;
 
 namespace Moonpie.Protocol.Packets.c2s.Play;
 
