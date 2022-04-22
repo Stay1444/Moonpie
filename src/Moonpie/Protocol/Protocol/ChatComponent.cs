@@ -40,6 +40,16 @@ public class ChatComponent
 
     [JsonPropertyName("color"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull), JsonConverter(typeof(ChatColorJsonConverter))]
     public ChatColor? Color { get; set; }
+    
+    [JsonPropertyName("bold"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public bool? Bold { get; set; }
+    
+    [JsonPropertyName("italic"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public bool? Italic { get; set; }
+    
+    [JsonPropertyName("strikethrough"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public bool? Strikethrough { get; set; }
+    
     public ChatComponent Add(ChatComponent component)
     {
         Extra ??= new List<ChatComponent>();
