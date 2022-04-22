@@ -28,6 +28,8 @@ using System.Text;
 using System.Text.Json;
 using Moonpie.Protocol.Protocol;
 using System.Linq;
+using Serilog;
+
 namespace Moonpie.Protocol.Network;
 
 public class InByteBuffer
@@ -163,22 +165,33 @@ public class InByteBuffer
     
     public int ReadVarInt()
     {
-        int value = 0;
-        int size = 0;
-        byte b;
-        do
+        try
         {
-            b = _bytes[_position++];
-            value |= (b & 0x7F) << size++ * 7;
-            if (size > 5)
+            int value = 0;
+            int size = 0;
+            byte b;
+            do
             {
-                throw new OverflowException("VarInt is too big");
-            }
-        } while ((b & 0x80) == 0x80);
-        return value;
+                b = _bytes[_position++];
+                value |= (b & 0x7F) << size++ * 7;
+                if (size > 5)
+                {
+                    throw new OverflowException("VarInt is too big");
+                }
+            } while ((b & 0x80) == 0x80);
+            return value;
+            
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "ERROR");
+            return 0;
+        }
+        
     }
     public string ReadString()
     {
+        
         int length = ReadVarInt();
         byte[] bytes = new byte[length];
         Array.Copy(_bytes, _position, bytes, 0, length);

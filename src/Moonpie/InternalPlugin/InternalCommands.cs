@@ -21,5 +21,13 @@ public class InternalCommands : BaseCommandModule
         await ctx.Player.SendMessageAsync(
             ChatComponent.Parse("&7You are on proxy: &3proxy01\n&7On the server: " + ctx.Player.Transport.ServerTransport!.Connection.RemoteEndPoint + "\n&7With coords: &9X &7-> &30 &9Y &7-> &30 &9Z &7-> &30", '&'));
     }
+
+
+
+    [Command("test_debug")]
+    public async Task TestDebug(CommandContext ctx)
+    {
+        await ctx.Player.SendAsPlayer("Ñ");
+    }
     
 }

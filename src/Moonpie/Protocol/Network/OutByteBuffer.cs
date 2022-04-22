@@ -135,8 +135,9 @@ public class OutByteBuffer
     }
     public void WriteString(string v)
     {
-        WriteVarInt(v.Length);
-        _bytes.AddRange(Encoding.UTF8.GetBytes(v));
+        var bytes = Encoding.UTF8.GetBytes(v);
+        WriteVarInt(bytes.Length);
+        _bytes.AddRange(bytes);
     }
     public void WriteBytes(byte[] v)
     {

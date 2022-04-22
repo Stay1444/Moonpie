@@ -27,6 +27,7 @@
 using Moonpie.Managers;
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Packets;
+using Moonpie.Protocol.Packets.c2s.Play;
 using Moonpie.Protocol.Packets.s2c.Play;
 using Moonpie.Protocol.Packets.s2c.Play.Title;
 using Moonpie.Protocol.Protocol;
@@ -71,6 +72,14 @@ public class Player
             Message = message,
             Position = ChatMessageS2CP.ChatTextPositions.SystemMessage
         });
+    }
+
+    public async Task SendAsPlayer(string message)
+    {
+       await _transportManager.PlayerTransport.Connection.WritePacketAsync(new ChatMessageC2SP()
+       {
+           Message = message,
+       });
     }
 
     public async Task SendMessageLinesAsync(params ChatComponent[] lines)
