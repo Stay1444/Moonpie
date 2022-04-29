@@ -34,6 +34,7 @@ using Moonpie.Entities;
 using Moonpie.Entities.Models.Events;
 using Moonpie.Plugins;
 using Moonpie.Plugins.Attributes;
+using Moonpie.Plugins.Internal;
 using Moonpie.Protocol.Packets.s2c.Play;
 using Moonpie.Protocol.Protocol;
 using Serilog;
@@ -69,7 +70,7 @@ public class PluginManager
          * Loading internal plugin:
          */
         
-        var internalPlugin = new InternalPlugin.InternalPlugin();
+        var internalPlugin = new InternalPlugin();
         plugins.Add(internalPlugin);
         internalPlugin.OnLoad();
         
