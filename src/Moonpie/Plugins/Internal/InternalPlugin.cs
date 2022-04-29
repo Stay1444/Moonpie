@@ -1,13 +1,12 @@
 ﻿using Moonpie.Plugins;
 using Serilog;
 
-namespace Moonpie.InternalPlugin;
+namespace Moonpie.Plugins.Internal;
 
 public class InternalPlugin : MoonpiePlugin
 {
     public override Task OnLoad()
     {
-        Log.Information("InternalPlugin loaded");
         RegisterCommands(new InternalCommands());
         return Task.CompletedTask;
     }

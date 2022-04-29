@@ -2,7 +2,7 @@
 using Moonpie.Plugins.Attributes;
 using Moonpie.Protocol.Protocol;
 
-namespace Moonpie.InternalPlugin;
+namespace Moonpie.Plugins.Internal;
 
 public class InternalCommands : BaseCommandModule
 {
