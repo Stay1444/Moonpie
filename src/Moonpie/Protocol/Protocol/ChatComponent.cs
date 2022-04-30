@@ -130,6 +130,31 @@ public class ChatComponent
         
         return result;
     }
+
+    public static ChatComponent From(params object[] values)
+    {
+        var result = new ChatComponent("");
+
+        ChatColor selectedColor = ChatColor.White;
+        foreach (var value in values)
+        {
+            if (value is ChatColor color)
+            {
+                selectedColor = color;
+                continue;
+            }
+
+            var text = value.ToString();
+            var iteration = new ChatComponent(text ?? "")
+            {
+                Color = selectedColor
+            };
+            result.Extra ??= new List<ChatComponent>();
+            result.Extra.Add(iteration);
+        }
+        
+        return result;
+    }
     
     public override bool Equals(object? obj)
     {
