@@ -71,6 +71,7 @@ public class MoonpieConfiguration
 
     public class MoonpieConfiguration_Others
     {
+        public bool DisableInternalCommands { get; set; } = false;
         public string[] DisabledCommands { get; set; } = new string[] { "example" };
     }
 

@@ -66,18 +66,13 @@ public class PluginManager
             Directory.CreateDirectory("plugins");
         }
 
-        /*
-         * Loading internal plugin:
-         */
-        
-        var internalPlugin = new InternalPlugin();
-        plugins.Add(internalPlugin);
-        internalPlugin.OnLoad();
-        
-        /*
-         * Start of modular plugins load:
-         */
-        
+        if (!_proxy.Configuration.Others.DisableInternalCommands)
+        {
+            var internalPlugin = new InternalPlugin();
+            plugins.Add(internalPlugin);
+            internalPlugin.OnLoad();
+        }
+
         foreach (var file in Directory.GetFiles("plugins", "*.dll"))
         {
             try
