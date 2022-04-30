@@ -73,5 +73,9 @@ public struct Vector3d
     {
         return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode();
     }
-    
+
+    public override string ToString()
+    {
+        return $"({X}, {Y}, {Z})";
+    }
 }
