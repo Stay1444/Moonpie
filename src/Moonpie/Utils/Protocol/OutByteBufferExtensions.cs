@@ -24,12 +24,11 @@
 // SOFTWARE.
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Protocol;
+using Moonpie.Utils.Math;
 
 namespace Moonpie.Utils.Protocol;
 
@@ -228,4 +227,12 @@ public static class OutByteBufferExtensions
             write(item);
         }
     }
+    
+    public static void WriteVector3d(this OutByteBuffer buffer, Vector3d vector)
+    {
+        buffer.WriteDouble(vector.X);
+        buffer.WriteDouble(vector.Y);
+        buffer.WriteDouble(vector.Z);
+    }
+    
 }

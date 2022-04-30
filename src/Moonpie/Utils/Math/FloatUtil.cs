@@ -50,4 +50,17 @@ public static class FloatUtil
     public static bool IsLess(this float a, float b) {
         return a < b;
     }
+    
+    public static bool IsEqual(this double a, double b, double tolerance = 0.001f) {
+        return System.Math.Abs(a - b) < tolerance;
+    }
+    
+    public static bool IsGreater(this double a, double b) {
+        return a > b;
+    }
+    
+    public static bool IsLess(this double a, double b) {
+        return a < b;
+    }
+    
 }

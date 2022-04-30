@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Protocol;
+using Moonpie.Utils.Math;
 
 namespace Moonpie.Utils.Protocol;
 
@@ -229,4 +230,10 @@ public static class InByteBufferExtensions
             Textures = textures
         };
     }
+    
+    public static Vector3d ReadVector3d(this InByteBuffer buffer)
+    {
+        return new Vector3d(buffer.ReadDouble(), buffer.ReadDouble(), buffer.ReadDouble());
+    }
+    
 }
