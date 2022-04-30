@@ -51,6 +51,11 @@ public class ChatColor : SmartEnum<ChatColor, string>
     public static readonly ChatColor LightPurple = new ChatColor("Pink", "light_purple",'d', Color.Plum);
     public static readonly ChatColor Yellow = new ChatColor("Yellow", "yellow",'e', Color.Yellow);
     public static readonly ChatColor White = new ChatColor("White", "white",'f', Color.White);
+    public static readonly ChatColor Obfuscated = new ChatColor("Obfuscated", "obfuscated",'k', Color.White);
+    public static readonly ChatColor Bold = new ChatColor("Bold", "bold",'l', Color.White);
+    public static readonly ChatColor Strikethrough = new ChatColor("Strikethrough", "strikethrough",'m', Color.White);
+    public static readonly ChatColor Underline = new ChatColor("Underline", "underline",'n', Color.White);
+    public static readonly ChatColor Italic = new ChatColor("Italic", "italic",'o', Color.White);
     public static readonly ChatColor Reset = new ChatColor("Reset", "reset",'r', Color.White);
     internal string Data { get; }
     public Color Color { get; }

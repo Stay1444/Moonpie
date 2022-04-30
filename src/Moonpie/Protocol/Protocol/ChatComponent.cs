@@ -50,6 +50,15 @@ public class ChatComponent
     [JsonPropertyName("strikethrough"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? Strikethrough { get; set; }
     
+    [JsonPropertyName("obfuscated"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public bool? Obfuscated { get; set; }
+    
+    [JsonPropertyName("underlined"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public bool? Underlined { get; set; }
+    
+    [JsonPropertyName("clickEvent"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ClickEvent? Event { get; set; }
+    
     public ChatComponent Add(ChatComponent component)
     {
         Extra ??= new List<ChatComponent>();
@@ -136,21 +145,49 @@ public class ChatComponent
         var result = new ChatComponent("");
 
         ChatColor selectedColor = ChatColor.White;
+        ChatComponent iteration = new ChatComponent("");
         foreach (var value in values)
         {
             if (value is ChatColor color)
             {
-                selectedColor = color;
+
+                if (color == ChatColor.Obfuscated)
+                {
+                    iteration.Obfuscated = true;
+                }else if (color == ChatColor.Bold)
+                {
+                    iteration.Bold = true;
+                }else if (color == ChatColor.Strikethrough)
+                {
+                    iteration.Strikethrough = true;
+                }else if (color == ChatColor.Underline)
+                {
+                    iteration.Underlined = true;
+                }else if (color == ChatColor.Italic)
+                {
+                    iteration.Italic = true;
+                }else if (color == ChatColor.Reset)
+                {
+                    iteration = new ChatComponent(iteration.Text ?? "");
+                }
+                else
+                {
+                    iteration.Color = color;
+                }
+                
                 continue;
             }
 
-            var text = value.ToString();
-            var iteration = new ChatComponent(text ?? "")
+            if (value is ClickEvent @event)
             {
-                Color = selectedColor
-            };
+                iteration.Event = @event;
+            }
+
+            var text = value.ToString();
+            iteration.Text = text;
             result.Extra ??= new List<ChatComponent>();
             result.Extra.Add(iteration);
+            iteration = new ChatComponent("");
         }
         
         return result;
@@ -324,5 +361,19 @@ public class ChatComponent
         
         [JsonPropertyName("extra"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string[]? Extra { get; set; }
+    }
+
+    public class ClickEvent
+    {
+        [JsonPropertyName("action")]
+        public string Action { get; set; }
+        [JsonPropertyName("value")]
+        public string Value { get; set; }
+        
+        public ClickEvent(string action, string value)
+        {
+            Action = action;
+            Value = value;
+        }
     }
 }
