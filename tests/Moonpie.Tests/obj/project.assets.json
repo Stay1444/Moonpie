@@ -2,22 +2,13 @@
   "version": 3,
   "targets": {
     "net6.0": {
-      "Ardalis.SmartEnum/2.0.1": {
+      "Ardalis.SmartEnum/2.1.0": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Ardalis.SmartEnum.dll": {}
         },
         "runtime": {
           "lib/netstandard2.0/Ardalis.SmartEnum.dll": {}
-        }
-      },
-      "CommandLineParser/2.8.0": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/CommandLine.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/CommandLine.dll": {}
         }
       },
       "coverlet.collector/3.1.0": {
@@ -490,15 +481,6 @@
         },
         "runtime": {
           "lib/net5.0/Serilog.Sinks.File.dll": {}
-        }
-      },
-      "SmartEnums/3.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/SmartEnums.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0/SmartEnums.dll": {}
         }
       },
       "System.Collections/4.0.11": {
@@ -1097,13 +1079,12 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "Ardalis.SmartEnum": "2.0.1",
-          "CommandLineParser": "2.8.0",
+          "Ardalis.SmartEnum": "2.1.0",
           "DotNetZip": "1.16.0",
+          "Moonpie.NBT": "1.0.0",
           "Serilog": "2.11.0-dev-01380",
           "Serilog.Sinks.Console": "4.0.2-dev-00890",
           "Serilog.Sinks.File": "5.0.1-dev-00947",
-          "SmartEnums": "3.0.0",
           "Tomlyn": "0.14.0"
         },
         "compile": {
@@ -1112,44 +1093,35 @@
         "runtime": {
           "bin/placeholder/Moonpie.dll": {}
         }
+      },
+      "Moonpie.NBT/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Ardalis.SmartEnum": "2.1.0"
+        },
+        "compile": {
+          "bin/placeholder/Moonpie.NBT.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Moonpie.NBT.dll": {}
+        }
       }
     }
   },
   "libraries": {
-    "Ardalis.SmartEnum/2.0.1": {
-      "sha512": "tukxECzQuEXRGUzalYGF90CrD0hqW+308J3IaDKUoIavF3npUGVGn2ptumDSMIdZWInjPTlk3eJrrZuAePQbYA==",
+    "Ardalis.SmartEnum/2.1.0": {
+      "sha512": "RY3BulzPKbcwGhsY/gYkn8sPQtbipF6XheDHbW/TSVUtyFJ/FKTnY2Tx+34WLL5+e/9UnSQcGd3dOqpdN1QzKA==",
       "type": "package",
-      "path": "ardalis.smartenum/2.0.1",
+      "path": "ardalis.smartenum/2.1.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "ardalis.smartenum.2.0.1.nupkg.sha512",
+        "ardalis.smartenum.2.1.0.nupkg.sha512",
         "ardalis.smartenum.nuspec",
         "icon.png",
         "lib/netstandard2.0/Ardalis.SmartEnum.dll",
         "lib/netstandard2.0/Ardalis.SmartEnum.xml"
-      ]
-    },
-    "CommandLineParser/2.8.0": {
-      "sha512": "eco2HlKQBY4Joz9odHigzGpVzv6pjsXnY5lziioMveQxr+i2Z7xYcIOMeZTgYiqnMtMAbXMXsVhrNfWO5vJS8Q==",
-      "type": "package",
-      "path": "commandlineparser/2.8.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "CommandLine20.png",
-        "License.md",
-        "README.md",
-        "commandlineparser.2.8.0.nupkg.sha512",
-        "commandlineparser.nuspec",
-        "lib/net40/CommandLine.dll",
-        "lib/net40/CommandLine.xml",
-        "lib/net45/CommandLine.dll",
-        "lib/net45/CommandLine.xml",
-        "lib/net461/CommandLine.dll",
-        "lib/net461/CommandLine.xml",
-        "lib/netstandard2.0/CommandLine.dll",
-        "lib/netstandard2.0/CommandLine.xml"
       ]
     },
     "coverlet.collector/3.1.0": {
@@ -2201,19 +2173,6 @@
         "lib/netstandard2.1/Serilog.Sinks.File.xml",
         "serilog.sinks.file.5.0.1-dev-00947.nupkg.sha512",
         "serilog.sinks.file.nuspec"
-      ]
-    },
-    "SmartEnums/3.0.0": {
-      "sha512": "lX+5Yx6A+qJ78jENqw4uSXzJRJShFE3JduE0oERc/394/81k7D1gJP8KVjXA8IsqkhsZra/4ygAulx5oWoiM4A==",
-      "type": "package",
-      "path": "smartenums/3.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net6.0/SmartEnums.dll",
-        "lib/net6.0/SmartEnums.xml",
-        "smartenums.3.0.0.nupkg.sha512",
-        "smartenums.nuspec"
       ]
     },
     "System.Collections/4.0.11": {
@@ -4495,6 +4454,11 @@
       "type": "project",
       "path": "../../src/Moonpie/Moonpie.csproj",
       "msbuildProject": "../../src/Moonpie/Moonpie.csproj"
+    },
+    "Moonpie.NBT/1.0.0": {
+      "type": "project",
+      "path": "../../src/Moonpie.NBT/Moonpie.NBT.csproj",
+      "msbuildProject": "../../src/Moonpie.NBT/Moonpie.NBT.csproj"
     }
   },
   "projectFileDependencyGroups": {

@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{C1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicPlugin", "examples\BasicPlugin\BasicPlugin.csproj", "{5FE38E18-8F4D-4D13-A77B-630788ADA1C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moonpie.NBT", "src\Moonpie.NBT\Moonpie.NBT.csproj", "{D2441ADB-AC68-4540-9C50-4242ECB6FB89}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{5FE38E18-8F4D-4D13-A77B-630788ADA1C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FE38E18-8F4D-4D13-A77B-630788ADA1C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FE38E18-8F4D-4D13-A77B-630788ADA1C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2441ADB-AC68-4540-9C50-4242ECB6FB89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2441ADB-AC68-4540-9C50-4242ECB6FB89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2441ADB-AC68-4540-9C50-4242ECB6FB89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2441ADB-AC68-4540-9C50-4242ECB6FB89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FC50F72D-CDDC-4FED-A549-B986EDD7ADDE} = {487C6B74-3571-4482-B2F4-9534B8118980}
