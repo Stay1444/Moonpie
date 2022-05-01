@@ -4,9 +4,15 @@ namespace Moonpie.NBT.Tags;
 
 public class NBTByte : NBTNamedBase, INBTSerializable
 {
-    public NBTByte() : base(TagType.Byte)
+    internal NBTByte() : base(TagType.Byte)
     {
         
+    }
+    
+    public NBTByte(string name, byte value) : base(TagType.Byte)
+    {
+        Name = name;
+        Value = value;
     }
 
     public byte Value { get; set; }
@@ -22,11 +28,12 @@ public class NBTByte : NBTNamedBase, INBTSerializable
         return index + sizeof(byte);
     }
 
-    public Span<byte> Serialize(bool named = true)
+    public void Serialize(Stream stream, bool named = true)
     {
-        throw new NotImplementedException();
+        if (named) WriteName(stream);
+        stream.WriteByte(Value);
     }
-    
+
     public override string ToString()
     {
         var sb = new StringBuilder();

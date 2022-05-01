@@ -4,7 +4,7 @@ namespace Moonpie.NBT.Tags;
 
 public class NBTEnd : NBTBase
 {
-    public NBTEnd() : base(TagType.End)
+    internal NBTEnd() : base(TagType.End)
     {
         
     }

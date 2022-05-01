@@ -1,7 +1,7 @@
 namespace Moonpie.NBT;
 
-public interface INBTSerializable
+internal interface INBTSerializable
 {
     public int Deserialize(Span<byte> data, int index, bool named = true);
-    public Span<byte> Serialize(bool named = true);
+    public void Serialize(Stream stream, bool named = true);
 }

@@ -5,10 +5,16 @@ namespace Moonpie.NBT.Tags;
 
 public class NBTCompound : NBTNamedBase, INBTSerializable
 {
-    public NBTCompound() : base(TagType.Compound)
+    internal NBTCompound() : base(TagType.Compound)
     {
         
     }
+
+    public NBTCompound(string name) : base(TagType.Compound)
+    {
+        this.Name = name;
+    }    
+    
     public List<NBTBase> Children { get; set; } = new List<NBTBase>();
     public int Deserialize(Span<byte> data, int index, bool named = true)
     {
@@ -29,13 +35,13 @@ public class NBTCompound : NBTNamedBase, INBTSerializable
             
             var instance = tagType.CreateInstance();
             
-            Children.Add(instance);
             
             if (instance is NBTEnd)
             {
                 break;
             }
-            
+            Children.Add(instance);
+
             if (instance is INBTSerializable serializable)
             {
                 index = serializable.Deserialize(data, index);
@@ -49,9 +55,23 @@ public class NBTCompound : NBTNamedBase, INBTSerializable
         return index;
     }
 
-    public Span<byte> Serialize(bool named = true)
+    public void Serialize(Stream stream, bool named = true)
     {
-        throw new NotImplementedException();
+        if (named) WriteName(stream);
+        
+        foreach (var child in Children)
+        {
+            stream.WriteByte((byte) child.Type.Value);
+            if (child is INBTSerializable serializable)
+            {
+                serializable.Serialize(stream);
+            }else
+            {
+                throw new UnsupportedTagTypeException(child.Type);
+            }
+        }
+        
+        stream.WriteByte((byte) TagType.End.Value);
     }
 
     public override string ToString()

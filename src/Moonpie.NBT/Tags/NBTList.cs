@@ -6,11 +6,20 @@ namespace Moonpie.NBT.Tags;
 
 public class NBTList : NBTNamedBase, INBTSerializable
 {
-    public NBTList() : base(TagType.List)
+    internal NBTList() : base(TagType.TagList)
     {
         
     }
-    public List<NBTBase> Values { get; set; } = new List<NBTBase>();
+    
+    public NBTList(string name, TagType type) : base(TagType.TagList)
+    {
+        this.Name = name;
+        this.ListType = type;
+    }
+    
+    public TagType ListType { get; private set; } = TagType.TagList;
+    private List<NBTBase> _values = new List<NBTBase>();
+    public IReadOnlyList<NBTBase> Values => _values;
     public int Deserialize(Span<byte> data, int index, bool named = true)
     {
         if (named)
@@ -18,16 +27,16 @@ public class NBTList : NBTNamedBase, INBTSerializable
             index = ReadName(data, index);
         }
         
-        var type = TagType.FromValue(data[index]);
+        ListType = TagType.FromValue(data[index]);
         index++;
         var length = data.Slice(index, sizeof(int)).AsIntBE();
         index += sizeof(int);
         
         for (var i = 0; i < length; i++)
         {
-            var value = type.CreateInstance();
+            var value = ListType.CreateInstance();
             
-            Values.Add(value);
+            _values.Add(value);
             
             if (value is INBTSerializable serializable)
             {
@@ -35,22 +44,37 @@ public class NBTList : NBTNamedBase, INBTSerializable
             }
             else
             {
-                throw new UnsupportedTagTypeException(type);
+                throw new UnsupportedTagTypeException(ListType);
             }
         }
         
         return index;
     }
 
-    public Span<byte> Serialize(bool named = true)
+    public void Serialize(Stream stream, bool named = true)
     {
-        throw new NotImplementedException();
+        if (named) WriteName(stream);
+        
+        stream.WriteByte((byte) ListType);
+        
+        stream.WriteIntBE(Values.Count);
+        
+        foreach (var value in Values)
+        {
+            if (value is INBTSerializable serializable)
+            {
+                serializable.Serialize(stream, false);
+            }else
+            {
+                throw new UnsupportedTagTypeException(value.Type);
+            }
+        } 
     }
-    
+
     public override string ToString()
     {
         var result = new StringBuilder();
-        result.Append(TagType.List.Name);
+        result.Append(TagType.TagList.Name);
         if (this.Name is null)
         {
             result.Append("(None): ");
@@ -91,7 +115,52 @@ public class NBTList : NBTNamedBase, INBTSerializable
     
     public NBTBase this[int index]
     {
-        get => Values[index];
-        set => Values[index] = value;
+        get => _values[index];
+        set => _values[index] = value;
+    }
+    
+    public void Add(NBTBase value)
+    {
+        if (value.Type != ListType)
+        {
+            throw new ArgumentException($"Cannot add {value.Type} to {ListType} list");
+        }
+        
+        _values.Add(value);
+    }
+    
+    public void Remove(NBTBase value)
+    {
+        _values.Remove(value);
+    }
+    
+    public void Clear()
+    {
+        _values.Clear();
+    }
+    
+    public bool Contains(NBTBase value)
+    {
+        return _values.Contains(value);
+    }
+    
+    public int IndexOf(NBTBase value)
+    {
+        return _values.IndexOf(value);
+    }
+    
+    public void Insert(int index, NBTBase value)
+    {
+        _values.Insert(index, value);
+    }
+    
+    public void RemoveAt(int index)
+    {
+        _values.RemoveAt(index);
+    }
+    
+    public IEnumerator<NBTBase> GetEnumerator()
+    {
+        return _values.GetEnumerator();
     }
 }

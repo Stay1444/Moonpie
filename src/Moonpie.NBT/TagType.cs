@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Ardalis.SmartEnum;
 using Moonpie.NBT.Tags;
 
@@ -14,7 +15,7 @@ public class TagType : SmartEnum<TagType>
     public static readonly TagType Double = new TagType("TAG_Double", 6, typeof(NBTDouble));
     public static readonly TagType ByteArray = new TagType("TAG_ByteArray", 7, typeof(NBTByteArray));
     public static readonly TagType String = new TagType("TAG_String", 8, typeof(NBTString));
-    public new static readonly TagType List = new TagType("TAG_List", 9, typeof(NBTList));
+    public static readonly TagType TagList = new TagType("TAG_List", 9, typeof(NBTList));
     public static readonly TagType Compound = new TagType("TAG_Compound", 10, typeof(NBTCompound));
     public static readonly TagType IntArray = new TagType("TAG_IntArray", 11, typeof(NBTIntArray));
     public static readonly TagType LongArray = new TagType("TAG_LongArray", 12, typeof(NBTLongArray));

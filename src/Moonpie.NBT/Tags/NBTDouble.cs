@@ -5,9 +5,15 @@ namespace Moonpie.NBT.Tags;
 
 public class NBTDouble : NBTNamedBase, INBTSerializable
 {
-    public NBTDouble() : base(TagType.Double)
+    internal NBTDouble() : base(TagType.Double)
     {
         
+    }
+    
+    public NBTDouble(string name, double value) : base(TagType.Double)
+    {
+        Name = name;
+        Value = value;
     }
     
     public double Value { get; set; }
@@ -23,11 +29,13 @@ public class NBTDouble : NBTNamedBase, INBTSerializable
         return index + sizeof(double);
     }
 
-    public Span<byte> Serialize(bool named = true)
+    public void Serialize(Stream stream, bool named = true)
     {
-        throw new NotImplementedException();
+        if (named) WriteName(stream);
+        stream.WriteDoubleBE(Value);
     }
-    
+
+
     public override string ToString()
     {
         var sb = new StringBuilder();

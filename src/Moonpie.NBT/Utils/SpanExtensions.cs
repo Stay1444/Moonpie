@@ -2,7 +2,7 @@ using System.Text;
 
 namespace Moonpie.NBT.Utils;
 
-public static class SpanExtensions
+internal static class SpanExtensions
 {
     public static short AsShortBE(this Span<byte> span)
     {

@@ -9,7 +9,14 @@ public static class NBTSerializer
     private static byte[] ReadFully(Stream input)
     {
         using MemoryStream ms = new MemoryStream();
-        input.CopyTo(ms);
+        while (true)
+        {
+            byte[] buffer = new byte[1024];
+            int read = input.Read(buffer, 0, buffer.Length);
+            if (read <= 0)
+                break;
+            ms.Write(buffer, 0, read);
+        }
         return ms.ToArray();
     }
     
@@ -26,7 +33,7 @@ public static class NBTSerializer
         {
             return ReadCompound(data);
 
-        }else if (type == TagType.List)
+        }else if (type == TagType.TagList)
         {
             return ReadList(data);
         }
@@ -38,7 +45,31 @@ public static class NBTSerializer
 
     public static byte[] Serialize(NBTBase tag, NBTCompression compression = NBTCompression.None)
     {
-        throw new NotImplementedException();
+        using var stream = new MemoryStream();
+
+        if (tag is INBTSerializable serializable)
+        {
+            stream.WriteByte((byte)tag.Type.Value);
+            serializable.Serialize(stream);
+        }
+        else
+        {
+            throw new UnsupportedTagTypeException(tag.Type);
+        }
+
+        if (compression == NBTCompression.GZip)
+        {
+            var output = new MemoryStream();
+            using var gzip = new GZipStream(output, CompressionMode.Compress);
+            stream.WriteTo(gzip);
+            gzip.Flush();
+            gzip.Close();
+            
+            return output.ToArray();
+        }else
+        {
+            return stream.ToArray();
+        }
     }
     
     private static NBTCompound ReadCompound(Span<byte> data)
