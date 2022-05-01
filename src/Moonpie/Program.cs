@@ -30,8 +30,6 @@ using Moonpie.NBT;
 using Moonpie.NBT.Tags;
 using Serilog;
 using Tomlyn;
-var result = NBTSerializer.Deserialize(File.ReadAllBytes("/home/stay/Desktop/bigtest.nbt"), NBTCompression.GZip);
-return;
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()

@@ -71,7 +71,7 @@ public static class NBTSerializer
             return stream.ToArray();
         }
     }
-    
+
     private static NBTCompound ReadCompound(Span<byte> data)
     {
         var compound = new NBTCompound();
