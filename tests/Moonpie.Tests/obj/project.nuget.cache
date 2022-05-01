@@ -1,11 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "AJxvAtmNfbAPWR2CD7qT67yqcGydqLV3OtTQ8Gt/WcGHHhlIlQM2FdLXGaFmhtOigvBBYWTPJl0uM3hXHTi+nw==",
+  "dgSpecHash": "z9BbMZuyma2yB8hNgxNptp4PZFfcdYIOR4RMn55KKMb+8y/ZKcrHKSZ9kfRDXcyWtof+MM/JZW4LRQuYhSCmkg==",
   "success": true,
   "projectFilePath": "/home/stay/work/Moonpie/tests/Moonpie.Tests/Moonpie.Tests.csproj",
   "expectedPackageFiles": [
-    "/home/stay/.nuget/packages/ardalis.smartenum/2.0.1/ardalis.smartenum.2.0.1.nupkg.sha512",
-    "/home/stay/.nuget/packages/commandlineparser/2.8.0/commandlineparser.2.8.0.nupkg.sha512",
+    "/home/stay/.nuget/packages/ardalis.smartenum/2.1.0/ardalis.smartenum.2.1.0.nupkg.sha512",
     "/home/stay/.nuget/packages/coverlet.collector/3.1.0/coverlet.collector.3.1.0.nupkg.sha512",
     "/home/stay/.nuget/packages/dotnetzip/1.16.0/dotnetzip.1.16.0.nupkg.sha512",
     "/home/stay/.nuget/packages/microsoft.codecoverage/16.11.0/microsoft.codecoverage.16.11.0.nupkg.sha512",
@@ -24,7 +23,6 @@
     "/home/stay/.nuget/packages/serilog/2.11.0-dev-01380/serilog.2.11.0-dev-01380.nupkg.sha512",
     "/home/stay/.nuget/packages/serilog.sinks.console/4.0.2-dev-00890/serilog.sinks.console.4.0.2-dev-00890.nupkg.sha512",
     "/home/stay/.nuget/packages/serilog.sinks.file/5.0.1-dev-00947/serilog.sinks.file.5.0.1-dev-00947.nupkg.sha512",
-    "/home/stay/.nuget/packages/smartenums/3.0.0/smartenums.3.0.0.nupkg.sha512",
     "/home/stay/.nuget/packages/system.collections/4.0.11/system.collections.4.0.11.nupkg.sha512",
     "/home/stay/.nuget/packages/system.diagnostics.debug/4.0.11/system.diagnostics.debug.4.0.11.nupkg.sha512",
     "/home/stay/.nuget/packages/system.diagnostics.tools/4.0.1/system.diagnostics.tools.4.0.1.nupkg.sha512",

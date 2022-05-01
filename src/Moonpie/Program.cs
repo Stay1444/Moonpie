@@ -26,9 +26,14 @@
 
 global using System;
 using Moonpie.Entities;
+using Moonpie.NBT;
+using Moonpie.NBT.Tags;
 using Serilog;
 using Tomlyn;
-
+var result = NBTSerializer.Deserialize(File.ReadAllBytes("/home/stay/Desktop/bigtest.nbt"), NBTCompression.GZip);
+Console.WriteLine(result);
+File.WriteAllBytes("/home/stay/Desktop/bigtest-copy.nbt", NBTSerializer.Serialize(result, NBTCompression.GZip));
+return;
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.Console()
