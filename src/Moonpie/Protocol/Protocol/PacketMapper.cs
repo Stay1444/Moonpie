@@ -24,9 +24,6 @@
 // SOFTWARE.
 #endregion
 
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using Moonpie.Protocol.Network;
@@ -39,52 +36,51 @@ using Moonpie.Protocol.Packets.s2c;
 using Moonpie.Protocol.Packets.s2c.Login;
 using Moonpie.Protocol.Packets.s2c.Status;
 using Moonpie.Protocol.Protocol.Mapping;
-using Serilog;
 
 namespace Moonpie.Protocol.Protocol;
 
 public class PacketMapper
 {
     
-    private const bool LOG = false;
+    private const bool Log = false;
     public PacketMapper()
     {
         MapIfNecessary();
     }
 
-    public int? GetPacketId(PacketTypes.C2S packet, ProtocolVersion ProtocolVersion)
+    public int? GetPacketId(PacketTypes.C2S packet, ProtocolVersion protocolVersion)
     {
-        if (LOG) Log.Debug("GetPacketId: {0}", packet.ToString());
+        if (Log) Serilog.Log.Debug("GetPacketId: {0}", packet.ToString());
         // check if static mappings contains that packet. Static mappings usually contain packets from STATUS and LOGIN since this packets do not change.
         if (_c2sStaticMappings.ContainsKey(packet))
         {
             return _c2sStaticMappings[packet].Value.Value;
         }
         
-        var vp = _mappings![ProtocolVersion];
+        var vp = _mappings![protocolVersion];
 
         if (vp.MapVersion is not null) vp = _mappings[vp.MapVersion];
 
         return vp.C2S!.IndexOf(packet);
     }
 
-    public int? GetPacketId(PacketTypes.S2C packet, ProtocolVersion ProtocolVersion)
+    public int? GetPacketId(PacketTypes.S2C packet, ProtocolVersion protocolVersion)
     {
-        if (LOG) Log.Debug("GetPacketId: {0}", packet.ToString());
+        if (Log) Serilog.Log.Debug("GetPacketId: {0}", packet.ToString());
         // check if static mappings contains that packet. Static mappings usually contain packets from STATUS and LOGIN since this packets do not change.
         if (_s2cStaticMappings.ContainsKey(packet))
         {
             return _s2cStaticMappings[packet].Value.Value;
         }
         
-        var vp = _mappings![ProtocolVersion];
+        var vp = _mappings![protocolVersion];
 
         if (vp.MapVersion is not null) vp = _mappings[vp.MapVersion];
 
         return vp.S2C!.IndexOf(packet);
     }
 
-    public PacketTypes.C2S? GetC2SPacket(int id, ProtocolVersion ProtocolVersion, ProtocolState state)
+    public PacketTypes.C2S? GetC2SPacket(int id, ProtocolVersion protocolVersion, ProtocolState state)
     {
 
         if (state != ProtocolState.Play)
@@ -92,21 +88,21 @@ public class PacketMapper
             return _c2sStaticMappings.FirstOrDefault(x => x.Value.Value.Value == id && x.Value.Key == state).Key;
         }
         
-        var vp = _mappings![ProtocolVersion];
+        var vp = _mappings![protocolVersion];
 
         if (vp.MapVersion is not null) vp = _mappings[vp.MapVersion];
 
         return vp.C2S!.ElementAtOrDefault(id);
     }
 
-    public PacketTypes.S2C? GetS2CPacket(int id, ProtocolVersion ProtocolVersion, ProtocolState state)
+    public PacketTypes.S2C? GetS2CPacket(int id, ProtocolVersion protocolVersion, ProtocolState state)
     {
         if (state != ProtocolState.Play)
         {
             return _s2cStaticMappings.FirstOrDefault(x => x.Value.Value.Value == id && x.Value.Key == state ).Key;
         }
         
-        var vp = _mappings![ProtocolVersion];
+        var vp = _mappings![protocolVersion];
 
         if (vp.MapVersion is not null) vp = _mappings[vp.MapVersion];
 
@@ -184,9 +180,9 @@ public class PacketMapper
     
     public IC2SPacket DeserializeC2SPacket(InByteBuffer buffer)
     {
-        var ProtocolVersion = buffer.Version;
+        var protocolVersion = buffer.Version;
         int id = buffer.ReadVarInt();
-        var packetType = GetC2SPacket(id, ProtocolVersion, buffer.State);
+        var packetType = GetC2SPacket(id, protocolVersion, buffer.State);
 
         if (packetType is null) throw new Exception($"Could not find C2S packet with id {id}");
  
@@ -211,15 +207,15 @@ public class PacketMapper
         if (packet is null) throw new Exception($"Could not create C2S packet with id {id}");
 
         packet.Read(buffer);
-        if (LOG)
+        if (Log)
         {
             if (packet is GenericC2SP generic)
             {
-                Log.Debug("Deserialized C2S packet: {0}", generic.Type);
+                Serilog.Log.Debug("Deserialized C2S packet: {0}", generic.Type);
             }
             else
             {
-                Log.Debug("Deserialized C2S packet: {0}", packet.GetType().Name);
+                Serilog.Log.Debug("Deserialized C2S packet: {0}", packet.GetType().Name);
             }
         }
         return packet;
@@ -253,15 +249,15 @@ public class PacketMapper
         if (packet is null) throw new Exception($"Could not create S2C packet with id {id}");
         packet.Read(buffer);
 
-        if (LOG)
+        if (Log)
         {
             if (packet is GenericS2CP generic)
             {
-                Log.Debug("Deserialized S2C packet: {0}", generic.Type);
+                Serilog.Log.Debug("Deserialized S2C packet: {0}", generic.Type);
             }
             else
             {
-                Log.Debug("Deserialized S2C packet: {0}", packet.GetType().Name);
+                Serilog.Log.Debug("Deserialized S2C packet: {0}", packet.GetType().Name);
             }
         }
         return packet;
