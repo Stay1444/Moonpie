@@ -24,16 +24,10 @@
 // SOFTWARE.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Moonpie.Entities;
 using Moonpie.Entities.Models.Events;
 using Moonpie.Plugins;
-using Moonpie.Plugins.Attributes;
 using Moonpie.Plugins.Internal;
 using Moonpie.Protocol.Packets.s2c.Play;
 using Moonpie.Protocol.Protocol;
@@ -43,41 +37,47 @@ namespace Moonpie.Managers;
 
 public class PluginManager
 {
-
-    public PluginManager(Moonpie proxy)
+    public IReadOnlyList<MoonpiePlugin> Plugins => _plugins!;
+    
+    private List<MoonpiePlugin>? _plugins;
+    private readonly Moonpie _proxy;
+    
+    private const string PluginDirectory = "plugins";
+    
+    internal PluginManager(Moonpie proxy)
     {
         _proxy = proxy;
     }
-    private List<MoonpiePlugin>? plugins;
-    public IReadOnlyList<MoonpiePlugin> Plugins => plugins!;
-    private Moonpie _proxy;
 
     internal void Load()
     {
-        if (plugins != null)
+        if (_plugins != null)
         {
             throw new Exception("PluginManager already loaded");            
         }
         
-        plugins = new List<MoonpiePlugin>();
+        _plugins = new List<MoonpiePlugin>();
         
-        if (!Directory.Exists("plugins"))
+        if (!Directory.Exists(PluginDirectory))
         {
-            Directory.CreateDirectory("plugins");
+            Directory.CreateDirectory(PluginDirectory);
         }
 
         if (!_proxy.Configuration.Others.DisableInternalCommands)
         {
             var internalPlugin = new InternalPlugin();
-            plugins.Add(internalPlugin);
+            _plugins.Add(internalPlugin);
             internalPlugin.OnLoad();
         }
 
-        foreach (var file in Directory.GetFiles("plugins", "*.dll"))
+        // Loop through all files ending in .dll in PluginsDirectory
+        foreach (var file in Directory.GetFiles(PluginDirectory, "*.dll"))
         {
             try
             {
                 var assembly = Assembly.LoadFrom(file);
+                
+                // Loop through each type in the assembly until we find one that is a subclass of MoonpiePlugin
                 foreach (var type in assembly.GetTypes())
                 {
                     if (type.IsSubclassOf(typeof(MoonpiePlugin)))
@@ -85,11 +85,17 @@ public class PluginManager
                         try
                         {
                             Log.Information("Loading plugin {name}", type.Assembly.GetName().Name);
-                            var plugin = (MoonpiePlugin?) Activator.CreateInstance(type);
+                            
+                            var plugin = (MoonpiePlugin?) Activator.CreateInstance(type); // Create an instance of the plugin. ToDo: Service provider?
+
                             if (plugin is null) continue;
-                            plugins.Add(plugin);
+                            
+                            _plugins.Add(plugin);
+                            
                             plugin.Proxy = _proxy;
+                            
                             plugin.OnLoad();
+                            
                         }catch(Exception e)
                         {
                             Log.Error(e, "Failed to load plugin {name}", type.Assembly.GetName().Name);
@@ -104,24 +110,33 @@ public class PluginManager
         }
     }
     
+    //ToDo: Optimize this, currently its using reflection every time an event is fired. I don't think this is a big deal, but it would be nice to optimize this.
     internal async Task<T?> TriggerEventAsync<T>(T args) where T : MoonpieEventArgs
     {
-        foreach (var plugin in plugins!)
+        // Loop through all the plugins loaded
+        foreach (var plugin in _plugins!)
         {
-
+            // Loop through the plugin event listeners
             foreach (var listener in plugin.Listeners)
             {
+                // Get all the methods 
                 var methods = listener.GetType().GetMethods();
+                
+                // Loop through all the methods
                 foreach (var method in methods)
                 {
-                    var baseDefinition = method.GetBaseDefinition();
-                    if (baseDefinition.DeclaringType != typeof(BaseEventListener)) continue;
-                    if (!method.GetParameters().Any()) continue;
-                    if (method.GetParameters().First().ParameterType == args.GetType())
+                    var baseDefinition = method.GetBaseDefinition(); // Get the base definition of the method
+                    
+                    if (baseDefinition.DeclaringType != typeof(BaseEventListener)) continue; // If the method is not a listener, skip it
+                    
+                    if (!method.GetParameters().Any()) continue; // If the method has no parameters, skip it
+                    
+                    if (method.GetParameters().First().ParameterType == args.GetType()) // If the method's first parameter is the same type as the event args, execute it
                     {
                         try
                         {
                             await ((Task?) method.Invoke(listener, new object[] {args}))!;
+                            
                             if (args.Handled) return args;
                         }
                         catch (Exception e)
@@ -137,17 +152,19 @@ public class PluginManager
 
     internal async Task<bool> TriggerCommandAsync(Player player, string text)
     {
-        string commandName = text.Split(' ')[0];
-        string[] args = text.Split(' ').Skip(1).ToArray();
-        commandName = commandName.Substring(1);
+        string commandName = text.Split(' ')[0]; // Get the command name
         
-        if (_proxy.Configuration.Others.DisabledCommands.Contains(commandName))
+        string[] args = text.Split(' ').Skip(1).ToArray(); // Get the arguments (skip the command name)
+        
+        commandName = commandName.Substring(1); // Remove the slash from the command name
+        
+        if (_proxy.Configuration.Others.DisabledCommands.Contains(commandName)) 
         {
             await player.SendMessageAsync("Unknown command. Type \"/help\" for help.");
             return true;
         }
         
-        foreach (var plugin in plugins!)
+        foreach (var plugin in _plugins!)
         {
             foreach (var commandInfo in plugin.Commands)
             {
@@ -163,7 +180,7 @@ public class PluginManager
 
     internal bool DoesCommandExist(string commandName)
     {
-        foreach (var plugin in plugins!)
+        foreach (var plugin in _plugins!)
         {
             foreach (var commandInfo in plugin.Commands)
             {
@@ -182,6 +199,7 @@ public class PluginManager
         {
             var context = new CommandContext(command, player, _proxy,
                 Plugins.FirstOrDefault(p => p.Commands.Any(c => c.GetType() == command.Method.GetType()))!);
+            
             var methodParameters = command.Method.GetParameters();
             
             object[] parameters = new object[methodParameters.Length];
@@ -214,9 +232,10 @@ public class PluginManager
         }
     }
 
+    //ToDo: This is a fucking mess and needs to be cleaned up
     internal Dictionary<string, KeyValuePair<DeclareCommandsS2CP.CommandNode, List<DeclareCommandsS2CP.CommandNode>?>> RegisterCommands(Player player)
     {
-        if (plugins is null) return new Dictionary<string, KeyValuePair<DeclareCommandsS2CP.CommandNode, List<DeclareCommandsS2CP.CommandNode>?>>();
+        if (_plugins is null) return new Dictionary<string, KeyValuePair<DeclareCommandsS2CP.CommandNode, List<DeclareCommandsS2CP.CommandNode>?>>();
         var list = new Dictionary<string, KeyValuePair<DeclareCommandsS2CP.CommandNode, List<DeclareCommandsS2CP.CommandNode>?>>();
 
         bool AreNextParametersRequired(ParameterInfo[] parameters, int startIndex)
@@ -229,7 +248,7 @@ public class PluginManager
             return true;
         }
         
-        foreach (var plugin in plugins)
+        foreach (var plugin in _plugins)
         {
             foreach (var commandInfo in plugin.Commands)
             {
@@ -293,9 +312,10 @@ public class PluginManager
     
     public T? GetInstance<T>() where T : MoonpiePlugin
     {
-        return plugins!.FirstOrDefault(x => x is T) as T;
+        return _plugins!.FirstOrDefault(x => x is T) as T;
     }
 
+    //ToDo: Same as the RegisterCommands method. This is a temporary solution.
     internal Task<bool> HandleAutoCompletionAsync(Player player, int transactionId, string text)
     {
         string[] split = text.Substring(1).Split(' ');
@@ -308,7 +328,7 @@ public class PluginManager
     
     private CommandInfo? GetCommandInfo(string commandName)
     {
-        foreach (var plugin in plugins!)
+        foreach (var plugin in _plugins!)
         {
             foreach (var commandInfo in plugin.Commands)
             {
@@ -321,7 +341,7 @@ public class PluginManager
 
     private MoonpiePlugin? GetPlugin(CommandInfo info)
     {
-        foreach (var plugin in plugins!)
+        foreach (var plugin in _plugins!)
         {
             foreach (var commandInfo in plugin.Commands)
             {
@@ -332,6 +352,7 @@ public class PluginManager
         return null;
     }
 
+    //ToDo: Wow. This is a temporary solution.
     private async Task RunAutoCompletionAsync(Player player, int transactionId, string command, string[] ogargs)
     {
         if (ogargs.Any() && ogargs[0] == "")
