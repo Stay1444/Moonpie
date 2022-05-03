@@ -26,7 +26,7 @@
 
 namespace Moonpie.Protocol.Protocol;
 
-public class PacketTypes
+public static class PacketTypes
 {
     public enum C2S
     {
