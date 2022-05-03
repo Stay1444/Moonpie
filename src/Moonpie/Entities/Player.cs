@@ -38,20 +38,19 @@ namespace Moonpie.Entities;
 public class Player
 {
     public Moonpie Proxy { get; init; }
-    private readonly TransportManager _transportManager;
-    public ProtocolVersion Version => _transportManager.Version;
-    
-    
     public event EventHandler? Disconnected
     {
         add => _transportManager.PlayerDisconnected += value;
 
         remove => _transportManager.PlayerDisconnected -= value;
     }
-    
-    public TransportManager Transport => _transportManager;
     public BossbarManager BossbarManager { get; }
     public string Username { get; internal set; }
+    public ProtocolVersion Version => _transportManager.Version;
+    public TransportManager Transport => _transportManager;
+
+    
+    private readonly TransportManager _transportManager;
     internal Player(Moonpie proxy, PlayerConnection connection, string username)
     {
         this.Proxy = proxy;
