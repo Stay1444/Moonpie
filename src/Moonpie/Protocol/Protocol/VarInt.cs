@@ -24,8 +24,6 @@
 // SOFTWARE.
 #endregion
 
-using System.Collections.Generic;
-
 namespace Moonpie.Protocol.Protocol;
 
 public struct VarInt
@@ -106,7 +104,7 @@ public struct VarInt
 
     public static VarInt Read(byte[] bytes, int offset = 0)
     {
-        FromBytes(bytes, out var size, out var value, offset);
+        FromBytes(bytes, out _, out var value, offset);
         return new VarInt(value);
     }
 }
