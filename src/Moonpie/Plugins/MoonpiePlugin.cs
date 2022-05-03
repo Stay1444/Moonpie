@@ -24,10 +24,7 @@
 // SOFTWARE.
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Moonpie.Plugins.Attributes;
 using Serilog;
 
@@ -35,7 +32,8 @@ namespace Moonpie.Plugins;
 
 public abstract class MoonpiePlugin
 {
-    public Moonpie Proxy { get; internal set; }
+    public Moonpie Proxy { get; internal set; } = null!; // This is set automatically when the plugin is loaded. WARNING: This is not ready in the constructor.
+    
     private List<BaseEventListener> _listeners = new List<BaseEventListener>();
     public IReadOnlyCollection<BaseEventListener> Listeners => _listeners;
     
