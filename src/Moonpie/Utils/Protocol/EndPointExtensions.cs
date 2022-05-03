@@ -24,10 +24,7 @@
 // SOFTWARE.
 #endregion
 
-using System.Net;
-
 namespace Moonpie.Utils.Protocol;
-
 public static class EndPointExtensions
 {
     public static int GetPort(this EndPoint endPoint)
