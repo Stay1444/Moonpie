@@ -27,7 +27,7 @@
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Protocol;
 using Moonpie.Utils.Protocol;
-using Moonpie.Utils.Protocol;
+
 namespace Moonpie.Protocol.Packets.s2c.Play;
 
 [PacketType(PacketTypes.S2C.PlayAutoCompletions)]
@@ -40,7 +40,7 @@ public class TabCompleteS2CP : IS2CPacket
     public record Match
     {
         public string MatchText { get; set; } = "";
-        public bool HasTooltip { get; set; } = false;
+        public bool HasTooltip { get; set; }
         public ChatComponent Tooltip { get; set; } = ChatComponent.Empty;
     }
     
