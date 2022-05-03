@@ -24,7 +24,6 @@
 // SOFTWARE.
 #endregion
 
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Moonpie.Protocol.Protocol;
@@ -40,9 +39,9 @@ public class ServerStatus
         }
         
         [JsonPropertyName("max")]
-        public int Max { get; set; } = 0;
+        public int Max { get; set; }
         [JsonPropertyName("online")]
-        public int Online { get; set; } = 0;
+        public int Online { get; set; }
 
         [JsonPropertyName("sample"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public List<ServerStatusPlayersSample>? Sample { get; set; } = null;
@@ -51,9 +50,9 @@ public class ServerStatus
     public class ServerStatusVersion
     {
         [JsonPropertyName("name")]
-        public string Name { get; set; } = "";
+        public string Name { get; set; } = String.Empty;
         [JsonPropertyName("protocol")]
-        public int Protocol { get; set; } = 0;
+        public int Protocol { get; set; }
     }
     
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -63,9 +62,9 @@ public class ServerStatus
     public ChatComponent Description { get; set; } = ChatComponent.Empty;
     
     [JsonPropertyName("players")]
-    public ServerStatusPlayers Players { get; set; } = new ServerStatusPlayers();
+    public ServerStatusPlayers Players { get; set; } = new ();
     
     [JsonPropertyName("version")]
-    public ServerStatusVersion Version { get; set; } = new ServerStatusVersion();
+    public ServerStatusVersion Version { get; set; } = new ();
     
 }
