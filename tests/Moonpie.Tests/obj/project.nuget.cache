@@ -1,11 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "z9BbMZuyma2yB8hNgxNptp4PZFfcdYIOR4RMn55KKMb+8y/ZKcrHKSZ9kfRDXcyWtof+MM/JZW4LRQuYhSCmkg==",
+  "dgSpecHash": "+HH6MuWEIbaLRwB+3RexfMmsgrYD3CvxDkChf1/KNLPRtLEr4/2nZbmk5ep5ht89nFdtNBb9NxuRESEvuia+ZQ==",
   "success": true,
   "projectFilePath": "/home/stay/work/Moonpie/tests/Moonpie.Tests/Moonpie.Tests.csproj",
   "expectedPackageFiles": [
     "/home/stay/.nuget/packages/ardalis.smartenum/2.1.0/ardalis.smartenum.2.1.0.nupkg.sha512",
-    "/home/stay/.nuget/packages/coverlet.collector/3.1.0/coverlet.collector.3.1.0.nupkg.sha512",
     "/home/stay/.nuget/packages/dotnetzip/1.16.0/dotnetzip.1.16.0.nupkg.sha512",
     "/home/stay/.nuget/packages/microsoft.codecoverage/16.11.0/microsoft.codecoverage.16.11.0.nupkg.sha512",
     "/home/stay/.nuget/packages/microsoft.csharp/4.0.1/microsoft.csharp.4.0.1.nupkg.sha512",

@@ -193,10 +193,6 @@
             "NUnit3TestAdapter": {
               "target": "Package",
               "version": "[4.0.0, )"
-            },
-            "coverlet.collector": {
-              "target": "Package",
-              "version": "[3.1.0, )"
             }
           },
           "imports": [
