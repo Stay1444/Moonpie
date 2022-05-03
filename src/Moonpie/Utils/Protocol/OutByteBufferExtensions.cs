@@ -24,7 +24,6 @@
 // SOFTWARE.
 #endregion
 
-using System.Text;
 using System.Text.Json;
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Protocol;
