@@ -276,32 +276,32 @@ public class PacketMapper
     private static Dictionary<PacketTypes.C2S, KeyValuePair<ProtocolState,KeyValuePair<Type, int>>> _c2sStaticMappings = new()
     {
         {
-            PacketTypes.C2S.HANDSHAKING_HANDSHAKE,
+            PacketTypes.C2S.HandshakingHandshake,
             new ( ProtocolState.Handshaking,
             new (typeof(HandshakeC2SP), 0))
         },
         {
-            PacketTypes.C2S.STATUS_REQUEST,
+            PacketTypes.C2S.StatusRequest,
             new ( ProtocolState.Status,
             new (typeof(StatusRequestC2SP), 0))
         },
         {
-            PacketTypes.C2S.STATUS_PING,
+            PacketTypes.C2S.StatusPing,
             new ( ProtocolState.Status,
             new (typeof(StatusPingC2SP), 1))
         },
         {
-            PacketTypes.C2S.LOGIN_LOGIN_START,
+            PacketTypes.C2S.LoginLoginStart,
             new ( ProtocolState.Login,
             new (typeof(LoginStartC2SP), 0))
         },
         {
-            PacketTypes.C2S.LOGIN_ENCRYPTION_RESPONSE,
+            PacketTypes.C2S.LoginEncryptionResponse,
             new ( ProtocolState.Login,
             new (typeof(EncryptionResponseC2SP), 1))
         },
         {
-            PacketTypes.C2S.LOGIN_PLUGIN_RESPONSE,
+            PacketTypes.C2S.LoginPluginResponse,
             new ( ProtocolState.Login,
             new (typeof(LoginPluginResponseC2SP), 2))
         }
@@ -310,37 +310,37 @@ public class PacketMapper
     private static Dictionary<PacketTypes.S2C, KeyValuePair<ProtocolState,KeyValuePair<Type, int>>> _s2cStaticMappings = new()
     {
         {
-            PacketTypes.S2C.LOGIN_KICK,
+            PacketTypes.S2C.LoginKick,
             new ( ProtocolState.Login,
             new (typeof(LoginKickS2CP), 0))
         },
         {
-            PacketTypes.S2C.LOGIN_ENCRYPTION_REQUEST,
+            PacketTypes.S2C.LoginEncryptionRequest,
             new ( ProtocolState.Login,
             new (typeof(EncryptionRequestS2CP), 1))
         },
         {
-            PacketTypes.S2C.LOGIN_LOGIN_SUCCESS,
+            PacketTypes.S2C.LoginLoginSuccess,
             new ( ProtocolState.Login,
             new (typeof(LoginSuccessS2CP), 2))
         },
         {
-            PacketTypes.S2C.LOGIN_COMPRESSION_SET,
+            PacketTypes.S2C.LoginCompressionSet,
             new ( ProtocolState.Login,
             new (typeof(CompressionSetS2CP), 3))
         },
         {
-            PacketTypes.S2C.LOGIN_PLUGIN_REQUEST,
+            PacketTypes.S2C.LoginPluginRequest,
             new ( ProtocolState.Login,
             new (typeof(LoginPluginRequestS2CP), 4))
         },
         {
-            PacketTypes.S2C.STATUS_RESPONSE,
+            PacketTypes.S2C.StatusResponse,
             new ( ProtocolState.Status,
             new (typeof(ServerStatusResponseS2CP), 0))
         },
         {
-            PacketTypes.S2C.STATUS_PONG,
+            PacketTypes.S2C.StatusPong,
             new ( ProtocolState.Status,
             new (typeof(StatusPongS2CP), 1))
         }

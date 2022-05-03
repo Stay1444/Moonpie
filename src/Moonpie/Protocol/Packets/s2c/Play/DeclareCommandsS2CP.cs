@@ -30,7 +30,7 @@ using Moonpie.Utils.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Play;
 
-[PacketType(PacketTypes.S2C.PLAY_DECLARE_COMMANDS)]
+[PacketType(PacketTypes.S2C.PlayDeclareCommands)]
 public class DeclareCommandsS2CP : IS2CPacket
 {
     public enum NodeType

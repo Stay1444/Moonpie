@@ -30,7 +30,7 @@ using Moonpie.Utils.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Play.Title;
 
-[PacketType(PacketTypes.S2C.PLAY_TITLE_SUBTITLE_SET)]
+[PacketType(PacketTypes.S2C.PlayTitleSubtitleSet)]
 public class TitleSubtitleSetS2CP : IS2CPacket
 {
     public ChatComponent Subtitle { get; set; } = ChatComponent.Empty;

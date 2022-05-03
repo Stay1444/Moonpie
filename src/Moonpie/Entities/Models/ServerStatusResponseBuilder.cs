@@ -35,7 +35,7 @@ public class ServerStatusResponseBuilder
     public int MaxSlots { get; private set; }
     public int UsedSlots { get; private set; }
     
-    public ProtocolVersion Version { get; private set; }
+    public ProtocolVersion Version { get; private set; } = ProtocolVersion.v1_7_1_pre;
     
     public ServerStatusResponseBuilder WithDescription(ChatComponent chatComponent)
     {

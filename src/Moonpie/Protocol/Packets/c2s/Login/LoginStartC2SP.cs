@@ -29,7 +29,7 @@ using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Protocol.Packets.c2s.Login;
 
-[PacketType(PacketTypes.C2S.LOGIN_LOGIN_START)]
+[PacketType(PacketTypes.C2S.LoginLoginStart)]
 public class LoginStartC2SP : IC2SPacket
 {
     public string? Username { get; set; }

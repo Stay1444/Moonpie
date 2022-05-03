@@ -4,7 +4,7 @@ using Moonpie.Utils.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Play;
 
-[PacketType(PacketTypes.S2C.PLAY_SERVER_DIFFICULTY)]
+[PacketType(PacketTypes.S2C.PlayServerDifficulty)]
 public class ServerDifficultyS2CP : IS2CPacket
 {
     public enum Difficulties

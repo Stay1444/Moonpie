@@ -30,7 +30,7 @@ using Moonpie.Utils.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Login;
 
-[PacketType(PacketTypes.S2C.LOGIN_KICK)]
+[PacketType(PacketTypes.S2C.LoginKick)]
 public class LoginKickS2CP : IS2CPacket
 {
     public ChatComponent Reason { get; set; } = ChatComponent.Empty;

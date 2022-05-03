@@ -29,7 +29,7 @@ using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Play.Title;
 
-[PacketType(PacketTypes.S2C.PLAY_TITLE_TIMES_SET)]
+[PacketType(PacketTypes.S2C.PlayTitleTimesSet)]
 public class TitleTimesSetS2CP : IS2CPacket
 {
     public int FadeInTime { get; set; }

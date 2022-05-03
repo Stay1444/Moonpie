@@ -29,7 +29,7 @@ using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Protocol.Packets.c2s.Play;
 
-[PacketType(PacketTypes.C2S.PLAY_AUTOCOMPLETIONS)]
+[PacketType(PacketTypes.C2S.PlayAutoCompletions)]
 public class TabCompleteC2SP : IC2SPacket
 {
     public int TransactionId { get; set; }

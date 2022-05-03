@@ -28,7 +28,7 @@ using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Play.Title;
-[PacketType(PacketTypes.S2C.PLAY_TITLE_CLEAR)]
+[PacketType(PacketTypes.S2C.PlayTitleClear)]
 public class TitleClearS2CP : IS2CPacket
 {
     public bool Reset { get; set; }

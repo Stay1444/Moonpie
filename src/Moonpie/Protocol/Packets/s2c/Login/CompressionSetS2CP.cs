@@ -31,7 +31,7 @@ using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Login;
 
-[PacketType(PacketTypes.S2C.LOGIN_COMPRESSION_SET)]
+[PacketType(PacketTypes.S2C.LoginCompressionSet)]
 public class CompressionSetS2CP : IS2CPacket
 {
     public int Threshold { get; set; }
