@@ -25,7 +25,6 @@
 #endregion
 
 using Moonpie.Entities.Enums;
-using Moonpie.Protocol.Packets.s2c.Play;
 using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Entities;
