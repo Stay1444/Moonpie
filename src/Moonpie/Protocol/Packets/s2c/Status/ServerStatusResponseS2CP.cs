@@ -36,11 +36,6 @@ public class ServerStatusResponseS2CP : IS2CPacket
     
     public ServerStatus? Status { get; set; }
     
-    public void Log()
-    {
-        Console.WriteLine("ServerStatusResponseS2CP");
-    }
-
     public void Read(InByteBuffer buffer)
     {
         Status = buffer.ReadJson<ServerStatus>();
