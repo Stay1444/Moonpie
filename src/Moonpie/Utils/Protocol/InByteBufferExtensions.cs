@@ -24,7 +24,6 @@
 // SOFTWARE.
 #endregion
 
-using System.Collections.Generic;
 using System.Text.Json;
 using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Protocol;
@@ -97,41 +96,7 @@ public static class InByteBufferExtensions
         }
         return array;
     }
-    
-    public static PlayerProperties ReadPlayerProperties(this InByteBuffer buffer)
-    {
-        PlayerTextures? textures = null;
-        int length = buffer.ReadVarInt();
-        for (int i = 0; i < length; i++)
-        {
-            var name = buffer.ReadString();
-            var value = buffer.ReadString();
-            string? signature = null;
-            if (buffer.Version < ProtocolVersion.v14w21a)
-            {
-                signature = buffer.ReadString();
-            }
-            else
-            {
-                signature = buffer.ReadOptional(buffer.ReadString);
-            }
 
-            if (name == "textures")
-            {
-                if (textures is not null) throw new Exception("Duplicate textures property");
-                textures = PlayerTextures.From(value, signature ?? throw new Exception("Missing signature"));
-            }
-            else
-            {
-                throw new Exception("Unknown player property: " + name);
-            }
-        }
-        return new PlayerProperties()
-        {
-            Textures = textures
-        };
-    }
-    
     public static Vector3d ReadVector3d(this InByteBuffer buffer)
     {
         return new Vector3d(buffer.ReadDouble(), buffer.ReadDouble(), buffer.ReadDouble());
