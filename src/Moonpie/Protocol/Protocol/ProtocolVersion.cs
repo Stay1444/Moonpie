@@ -31,6 +31,7 @@ namespace Moonpie.Protocol.Protocol;
 
 public class ProtocolVersion : SmartEnum<ProtocolVersion>
 {
+    //Hell broke loose
     #region Enum
     #pragma warning disable 
     public static readonly ProtocolVersion v22w13a = new("22w13a",1073741900, true);
