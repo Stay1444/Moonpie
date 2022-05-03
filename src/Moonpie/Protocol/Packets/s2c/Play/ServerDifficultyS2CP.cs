@@ -17,6 +17,7 @@ public class ServerDifficultyS2CP : IS2CPacket
     
     public Difficulties Difficulty { get; set; }
     public bool? Locked { get; set; }
+    
     public void Read(InByteBuffer buffer)
     {
         Difficulty = (Difficulties)buffer.ReadByte();
