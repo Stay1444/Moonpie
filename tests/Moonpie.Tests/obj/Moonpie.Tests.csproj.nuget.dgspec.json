@@ -4,6 +4,58 @@
     "/home/stay/work/Moonpie/tests/Moonpie.Tests/Moonpie.Tests.csproj": {}
   },
   "projects": {
+    "/home/stay/work/Moonpie/Moonpie.Mojang/Moonpie.Mojang.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/stay/work/Moonpie/Moonpie.Mojang/Moonpie.Mojang.csproj",
+        "projectName": "Moonpie.Mojang",
+        "projectPath": "/home/stay/work/Moonpie/Moonpie.Mojang/Moonpie.Mojang.csproj",
+        "packagesPath": "/home/stay/.nuget/packages/",
+        "outputPath": "/home/stay/work/Moonpie/Moonpie.Mojang/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/stay/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/6.0.202/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "/home/stay/work/Moonpie/src/Moonpie.NBT/Moonpie.NBT.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -84,6 +136,9 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
+              "/home/stay/work/Moonpie/Moonpie.Mojang/Moonpie.Mojang.csproj": {
+                "projectPath": "/home/stay/work/Moonpie/Moonpie.Mojang/Moonpie.Mojang.csproj"
+              },
               "/home/stay/work/Moonpie/src/Moonpie.NBT/Moonpie.NBT.csproj": {
                 "projectPath": "/home/stay/work/Moonpie/src/Moonpie.NBT/Moonpie.NBT.csproj"
               }
