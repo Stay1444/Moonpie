@@ -4411,8 +4411,8 @@
     },
     "Moonpie.Mojang/1.0.0": {
       "type": "project",
-      "path": "../../Moonpie.Mojang/Moonpie.Mojang.csproj",
-      "msbuildProject": "../../Moonpie.Mojang/Moonpie.Mojang.csproj"
+      "path": "../../src/Moonpie.Mojang/Moonpie.Mojang.csproj",
+      "msbuildProject": "../../src/Moonpie.Mojang/Moonpie.Mojang.csproj"
     },
     "Moonpie.NBT/1.0.0": {
       "type": "project",

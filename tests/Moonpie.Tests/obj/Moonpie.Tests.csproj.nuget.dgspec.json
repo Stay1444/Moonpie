@@ -4,14 +4,14 @@
     "/home/stay/work/Moonpie/tests/Moonpie.Tests/Moonpie.Tests.csproj": {}
   },
   "projects": {
-    "/home/stay/work/Moonpie/Moonpie.Mojang/Moonpie.Mojang.csproj": {
+    "/home/stay/work/Moonpie/src/Moonpie.Mojang/Moonpie.Mojang.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/stay/work/Moonpie/Moonpie.Mojang/Moonpie.Mojang.csproj",
+        "projectUniqueName": "/home/stay/work/Moonpie/src/Moonpie.Mojang/Moonpie.Mojang.csproj",
         "projectName": "Moonpie.Mojang",
-        "projectPath": "/home/stay/work/Moonpie/Moonpie.Mojang/Moonpie.Mojang.csproj",
+        "projectPath": "/home/stay/work/Moonpie/src/Moonpie.Mojang/Moonpie.Mojang.csproj",
         "packagesPath": "/home/stay/.nuget/packages/",
-        "outputPath": "/home/stay/work/Moonpie/Moonpie.Mojang/obj/",
+        "outputPath": "/home/stay/work/Moonpie/src/Moonpie.Mojang/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/stay/.nuget/NuGet/NuGet.Config"
@@ -136,8 +136,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "/home/stay/work/Moonpie/Moonpie.Mojang/Moonpie.Mojang.csproj": {
-                "projectPath": "/home/stay/work/Moonpie/Moonpie.Mojang/Moonpie.Mojang.csproj"
+              "/home/stay/work/Moonpie/src/Moonpie.Mojang/Moonpie.Mojang.csproj": {
+                "projectPath": "/home/stay/work/Moonpie/src/Moonpie.Mojang/Moonpie.Mojang.csproj"
               },
               "/home/stay/work/Moonpie/src/Moonpie.NBT/Moonpie.NBT.csproj": {
                 "projectPath": "/home/stay/work/Moonpie/src/Moonpie.NBT/Moonpie.NBT.csproj"
