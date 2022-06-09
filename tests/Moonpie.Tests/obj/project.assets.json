@@ -4447,7 +4447,8 @@
         "net6.0"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://www.myget.org/F/jint/api/v3/index.json ": {}
       },
       "frameworks": {
         "net6.0": {
@@ -4497,7 +4498,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/6.0.202/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/snap/dotnet-sdk/current/sdk/6.0.300/RuntimeIdentifierGraph.json"
       }
     }
   }
