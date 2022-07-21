@@ -29,7 +29,7 @@ using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Protocol.Packets.c2s.Login;
 
-[PacketType(PacketTypes.C2S.LoginPluginResponse)]
+[PacketType(PacketTypes.C2S.LOGIN_PLUGIN_RESPONSE)]
 public class LoginPluginResponseC2SP : IC2SPacket
 {
     public VarInt MessageId { get; set; }

@@ -28,7 +28,7 @@ using Moonpie.Protocol.Network;
 using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Protocol.Packets.c2s.Login;
-[PacketType(PacketTypes.C2S.LoginEncryptionResponse)]
+[PacketType(PacketTypes.C2S.LOGIN_ENCRYPTION_RESPONSE)]
 public class EncryptionResponseC2SP : IC2SPacket
 {   
     public int SharedSecretLength { get; set; }

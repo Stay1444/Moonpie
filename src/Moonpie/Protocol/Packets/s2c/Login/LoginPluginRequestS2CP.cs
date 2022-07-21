@@ -29,7 +29,7 @@ using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Login;
 
-[PacketType(PacketTypes.S2C.LoginPluginRequest)]
+[PacketType(PacketTypes.S2C.LOGIN_PLUGIN_REQUEST)]
 public class LoginPluginRequestS2CP : IS2CPacket
 {
     public int MessageId { get; set; } = -1;

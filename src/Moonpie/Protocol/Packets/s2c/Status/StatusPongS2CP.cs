@@ -29,7 +29,7 @@ using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Status;
 
-[PacketType(PacketTypes.S2C.StatusPong)]
+[PacketType(PacketTypes.S2C.STATUS_PONG)]
 public class StatusPongS2CP : IS2CPacket
 {
     public long PingId { get; set; }

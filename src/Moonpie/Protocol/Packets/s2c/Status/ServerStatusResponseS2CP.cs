@@ -30,7 +30,7 @@ using Moonpie.Utils.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Status;
 
-[PacketType(PacketTypes.S2C.StatusResponse)]
+[PacketType(PacketTypes.S2C.STATUS_RESPONSE)]
 public class ServerStatusResponseS2CP : IS2CPacket
 {
     

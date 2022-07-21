@@ -29,7 +29,7 @@ using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Protocol.Packets.c2s.Handshaking;
 
-[PacketType(PacketTypes.C2S.HandshakingHandshake)]
+[PacketType(PacketTypes.C2S.HANDSHAKING_HANDSHAKE)]
 public class HandshakeC2SP : IC2SPacket
 {
     public ProtocolVersion ProtocolVersion { get; set; }

@@ -29,7 +29,7 @@ using Moonpie.Protocol.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Login;
 
-[PacketType(PacketTypes.S2C.LoginEncryptionRequest)]
+[PacketType(PacketTypes.S2C.LOGIN_ENCRYPTION_REQUEST)]
 public class EncryptionRequestS2CP : IS2CPacket
 {
     public string ServerId { get; set; } = String.Empty;

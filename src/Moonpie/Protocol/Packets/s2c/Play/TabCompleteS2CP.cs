@@ -30,7 +30,7 @@ using Moonpie.Utils.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Play;
 
-[PacketType(PacketTypes.S2C.PlayAutoCompletions)]
+[PacketType(PacketTypes.S2C.PLAY_AUTOCOMPLETIONS)]
 public class TabCompleteS2CP : IS2CPacket
 {
     public int TransactionId { get; set; }

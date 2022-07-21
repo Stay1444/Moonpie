@@ -5,7 +5,7 @@ using Moonpie.Utils.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Play;
 
-[PacketType(PacketTypes.S2C.PlayPositionAndRotation)]
+[PacketType(PacketTypes.S2C.PLAY_POSITION_AND_ROTATION)]
 public class PositionAndRotationS2CP : IS2CPacket
 {
     public Vector3d Position { get; set; }

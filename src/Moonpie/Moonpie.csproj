@@ -45,7 +45,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Moonpie.Mojang\Moonpie.Mojang.csproj" />
       <ProjectReference Include="..\Moonpie.NBT\Moonpie.NBT.csproj" />
     </ItemGroup>
 

@@ -31,7 +31,7 @@ using Serilog;
 
 namespace Moonpie.Protocol.Packets.c2s.Play;
 
-[PacketType(PacketTypes.C2S.PlayChatMessage)]
+[PacketType(PacketTypes.C2S.PLAY_CHAT_MESSAGE)]
 public class ChatMessageC2SP : IC2SPacket
 {
     public string Message { get; set; } = "";

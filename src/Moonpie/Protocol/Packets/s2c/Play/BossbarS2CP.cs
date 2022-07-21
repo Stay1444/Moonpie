@@ -45,7 +45,7 @@ public enum BossbarAction
 }
 
 
-[PacketType(PacketTypes.S2C.PlayBossBar)]
+[PacketType(PacketTypes.S2C.PLAY_BOSS_BAR)]
 public class BossbarS2CP : IS2CPacket
 {
 

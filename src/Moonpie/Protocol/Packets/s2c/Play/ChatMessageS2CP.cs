@@ -31,7 +31,7 @@ using Moonpie.Utils.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Play;
 
-[PacketType(PacketTypes.S2C.PlayChatMessage)]
+[PacketType(PacketTypes.S2C.PLAY_CHAT_MESSAGE)]
 public class ChatMessageS2CP : IS2CPacket
 {
     public ChatComponent? Message { get; set; } = ChatComponent.Empty;

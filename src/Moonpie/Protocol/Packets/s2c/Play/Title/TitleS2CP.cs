@@ -30,7 +30,7 @@ using Moonpie.Utils.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Play.Title;
 
-[PacketType(PacketTypes.S2C.PlayTitle)]
+[PacketType(PacketTypes.S2C.PLAY_TITLE)]
 public class TitleS2CP : IS2CPacket
 {
     public enum TitleActions

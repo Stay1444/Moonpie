@@ -32,7 +32,7 @@ using Serilog;
 
 namespace Moonpie.Protocol.Packets.s2c.Login;
 
-[PacketType(PacketTypes.S2C.LoginLoginSuccess)]
+[PacketType(PacketTypes.S2C.LOGIN_LOGIN_SUCCESS)]
 public class LoginSuccessS2CP : IS2CPacket
 {
     public JavaUUID Uuid { get; set; }

@@ -5,7 +5,7 @@ using Moonpie.Utils.Protocol;
 
 namespace Moonpie.Protocol.Packets.s2c.Play;
 
-[PacketType(PacketTypes.S2C.PlayEntityTeleport)]
+[PacketType(PacketTypes.S2C.PLAY_ENTITY_TELEPORT)]
 public class EntityTeleportS2CP : IS2CPacket
 {
     public int EntityId { get; set; }
